@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universo Dark Art - Calendário Lunar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+    </style>
+</head>
+<body class="bg-[#050308] text-slate-200 min-h-screen flex flex-col justify-between selection:bg-purple-900 selection:text-white">
+
+    <!-- Header / Navegação Multi-Página -->
+    <header class="w-full bg-[#0a0610] border-b border-purple-950/60 py-4 px-6 flex flex-col sm:flex-row items-center justify-between shadow-lg gap-4">
+        <a href="index.html" class="flex items-center space-x-3 cursor-pointer">
+            <i data-lucide="moon-star" class="w-6 h-6 text-purple-400"></i>
+            <span class="font-cinzel font-bold text-lg tracking-widest text-purple-200">UNIVERSO <span class="text-purple-400">DARK ART</span></span>
+        </a>
+        
+        <nav class="flex flex-wrap justify-center gap-2">
+            <a href="index.html" class="px-3.5 py-1.5 rounded-xl text-xs font-cinzel tracking-wider transition-all bg-purple-950/20 text-slate-400 border border-purple-950/40 hover:text-purple-200">
+                Dashboard
+            </a>
+            <a href="teste.html" class="px-3.5 py-1.5 rounded-xl text-xs font-cinzel tracking-wider transition-all bg-purple-950/20 text-slate-400 border border-purple-950/40 hover:text-purple-200">
+                Teste Arquetípico
+            </a>
+            <a href="horoscopo.html" class="px-3.5 py-1.5 rounded-xl text-xs font-cinzel tracking-wider transition-all bg-purple-950/20 text-slate-400 border border-purple-950/40 hover:text-purple-200">
+                Horóscopo & Sombra
+            </a>
+            <a href="calendario.html" class="px-3.5 py-1.5 rounded-xl text-xs font-cinzel tracking-wider transition-all bg-purple-900/40 text-purple-200 border border-purple-700/50 shadow-sm">
+                Calendário Lunar
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <div class="bg-[#0f0b18] rounded-3xl shadow-2xl border border-purple-950/80 p-8 sm:p-10 text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-950 border border-purple-800 text-purple-400 rounded-full mb-4 shadow-inner">
+                <i data-lucide="moon" class="w-8 h-8" id="lunar-icon"></i>
+            </div>
+            <h2 id="lunar-phase-title" class="text-2xl font-bold font-cinzel text-purple-100 mb-1">Calculando fase lunar...</h2>
+            <p id="lunar-date-text" class="text-xs text-purple-400 uppercase tracking-widest font-cinzel mb-6"></p>
+            
+            <div class="bg-[#07050c] border border-purple-950/80 rounded-2xl p-6 max-w-lg mx-auto text-left space-y-3">
+                <h3 class="font-cinzel text-sm font-semibold text-purple-300">Influência Energética do Ciclo:</h3>
+                <p id="lunar-description" class="text-sm text-slate-300 font-light leading-relaxed">
+                    Aguarde o cálculo automático com base na data de hoje...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-purple-900 border-t border-purple-950/30 font-cinzel tracking-widest">
+        UNIVERSO DARK ART • LUNAR
+    </footer>
+
+    <!-- Arquivo JavaScript Separado -->
+    <script src="app.js"></script>
+</body>
+</html>
