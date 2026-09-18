@@ -8,6 +8,43 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
+       <!-- Configurações do PWA para o Equalize-se -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Equalize-se">
+
+<!-- Script para registrar o Service Worker e buscar dados novos ao abrir -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        console.log('Service Worker do Equalize-se registrado com sucesso.');
+
+        // Força a verificação de atualizações sempre que a página ganha foco (ao abrir o app)
+        window.addEventListener('focus', () => {
+          reg.update();
+        });
+
+        // Detecta se há uma nova versão disponível e atualiza em segundo plano
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed') {
+              if (navigator.serviceWorker.controller) {
+                console.log('Nova versão do Equalize-se encontrada. Atualizando...');
+                window.location.reload();
+              }
+            }
+          };
+        };
+      }).catch(err => {
+        console.log('Falha ao registrar o Service Worker:', err);
+      });
+    });
+  }
+</script>
 </head>
 <body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans pt-24 pb-12">
 
