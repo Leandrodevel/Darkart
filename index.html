@@ -64,6 +64,19 @@
             <p id="data-hoje" class="text-emerald-800 font-semibold text-sm sm:text-base inline-block px-4 py-1.5 bg-emerald-50/80 border border-emerald-200/60 rounded-full">Carregando data de referência...</p>
         </section>
 
+        <!-- 2. VÍDEO DO DIA (MOVIDO PARA O FINAL) -->
+        <section class="w-full pt-4">
+            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-4 sm:p-6 shadow-sm">
+                <div class="relative w-full overflow-hidden rounded-2xl shadow-md bg-black" style="padding-top: 56.25%;">
+                    <iframe id="video-iframe" class="absolute top-0 left-0 w-full h-full border-0" src="" title="Vídeo do dia" allowfullscreen></iframe>
+                </div>
+                <div class="mt-4 px-2">
+                    <h2 id="video-titulo" class="text-base sm:text-lg font-semibold text-slate-900 leading-snug">Vídeo de Inspiração do Dia</h2>
+                    <p id="video-descricao" class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">Carregando descrição do conteúdo recomendado...</p>
+                </div>
+            </div>
+        </section>
+        
         <!-- 1. CONTAINER DE CARDS DE FRASES DO DIA (EM CIMA, COM ROLAGEM A PARTIR DE 5 MENSAGENS) -->
         <section id="secao-frases-container" class="w-full space-y-3 hidden">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Pensamentos & Frases do Dia</h3>
@@ -109,19 +122,7 @@
             </div>
         </div>
 
-        <!-- 2. VÍDEO DO DIA (MOVIDO PARA O FINAL) -->
-        <section class="w-full pt-4">
-            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-4 sm:p-6 shadow-sm">
-                <div class="relative w-full overflow-hidden rounded-2xl shadow-md bg-black" style="padding-top: 56.25%;">
-                    <iframe id="video-iframe" class="absolute top-0 left-0 w-full h-full border-0" src="" title="Vídeo do dia" allowfullscreen></iframe>
-                </div>
-                <div class="mt-4 px-2">
-                    <h2 id="video-titulo" class="text-base sm:text-lg font-semibold text-slate-900 leading-snug">Vídeo de Inspiração do Dia</h2>
-                    <p id="video-descricao" class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">Carregando descrição do conteúdo recomendado...</p>
-                </div>
-            </div>
-        </section>
-
+        
     </main>
 
     <!-- BOTÃO FLUTUANTE NA LATERAL -->
