@@ -234,8 +234,21 @@
         document.getElementById("input-mensagem-usuario").value = "";
     }
 
-    // Função Global para Reagir às Mensagens (Com Toggle e Sincronização no Recarregamento)
+    // Função Global para Reagir às Mensagens (Com bloqueio até o próximo recarregamento)
     async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao) {
+        // Se a mensagem/card já foi marcado como bloqueado/processando nesta sessão antes do reload, ignora
+        if (elementoBotao.closest('.flex-wrap').hasAttribute('data-bloqueado')) {
+            return;
+        }
+
+        const containerBotoes = elementoBotao.closest('.flex-wrap');
+        // Trava visualmente todos os botões de reação deste card imediatamente
+        containerBotoes.setAttribute('data-bloqueado', 'true');
+        containerBotoes.querySelectorAll('button').forEach(btn => {
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            btn.style.pointerEvents = 'none';
+        });
+
         const chaveLocalTipo = 'reacao_tipo_' + dataIso + '_' + indexMensagem + '_' + tipoReacao;
         const chaveLocalMarcada = 'reacao_ativa_' + dataIso + '_' + indexMensagem;
         
@@ -248,20 +261,18 @@
             localStorage.removeItem(chaveLocalMarcada);
             localStorage.removeItem(chaveLocalTipo);
 
-            // Atualiza o contador na hora visualmente (-1)
             if (contadorSpan) {
                 contadorSpan.innerText = Math.max(0, valorAtualContador - 1);
             }
             elementoBotao.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50');
 
-            // Adiciona na fila de pendências para remover do servidor no próximo reload/sincronização
             salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'remover');
             return;
         }
 
         // Se já havia outra reação diferente na mesma mensagem, remove a anterior visualmente
         if (reacaoAnteriorNoCard) {
-            const botaoAnterior = document.querySelector(`[data-msg-key="${dataIso}-${indexMensagem}"][data-tipo-reacao="${reacaoAnteriorNoCard}"]`);
+            const botaoAnterior = containerBotoes.querySelector(`[data-tipo-reacao="${reacaoAnteriorNoCard}"]`);
             if (botaoAnterior) {
                 const contadorAntigo = botaoAnterior.querySelector('.contador-reacao');
                 if (contadorAntigo) {
@@ -277,20 +288,17 @@
         localStorage.setItem(chaveLocalMarcada, tipoReacao);
         localStorage.setItem(chaveLocalTipo, "true");
 
-        // Atualiza o contador na hora visualmente (+1)
         if (contadorSpan) {
             contadorSpan.innerText = valorAtualContador + 1;
         }
         elementoBotao.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-50');
 
-        // Adiciona na fila de pendências para enviar ao servidor no próximo reload/sincronização
         salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'adicionar');
     }
 
     // Auxiliar para gerenciar a fila de reações pendentes
     function salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, acao) {
         let pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
-        // Remove duplicadas antigas para a mesma mensagem/tipo
         pendencias = pendencias.filter(p => !(p.dataIso === dataIso && p.indexMensagem === indexMensagem && p.tipoReacao === tipoReacao));
         pendencias.push({ dataIso, indexMensagem, tipoReacao, acao });
         localStorage.setItem('equalize_pendencias_reacoes', JSON.stringify(pendencias));
