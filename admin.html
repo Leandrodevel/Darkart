@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equalize-se - Painel Administrativo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative">
+
+    <!-- TELA DE LOGIN (Oculta se autenticado) -->
+    <div id="login-container" class="max-w-md w-full mx-auto px-4 my-auto">
+        <div class="bg-white/90 backdrop-blur-md border border-emerald-100 rounded-3xl p-8 shadow-xl text-center space-y-6">
+            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto text-emerald-700">
+                <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-extrabold text-slate-900">Acesso Restrito</h1>
+                <p class="text-xs text-slate-500 mt-1">Entre com a senha de administrador para gerenciar o portal</p>
+            </div>
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Senha de Acesso</label>
+                    <input type="password" id="input-senha" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Digite a senha">
+                </div>
+                <button onclick="fazerLogin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-semibold shadow-sm transition-all">Entrar no Painel</button>
+                <div class="text-center">
+                    <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-700 font-medium transition-all">← Voltar para a página inicial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO (Exibido após o login) -->
+    <main id="painel-container" class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6 hidden">
+        
+        <!-- CABEÇALHO DO PAINEL -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Painel Administrativo</h1>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Gerenciamento completo de mensagens e vídeos</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                    <i data-lucide="home" class="w-4 h-4"></i> Ver Site
+                </a>
+                <button onclick="fazerLogout()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Sair
+                </button>
+            </div>
+        </header>
+
+        <!-- SEÇÃO: POSTAR NOVA MENSAGEM (Livre) -->
+        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="message-square-plus" class="w-5 h-5 text-emerald-700"></i> Postar Mensagem Livremente
+            </h2>
+            <div class="space-y-3">
+                <textarea id="adm-texto-msg" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escreva sua mensagem sem limitações de envio..."></textarea>
+                <div class="flex justify-end">
+                    <button onclick="salvarMensagem()" id="btn-salvar-msg" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Publicar Mensagem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: GERENCIAR VÍDEOS DIÁRIOS -->
+        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="video" class="w-5 h-5 text-purple-600"></i> Gerenciar Vídeos Diários
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <input type="text" id="adm-vid-data" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Data (AAAA-MM-DD)">
+                <input type="text" id="adm-vid-titulo" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Título do Vídeo">
+                <input type="text" id="adm-vid-id" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="YouTube ID (ex: dQw4w9WgXcQ)">
+            </div>
+            <textarea id="adm-vid-desc" rows="2" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Descrição do vídeo..."></textarea>
+            <div class="flex justify-end">
+                <button onclick="salvarVideo()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Cadastrar / Atualizar Vídeo</button>
+            </div>
+
+            <!-- Lista de Vídeos Postados -->
+            <div class="mt-4 pt-4 border-t border-slate-100">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Vídeos Cadastrados no Servidor</h3>
+                <div id="lista-videos-adm" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                    <!-- Preenchido via script -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: GERENCIAR TODAS AS MENSAGENS -->
+        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="list-checks" class="w-5 h-5 text-indigo-600"></i> Todas as Mensagens Cadastradas
+            </h2>
+            <div id="lista-mensagens-adm" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+                <!-- Preenchido via script -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8">
+        EQUALIZE-SE &copy; 2026 • PAINEL ADMINISTRATIVO
+    </footer>
+
+    <!-- Script de Conexão com o Banco (db.js) -->
+    <script src="db.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Variável de controle de edição de mensagem
+        let editandoIndexData = null;
+        let editandoMsgIndex = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const logado = sessionStorage.getItem("equalize_admin_logado");
+            if (logado === "true") {
+                mostrarPainel();
+            }
+        });
+
+        function fazerLogin() {
+            const senha = document.getElementById("input-senha").value;
+            // Senha padrão configurada 
+            if (senha === "eqz791-2026") {
+                sessionStorage.setItem("equalize_admin_logado", "true");
+                mostrarPainel();
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function fazerLogout() {
+            sessionStorage.removeItem("equalize_admin_logado");
+            document.getElementById("login-container").classList.remove("hidden");
+            document.getElementById("painel-container").classList.add("hidden");
+            document.getElementById("input-senha").value = "";
+        }
+
+        async function mostrarPainel() {
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("painel-container").classList.remove("hidden");
+            // Sugere a data de hoje automaticamente no campo de vídeo
+            document.getElementById("adm-vid-data").value = obterChaveDataHoje();
+            await carregarDadosAdm();
+        }
+
+        async function carregarDadosAdm() {
+            try {
+                const resp = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                if (!resp.ok) throw new Error("Erro ao carregar dados do servidor.");
+                
+                const resultado = await resp.json();
+                const todosOsDados = resultado.record || {};
+
+                renderizarVideosAdm(todosOsDados);
+                renderizarMensagensAdm(todosOsDados);
+            } catch (error) {
+                console.error("Erro ao carregar painel:", error);
+                alert("Erro ao conectar com o banco de dados.");
+            }
+        }
+
+        function renderizarVideosAdm(dadosGlobais) {
+            const container = document.getElementById("lista-videos-adm");
+            container.innerHTML = "";
+
+            let temVideos = false;
+            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
+                const diaObj = dadosGlobais[dataKey];
+                if (diaObj && diaObj.videoDoDia && diaObj.videoDoDia.youtubeId) {
+                    temVideos = true;
+                    const v = diaObj.videoDoDia;
+                    const item = document.createElement("div");
+                    item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-3 flex items-center justify-between text-xs";
+                    item.innerHTML = `
+                        <div>
+                            <span class="font-bold text-purple-700">[${dataKey}]</span> 
+                            <span class="font-semibold text-slate-800">${v.titulo || 'Sem Título'}</span>
+                            <span class="text-slate-400 block truncate max-w-xs">ID: ${v.youtubeId}</span>
+                        </div>
+                        <button onclick="apagarVideo('${dataKey}')" class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all" title="Apagar Vídeo">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    container.appendChild(item);
+                }
+            });
+
+            if (!temVideos) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">Nenhum vídeo cadastrado.</p>';
+            }
+            lucide.createIcons();
+        }
+
+        function renderizarMensagensAdm(dadosGlobais) {
+            const container = document.getElementById("lista-mensagens-adm");
+            container.innerHTML = "";
+
+            let totalMensagens = 0;
+            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
+                const diaObj = dadosGlobais[dataKey];
+                if (diaObj && diaObj.mensagensDoDia && diaObj.mensagensDoDia.length > 0) {
+                    diaObj.mensagensDoDia.forEach((msg, index) => {
+                        totalMensagens++;
+                        const item = document.createElement("div");
+                        item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs";
+                        item.innerHTML = `
+                            <div class="space-y-1 flex-1">
+                                <div class="flex items-center gap-2 text-slate-400 font-medium">
+                                    <span class="text-emerald-700 font-bold">Data: ${dataKey}</span>
+                                    <span>•</span>
+                                    <span>Às ${msg.horario || '00:00'}</span>
+                                </div>
+                                <p class="text-slate-800 italic">"${msg.texto}"</p>
+                            </div>
+                            <div class="flex items-center gap-2 self-end sm:self-center">
+                                <button onclick="prepararEdicaoMensagem('${dataKey}', ${index}, '${encodeURIComponent(msg.texto)}')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl font-semibold transition-all flex items-center gap-1">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
+                                </button>
+                                <button onclick="apagarMensagem('${dataKey}', ${index})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl font-semibold transition-all flex items-center gap-1">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+            });
+
+            if (totalMensagens === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Nenhuma mensagem cadastrada no sistema.</p>';
+            }
+            lucide.createIcons();
+        }
+
+        async function salvarMensagem() {
+            const texto = document.getElementById("adm-texto-msg").value.trim();
+            if (!texto) {
+                alert("Escreva uma mensagem antes de publicar.");
+                return;
+            }
+
+            const dataHojeIso = obterChaveDataHoje();
+            const agora = new Date();
+            const horarioFormatado = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            try {
+                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                const resJson = await respGet.json();
+                let dados = resJson.record || {};
+
+                if (!dados[dataHojeIso]) {
+                    dados[dataHojeIso] = { videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" }, resumoDiario: {}, mensagensDoDia: [] };
+                }
+                if (!dados[dataHojeIso].mensagensDoDia) {
+                    dados[dataHojeIso].mensagensDoDia = [];
+                }
+
+                if (editandoIndexData !== null && editandoMsgIndex !== null) {
+                    // Modo Edição
+                    dados[editandoIndexData].mensagensDoDia[editandoMsgIndex].texto = texto;
+                    editandoIndexData = null;
+                    editandoMsgIndex = null;
+                    document.getElementById("btn-salvar-msg").innerText = "Publicar Mensagem";
+                } else {
+                    // Modo Novo Envio
+                    dados[dataHojeIso].mensagensDoDia.push({
+                        texto: texto,
+                        horario: horarioFormatado,
+                        dataIso: dataHojeIso
+                    });
+                }
+
+                const respPut = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!respPut.ok) throw new Error("Erro ao salvar no servidor.");
+
+                document.getElementById("adm-texto-msg").value = "";
+                alert("Mensagem salva com sucesso!");
+                await carregarDadosAdm();
+
+            } catch (error) {
+                console.error("Erro ao salvar mensagem:", error);
+                alert("Erro ao salvar mensagem no servidor.");
+            }
+        }
+
+        function prepararEdicaoMensagem(dataKey, index, textoEncoded) {
+            editandoIndexData = dataKey;
+            editandoMsgIndex = index;
+            document.getElementById("adm-texto-msg").value = decodeURIComponent(textoEncoded);
+            document.getElementById("btn-salvar-msg").innerText = "Atualizar Mensagem";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function apagarMensagem(dataKey, index) {
+            if (!confirm("Tem certeza que deseja excluir esta mensagem?")) return;
+
+            try {
+                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                const resJson = await respGet.json();
+                let dados = resJson.record || {};
+
+                if (dados[dataKey] && dados[dataKey].mensagensDoDia) {
+                    dados[dataKey].mensagensDoDia.splice(index, 1);
+
+                    const respPut = await fetch(API_URL, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                        body: JSON.stringify(dados)
+                    });
+
+                    if (!respPut.ok) throw new Error("Erro ao excluir mensagem.");
+                    alert("Mensagem excluída com sucesso!");
+                    await carregarDadosAdm();
+                }
+            } catch (error) {
+                console.error("Erro ao apagar mensagem:", error);
+                alert("Erro ao excluir a mensagem.");
+            }
+        }
+
+        async function salvarVideo() {
+            const dataVid = document.getElementById("adm-vid-data").value.trim();
+            const titulo = document.getElementById("adm-vid-titulo").value.trim();
+            const youtubeId = document.getElementById("adm-vid-id").value.trim();
+            const descricao = document.getElementById("adm-vid-desc").value.trim();
+
+            if (!dataVid || !youtubeId) {
+                alert("Preencha ao menos a Data e o ID do YouTube.");
+                return;
+            }
+
+            try {
+                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                const resJson = await respGet.json();
+                let dados = resJson.record || {};
+
+                if (!dados[dataVid]) {
+                    dados[dataVid] = { resumoDiario: { data: dataVid }, mensagensDoDia: [] };
+                }
+
+                dados[dataVid].videoDoDia = {
+                    titulo: titulo || "Vídeo Diário",
+                    descricao: descricao || "",
+                    youtubeId: youtubeId
+                };
+
+                const respPut = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!respPut.ok) throw new Error("Erro ao salvar vídeo.");
+
+                document.getElementById("adm-vid-titulo").value = "";
+                document.getElementById("adm-vid-id").value = "";
+                document.getElementById("adm-vid-desc").value = "";
+                alert("Vídeo cadastrado/atualizado com sucesso!");
+                await carregarDadosAdm();
+
+            } catch (error) {
+                console.error("Erro ao salvar vídeo:", error);
+                alert("Erro ao atualizar o vídeo.");
+            }
+        }
+
+        async function apagarVideo(dataKey) {
+            if (!confirm(`Deseja apagar o vídeo vinculado à data ${dataKey}?`)) return;
+
+            try {
+                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_Key } });
+                const resJson = await respGet.json();
+                let dados = resJson.record || {};
+
+                if (dados[dataKey] && dados[dataKey].videoDoDia) {
+                    delete dados[dataKey].videoDoDia;
+
+                    const respPut = await fetch(API_URL, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                        body: JSON.stringify(dados)
+                    });
+
+                    if (!respPut.ok) throw new Error("Erro ao apagar vídeo.");
+                    alert("Vídeo apagado com sucesso!");
+                    await carregarDadosAdm();
+                }
+            } catch (error) {
+                console.error("Erro ao apagar vídeo:", error);
+                alert("Erro ao apagar o vídeo.");
+            }
+        }
+    </script>
+</body>
+</html>
