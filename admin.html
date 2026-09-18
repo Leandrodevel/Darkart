@@ -8,43 +8,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-       <!-- Configurações do PWA para o Equalize-se -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Equalize-se">
+    <!-- Configurações do PWA para o Equalize-se -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Equalize-se">
 
-<!-- Script para registrar o Service Worker e buscar dados novos ao abrir -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').then(reg => {
-        console.log('Service Worker do Equalize-se registrado com sucesso.');
-
-        // Força a verificação de atualizações sempre que a página ganha foco (ao abrir o app)
-        window.addEventListener('focus', () => {
-          reg.update();
+    <!-- Script para registrar o Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then(reg => {
+            console.log('Service Worker do Equalize-se registrado com sucesso.');
+            window.addEventListener('focus', () => { reg.update(); });
+          }).catch(err => {
+            console.log('Falha ao registrar o Service Worker:', err);
+          });
         });
-
-        // Detecta se há uma nova versão disponível e atualiza em segundo plano
-        reg.onupdatefound = () => {
-          const installingWorker = reg.installing;
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                console.log('Nova versão do Equalize-se encontrada. Atualizando...');
-                window.location.reload();
-              }
-            }
-          };
-        };
-      }).catch(err => {
-        console.log('Falha ao registrar o Service Worker:', err);
-      });
-    });
-  }
-</script>
+      }
+    </script>
 </head>
 <body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative">
 
@@ -63,7 +46,7 @@
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Senha de Acesso</label>
                     <input type="password" id="input-senha" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Digite a senha">
                 </div>
-                <button onclick="fazerLogin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-semibold shadow-sm transition-all">Entrar no Painel</button>
+                <button onclick="fazerLogin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-semibold shadow-sm transition-all cursor-pointer">Entrar no Painel</button>
                 <div class="text-center">
                     <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-700 font-medium transition-all">← Voltar para a página inicial</a>
                 </div>
@@ -78,13 +61,13 @@
         <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Painel Administrativo</h1>
-                <p class="text-xs text-slate-500 font-medium mt-0.5">Gerenciamento completo de mensagens e vídeos</p>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Gerenciamento completo (Equalize-se)</p>
             </div>
             <div class="flex items-center gap-2">
-                <a href="index.html" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
-                    <i data-lucide="home" class="w-4 h-4"></i> Ver Site
+                <a href="ajuda.html" target="_blank" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-emerald-200">
+                    <i data-lucide="heart-handshake" class="w-4 h-4"></i> Ver site
                 </a>
-                <button onclick="fazerLogout()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                <button onclick="fazerLogout()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
                     <i data-lucide="log-out" class="w-4 h-4"></i> Sair
                 </button>
             </div>
@@ -98,7 +81,7 @@
             <div class="space-y-3">
                 <textarea id="adm-texto-msg" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escreva sua mensagem sem limitações de envio..."></textarea>
                 <div class="flex justify-end">
-                    <button onclick="salvarMensagem()" id="btn-salvar-msg" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Publicar Mensagem</button>
+                    <button onclick="salvarMensagem()" id="btn-salvar-msg" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer">Publicar Mensagem</button>
                 </div>
             </div>
         </section>
@@ -115,7 +98,7 @@
             </div>
             <textarea id="adm-vid-desc" rows="2" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Descrição do vídeo..."></textarea>
             <div class="flex justify-end">
-                <button onclick="salvarVideo()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Cadastrar / Atualizar Vídeo</button>
+                <button onclick="salvarVideo()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer">Cadastrar / Atualizar Vídeo</button>
             </div>
 
             <!-- Lista de Vídeos Postados -->
@@ -124,6 +107,19 @@
                 <div id="lista-videos-adm" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                     <!-- Preenchido via script -->
                 </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: GERENCIAR PEDIDOS DE AJUDA / ACOLHIMENTO -->
+        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="heart-handshake" class="w-5 h-5 text-teal-600"></i> Pedidos de Ajuda e Acolhimento
+            </h2>
+            <p class="text-xs text-slate-500">Responda aos relatos enviados pelos usuários. A resposta aparecerá diretamente na página de acolhimento deles.</p>
+            
+            <div id="lista-ajuda-adm" class="space-y-4 max-h-[400px] overflow-y-auto pr-1">
+                <!-- Preenchido via script -->
+                <p class="text-xs text-slate-400 text-center py-4">Carregando pedidos de ajuda...</p>
             </div>
         </section>
 
@@ -144,12 +140,13 @@
         EQUALIZE-SE &copy; 2026 • PAINEL ADMINISTRATIVO
     </footer>
 
-    <!-- Script de Conexão com o Banco (db.js) -->
-    <script src="db.js"></script>
+    <!-- SCRIPT DE SINCRONIZAÇÃO EXTERNO -->
+    <script src="ajuda_sinc.js"></script>
+
+    <!-- Lógica de Controle do Painel Admin -->
     <script>
         lucide.createIcons();
 
-        // Variável de controle de edição de mensagem
         let editandoIndexData = null;
         let editandoMsgIndex = null;
 
@@ -160,9 +157,23 @@
             }
         });
 
+        function obterChaveDataHoje() {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
         function fazerLogin() {
             const senha = document.getElementById("input-senha").value;
-            // Senha padrão configurada 
             if (senha === "eqz791-2026") {
                 sessionStorage.setItem("equalize_admin_logado", "true");
                 mostrarPainel();
@@ -181,23 +192,19 @@
         async function mostrarPainel() {
             document.getElementById("login-container").classList.add("hidden");
             document.getElementById("painel-container").classList.remove("hidden");
-            // Sugere a data de hoje automaticamente no campo de vídeo
             document.getElementById("adm-vid-data").value = obterChaveDataHoje();
             await carregarDadosAdm();
         }
 
         async function carregarDadosAdm() {
             try {
-                const resp = await fetch(API_URL, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                if (!resp.ok) throw new Error("Erro ao carregar dados do servidor.");
-                
-                const resultado = await resp.json();
-                const todosOsDados = resultado.record || {};
+                // Utiliza a função importada do arquivo ajuda_sinc.js
+                const dadosGlobais = await buscarDadosAjudaServidor();
 
-                renderizarVideosAdm(todosOsDados);
-                renderizarMensagensAdm(todosOsDados);
+                renderizarVideosAdm(dadosGlobais);
+                renderizarPedidosAjudaAdm(dadosGlobais);
+                renderizarMensagensAdm(dadosGlobais);
+
             } catch (error) {
                 console.error("Erro ao carregar painel:", error);
                 alert("Erro ao conectar com o banco de dados.");
@@ -219,10 +226,10 @@
                     item.innerHTML = `
                         <div>
                             <span class="font-bold text-purple-700">[${dataKey}]</span> 
-                            <span class="font-semibold text-slate-800">${v.titulo || 'Sem Título'}</span>
-                            <span class="text-slate-400 block truncate max-w-xs">ID: ${v.youtubeId}</span>
+                            <span class="font-semibold text-slate-800">${escapeHtml(v.titulo || 'Sem Título')}</span>
+                            <span class="text-slate-400 block truncate max-w-xs">ID: ${escapeHtml(v.youtubeId)}</span>
                         </div>
-                        <button onclick="apagarVideo('${dataKey}')" class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all" title="Apagar Vídeo">
+                        <button onclick="apagarVideo('${dataKey}')" class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all cursor-pointer" title="Apagar Vídeo">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     `;
@@ -234,6 +241,68 @@
                 container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">Nenhum vídeo cadastrado.</p>';
             }
             lucide.createIcons();
+        }
+
+        function renderizarPedidosAjudaAdm(dadosGlobais) {
+            const container = document.getElementById("lista-ajuda-adm");
+            container.innerHTML = "";
+
+            let temRelatos = false;
+            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
+                const diaObj = dadosGlobais[dataKey];
+                if (diaObj && Array.isArray(diaObj.relatosAjuda) && diaObj.relatosAjuda.length > 0) {
+                    diaObj.relatosAjuda.slice().reverse().forEach((relato, indexInvertido) => {
+                        temRelatos = true;
+                        const indexReal = diaObj.relatosAjuda.length - 1 - indexInvertido;
+
+                        const item = document.createElement("div");
+                        item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-4 space-y-3 text-xs";
+                        item.innerHTML = `
+                            <div class="flex justify-between items-center text-slate-400">
+                                <span class="font-bold text-teal-700">Autor: ${escapeHtml(relato.autor || 'Anônimo')}</span>
+                                <span>${escapeHtml(relato.dataHora || dataKey)}</span>
+                            </div>
+                            <p class="text-slate-800 bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm">"${escapeHtml(relato.texto)}"</p>
+                            <div class="space-y-1.5 pt-1">
+                                <label class="block font-semibold text-slate-700 uppercase tracking-wider">Resposta de Acolhimento</label>
+                                <textarea id="resp-${dataKey}-${indexReal}" rows="2" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-teal-500 resize-none" placeholder="Digite a orientação ou resposta espiritual...">${escapeHtml(relato.resposta || "")}</textarea>
+                                <div class="flex justify-end">
+                                    <button onclick="salvarRespostaAjuda('${dataKey}', ${indexReal})" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Salvar Resposta
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+            });
+
+            if (!temRelatos) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Nenhum pedido de ajuda ou relato enviado até o momento.</p>';
+            }
+            lucide.createIcons();
+        }
+
+        async function salvarRespostaAjuda(dataKey, indexReal) {
+            const textoResposta = document.getElementById(`resp-${dataKey}-${indexReal}`).value.trim();
+
+            try {
+                let dados = await buscarDadosAjudaServidor();
+
+                if (dados[dataKey] && dados[dataKey].relatosAjuda && dados[dataKey].relatosAjuda[indexReal]) {
+                    dados[dataKey].relatosAjuda[indexReal].resposta = textoResposta;
+
+                    const sucesso = await salvarDadosAjudaServidor(dados);
+                    if (!sucesso) throw new Error("Erro ao salvar resposta.");
+
+                    alert("Resposta de acolhimento salva com sucesso!");
+                    await carregarDadosAdm();
+                }
+            } catch (error) {
+                console.error("Erro ao salvar resposta de ajuda:", error);
+                alert("Erro ao salvar a resposta no servidor.");
+            }
         }
 
         function renderizarMensagensAdm(dadosGlobais) {
@@ -253,15 +322,15 @@
                                 <div class="flex items-center gap-2 text-slate-400 font-medium">
                                     <span class="text-emerald-700 font-bold">Data: ${dataKey}</span>
                                     <span>•</span>
-                                    <span>Às ${msg.horario || '00:00'}</span>
+                                    <span>Às ${escapeHtml(msg.horario || '00:00')}</span>
                                 </div>
-                                <p class="text-slate-800 italic">"${msg.texto}"</p>
+                                <p class="text-slate-800 italic">"${escapeHtml(msg.texto)}"</p>
                             </div>
                             <div class="flex items-center gap-2 self-end sm:self-center">
-                                <button onclick="prepararEdicaoMensagem('${dataKey}', ${index}, '${encodeURIComponent(msg.texto)}')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl font-semibold transition-all flex items-center gap-1">
+                                <button onclick="prepararEdicaoMensagem('${dataKey}', ${index}, '${encodeURIComponent(msg.texto)}')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl font-semibold transition-all flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
                                 </button>
-                                <button onclick="apagarMensagem('${dataKey}', ${index})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl font-semibold transition-all flex items-center gap-1">
+                                <button onclick="apagarMensagem('${dataKey}', ${index})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl font-semibold transition-all flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir
                                 </button>
                             </div>
@@ -289,25 +358,20 @@
             const horarioFormatado = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
             try {
-                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
-                const resJson = await respGet.json();
-                let dados = resJson.record || {};
+                let dados = await buscarDadosAjudaServidor();
 
                 if (!dados[dataHojeIso]) {
-                    dados[dataHojeIso] = { videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" }, resumoDiario: {}, mensagensDoDia: [] };
+                    dados[dataHojeIso] = { videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" }, resumoDiario: {}, mensagensDoDia: [], relatosAjuda: [] };
                 }
-                if (!dados[dataHojeIso].mensagensDoDia) {
-                    dados[dataHojeIso].mensagensDoDia = [];
-                }
+                if (!dados[dataHojeIso].mensagensDoDia) dados[dataHojeIso].mensagensDoDia = [];
+                if (!dados[dataHojeIso].relatosAjuda) dados[dataHojeIso].relatosAjuda = [];
 
                 if (editandoIndexData !== null && editandoMsgIndex !== null) {
-                    // Modo Edição
                     dados[editandoIndexData].mensagensDoDia[editandoMsgIndex].texto = texto;
                     editandoIndexData = null;
                     editandoMsgIndex = null;
                     document.getElementById("btn-salvar-msg").innerText = "Publicar Mensagem";
                 } else {
-                    // Modo Novo Envio
                     dados[dataHojeIso].mensagensDoDia.push({
                         texto: texto,
                         horario: horarioFormatado,
@@ -315,13 +379,8 @@
                     });
                 }
 
-                const respPut = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                    body: JSON.stringify(dados)
-                });
-
-                if (!respPut.ok) throw new Error("Erro ao salvar no servidor.");
+                const sucesso = await salvarDadosAjudaServidor(dados);
+                if (!sucesso) throw new Error("Erro ao salvar no servidor.");
 
                 document.getElementById("adm-texto-msg").value = "";
                 alert("Mensagem salva com sucesso!");
@@ -345,20 +404,14 @@
             if (!confirm("Tem certeza que deseja excluir esta mensagem?")) return;
 
             try {
-                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
-                const resJson = await respGet.json();
-                let dados = resJson.record || {};
+                let dados = await buscarDadosAjudaServidor();
 
                 if (dados[dataKey] && dados[dataKey].mensagensDoDia) {
                     dados[dataKey].mensagensDoDia.splice(index, 1);
 
-                    const respPut = await fetch(API_URL, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                        body: JSON.stringify(dados)
-                    });
+                    const sucesso = await salvarDadosAjudaServidor(dados);
+                    if (!sucesso) throw new Error("Erro ao excluir mensagem.");
 
-                    if (!respPut.ok) throw new Error("Erro ao excluir mensagem.");
                     alert("Mensagem excluída com sucesso!");
                     await carregarDadosAdm();
                 }
@@ -380,13 +433,12 @@
             }
 
             try {
-                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
-                const resJson = await respGet.json();
-                let dados = resJson.record || {};
+                let dados = await buscarDadosAjudaServidor();
 
                 if (!dados[dataVid]) {
-                    dados[dataVid] = { resumoDiario: { data: dataVid }, mensagensDoDia: [] };
+                    dados[dataVid] = { resumoDiario: { data: dataVid }, mensagensDoDia: [], relatosAjuda: [] };
                 }
+                if (!dados[dataVid].relatosAjuda) dados[dataVid].relatosAjuda = [];
 
                 dados[dataVid].videoDoDia = {
                     titulo: titulo || "Vídeo Diário",
@@ -394,13 +446,8 @@
                     youtubeId: youtubeId
                 };
 
-                const respPut = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                    body: JSON.stringify(dados)
-                });
-
-                if (!respPut.ok) throw new Error("Erro ao salvar vídeo.");
+                const sucesso = await salvarDadosAjudaServidor(dados);
+                if (!sucesso) throw new Error("Erro ao salvar vídeo.");
 
                 document.getElementById("adm-vid-titulo").value = "";
                 document.getElementById("adm-vid-id").value = "";
@@ -418,20 +465,14 @@
             if (!confirm(`Deseja apagar o vídeo vinculado à data ${dataKey}?`)) return;
 
             try {
-                const respGet = await fetch(API_URL, { headers: { 'X-Master-Key': API_Key } });
-                const resJson = await respGet.json();
-                let dados = resJson.record || {};
+                let dados = await buscarDadosAjudaServidor();
 
                 if (dados[dataKey] && dados[dataKey].videoDoDia) {
                     delete dados[dataKey].videoDoDia;
 
-                    const respPut = await fetch(API_URL, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                        body: JSON.stringify(dados)
-                    });
+                    const sucesso = await salvarDadosAjudaServidor(dados);
+                    if (!sucesso) throw new Error("Erro ao apagar vídeo.");
 
-                    if (!respPut.ok) throw new Error("Erro ao apagar vídeo.");
                     alert("Vídeo apagado com sucesso!");
                     await carregarDadosAdm();
                 }
