@@ -305,13 +305,23 @@
                 elData.innerText = `Data de referência: ${hoje.toLocaleDateString('pt-BR', opcoesData)}`;
             }
 
-            const dia = hoje.getDate();
+                        const dia = hoje.getDate();
             const mes = hoje.getMonth() + 1;
             const ano = hoje.getFullYear();
+            
+            // Soma inicial de todos os dígitos da data
             const somaNumeros = `${dia}${mes}${ano}`.split('').reduce((acc, curr) => acc + parseInt(curr), 0);
-            const reduzirUnidade = (n) => n > 9 ? String(n).split('').reduce((a, c) => a + parseInt(c), 0) : n;
-            const numeroDia = reduzirUnidade(somaNumeros);
+            
+            // Função de redução teosófica iterativa (continua somando até sobrar apenas 1 dígito de 1 a 9)
+            const reduzirUnidade = (n) => {
+                while (n > 9) {
+                    n = String(n).split('').reduce((a, c) => a + parseInt(c), 0);
+                }
+                return n;
+            };
 
+            const numeroDia = reduzirUnidade(somaNumeros);
+            
             const significadosNumerologia = {
                 1: "Dia de novos começos, iniciativa e liderança pessoal.",
                 2: "Momento de cooperação, diplomacia, paciência e parcerias.",
