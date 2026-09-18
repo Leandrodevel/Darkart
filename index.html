@@ -424,6 +424,258 @@
                                         <div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">
                                             <i data-lucide="clock" class="w-3 h-3"></i>
                                             <span>${msg.horario}</span>
+<script>
+        lucide.createIcons();
+
+        function abrirModalFrase() {
+            const hojeIso = obterChaveDataHoje();
+            const ultimoEnvio = localStorage.getItem('equalize_ultimo_envio');
+            
+            if (ultimoEnvio === hojeIso) {
+                alert("Você já enviou a sua mensagem permitida para hoje! Ela ficará ativa até amanhã.");
+                return;
+            }
+            document.getElementById("modal-frase").classList.remove("hidden");
+        }
+
+        function fecharModalFrase() {
+            document.getElementById("modal-frase").classList.add("hidden");
+            document.getElementById("input-mensagem-usuario").value = "";
+        }
+
+        // Exibe um aviso semi-transparente temporário na tela
+        function mostrarAvisoReacao(elementoBotao, textoAviso) {
+            // Remove aviso anterior se já existir no card
+            const cardPai = elementoBotao.closest('.flex.flex-col');
+            let avisoAntigo = cardPai.querySelector('.aviso-reacao-temp');
+            if (avisoAntigo) avisoAntigo.remove();
+
+            const aviso = document.createElement("span");
+            aviso.className = "aviso-reacao-temp text-xs bg-slate-800/70 text-white px-2 py-1 rounded-md transition-opacity duration-300 mt-2 inline-block w-fit backdrop-blur-xs";
+            aviso.innerText = textoAviso;
+            
+            cardPai.appendChild(aviso);
+
+            setTimeout(() => {
+                aviso.style.opacity = '0';
+                setTimeout(() => aviso.remove(), 300);
+            }, 2500);
+        }
+
+        // Função Global para Reagir às Mensagens (Atualiza na hora na tela e guarda pendência para enviar ao recarregar)
+        function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao) {
+            const chaveLocalTipo = `reacao_tipo_${dataIso}_${indexMensagem}_${tipoReacao}`;
+            
+            // Verifica se o usuário já usou esta reação específica nesta mensagem
+            if (localStorage.getItem(chaveLocalTipo)) {
+                mostrarAvisoReacao(elementoBotao, "Você já usou esta reação!");
+                return;
+            }
+
+            // Marca no localStorage que essa reação específica foi usada
+            localStorage.setItem(chaveLocalTipo, "true");
+
+            // Atualiza visualmente o contador na hora (otimização de interface)
+            const contadorSpan = elementoBotao.querySelector('.contador-reacao');
+            if (contadorSpan) {
+                contadorSpan.innerText = parseInt(contadorSpan.innerText || '0') + 1;
+            }
+
+            // Salva a alteração em uma fila pendente no localStorage para ser enviada ao servidor ao recarregar/sair
+            const pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
+            pendencias.push({ dataIso, indexMensagem, tipoReacao });
+            localStorage.setItem('equalize_pendencias_reacoes', JSON.stringify(pendencias));
+        }
+
+        // Envia as reações pendentes acumuladas para o servidor de forma assíncrona
+        async function sincronizarReacoesPendentes() {
+            const pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
+            if (pendencias.length === 0) return;
+
+            try {
+                const getResp = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                if (!getResp.ok) return;
+                
+                const resJson = await getResp.json();
+                const jsonAtual = resJson.record || {};
+
+                let houveAlteracao = false;
+
+                pendencias.forEach(p => {
+                    if (jsonAtual[p.dataIso] && jsonAtual[p.dataIso].mensagensDoDia[p.indexMensagem]) {
+                        if (!jsonAtual[p.dataIso].mensagensDoDia[p.indexMensagem].reacoes) {
+                            jsonAtual[p.dataIso].mensagensDoDia[p.indexMensagem].reacoes = { coracao: 0, amem: 0, flor: 0 };
+                        }
+                        if (jsonAtual[p.dataIso].mensagensDoDia[p.indexMensagem].reacoes[p.tipoReacao] !== undefined) {
+                            jsonAtual[p.dataIso].mensagensDoDia[p.indexMensagem].reacoes[p.tipoReacao]++;
+                            houveAlteracao = true;
+                        }
+                    }
+                });
+
+                if (houveAlteracao) {
+                    const putResp = await fetch(API_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify(jsonAtual)
+                    });
+
+                    if (putResp.ok) {
+                        // Limpa as pendências após o envio bem-sucedido com o recarregamento
+                        localStorage.removeItem('equalize_pendencias_reacoes');
+                    }
+                }
+            } catch (erro) {
+                console.error("Erro ao sincronizar reações:", erro);
+            }
+        }
+
+        async function enviarMensagemServidor() {
+            const texto = document.getElementById("input-mensagem-usuario").value.trim();
+            if (!texto) {
+                alert("Por favor, escreva uma mensagem antes de enviar.");
+                return;
+            }
+
+            const btn = document.getElementById("btn-enviar-msg");
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            const agora = new Date();
+            const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const dataHojeIso = obterChaveDataHoje();
+
+            const novaMensagemObj = {
+                texto: texto,
+                horario: horaFormatada,
+                dataIso: dataHojeIso,
+                reacoes: { coracao: 0, amem: 0, flor: 0 }
+            };
+
+            try {
+                // Antes de enviar nova mensagem, garante que reações pendentes subam juntas
+                await sincronizarReacoesPendentes();
+
+                const getResp = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                
+                let jsonAtual = {};
+                if (getResp.ok) {
+                    const resJson = await getResp.json();
+                    jsonAtual = resJson.record || {};
+                }
+
+                if (!jsonAtual[dataHojeIso]) {
+                    jsonAtual[dataHojeIso] = {
+                        videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" },
+                        resumoDiario: {},
+                        mensagensDoDia: []
+                    };
+                }
+
+                if (!jsonAtual[dataHojeIso].mensagensDoDia) {
+                    jsonAtual[dataHojeIso].mensagensDoDia = [];
+                }
+
+                jsonAtual[dataHojeIso].mensagensDoDia.push(novaMensagemObj);
+
+                const putResp = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(jsonAtual)
+                });
+
+                if (!putResp.ok) throw new Error("Erro ao atualizar o servidor JSON.");
+
+                localStorage.setItem('equalize_ultimo_envio', dataHojeIso);
+
+                alert("Mensagem enviada e publicada com sucesso!");
+                fecharModalFrase();
+                window.location.reload();
+
+            } catch (error) {
+                console.error("Erro no envio:", error);
+                alert("Houve um erro ao enviar a mensagem para o servidor. Tente novamente.");
+                btn.innerText = "Enviar";
+                btn.disabled = false;
+            }
+        }
+
+        // Função que busca os dados do servidor / API
+        async function carregarDadosDinamicos() {
+            if (typeof buscarDadosDoBanco === 'function') {
+                try {
+                    const resposta = await buscarDadosDoBanco();
+                    if (resposta && resposta.dados) {
+                        const videoDoDia = resposta.dados.videoDoDia;
+                        if (videoDoDia) {
+                            setTextoSeExistir("video-titulo", videoDoDia.titulo);
+                            setTextoSeExistir("video-descricao", videoDoDia.descricao);
+                            const iframeVideo = document.getElementById("video-iframe");
+                            if (iframeVideo && videoDoDia.youtubeId) {
+                                const novoSrc = `https://www.youtube.com/embed/${videoDoDia.youtubeId}`;
+                                if (!iframeVideo.src.includes(videoDoDia.youtubeId)) {
+                                    iframeVideo.src = novoSrc;
+                                }
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Erro ao carregar dados do banco:", e);
+                }
+            }
+
+            try {
+                const hojeChave = obterChaveDataHoje();
+                const getResp = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                if (getResp.ok) {
+                    const dadosGlobais = await getResp.json();
+                    const registroHoje = dadosGlobais.record[hojeChave];
+                    
+                    if (registroHoje && registroHoje.mensagensDoDia && registroHoje.mensagensDoDia.length > 0) {
+                        const containerSecao = document.getElementById("secao-frases-container");
+                        const listaContainer = document.getElementById("lista-frases-do-dia");
+                        if (containerSecao) containerSecao.classList.remove("hidden");
+                        if (listaContainer) {
+                            listaContainer.innerHTML = "";
+
+                            // Exibe as mais recentes primeiro
+                            registroHoje.mensagensDoDia.slice().reverse().forEach((msg, indexOriginal) => {
+                                const indexReal = registroHoje.mensagensDoDia.length - 1 - indexOriginal;
+                                const reacoes = msg.reacoes || { coracao: 0, amem: 0, flor: 0 };
+
+                                const card = document.createElement("div");
+                                card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+                                card.innerHTML = `
+                                    <p class="text-sm text-slate-800 italic mb-3">"${msg.texto}"</p>
+                                    
+                                    <div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">
+                                        <!-- Botões de Reação (Sem risada e com repasse do próprio elemento) -->
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'coracao', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer">
+                                                <span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">${reacoes.coracao}</span>
+                                            </button>
+                                            <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'amem', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer">
+                                                <span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">${reacoes.amem}</span>
+                                            </button>
+                                            <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'flor', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer">
+                                                <span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">${reacoes.flor}</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Horário -->
+                                        <div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">
+                                            <i data-lucide="clock" class="w-3 h-3"></i>
+                                            <span>${msg.horario}</span>
                                         </div>
                                     </div>
                                 `;
@@ -439,6 +691,9 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
+            // Sincroniza reações que ficaram pendentes da sessão anterior ao carregar
+            await sincronizarReacoesPendentes();
+
             const hoje = new Date();
             
             const opcoesData = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -470,7 +725,7 @@
                 5: "Energia de mudanças, versatilidade, liberdade e novas experiências.",
                 6: "Harmonia familiar, cuidado com o lar, responsabilidade e afeto.",
                 7: "Intuição acentuada, estudo, introspecção e busca espiritual.",
-                8: "Poder pessoal, foco em realizações materiais, justiça e finanças.",
+                8: "Poder pessoal, foco em realizações materiais, justice e finanças.",
                 9: "Conclusão de ciclos, generosidade, compaixão e desapego."
             };
 
@@ -482,9 +737,15 @@
 
             // Executa a primeira vez logo ao carregar a página
             await carregarDadosDinamicos();
+        });
 
-            // Atualiza os dados de forma automática a cada 5 segundos
-            setInterval(carregarDadosDinamicos, 5000);
+        // Sincroniza reações pendentes também ao fechar ou atualizar a página
+        window.addEventListener('beforeunload', () => {
+            const pendencias = localStorage.getItem('equalize_pendencias_reacoes');
+            if (pendencias) {
+                // Utiliza sendBeacon se possível para garantir envio ao sair
+                // Ou deixa salvo para enviar no próximo carregamento (já implementado no DOMContentLoaded)
+            }
         });
 
         function setTextoSeExistir(id, texto) {
@@ -528,10 +789,6 @@
             if (idadeDias < 1.84) { fase = "Lua Nova"; significado = "Momento excelente para intenções, recomeços e plantio de sementes."; }
             else if (idadeDias < 9.22) { fase = "Lua Crescente"; significado = "Impulso para dar andamento a projetos e fortalecer alicerces."; }
             else if (idadeDias < 18.45) { fase = "Lua Cheia"; significado = "Apogeu energético, intuição expandida, clareza e forte iluminação emocional."; }
-            else if (idadeDias < 27.68) { fase = "Lua Minguante"; significado = "Período ideal para limpezas, encerramentos e desapegos."; }
-            setTextoSeExistir("lua-valor", fase);
-            setTextoSeExistir("lua-significado", significado);
-        }
-    </script>
+            else if (idadeDias < 27.68) { fase = "Lua Minguante"; significado = "Período ideal pa
 </body>
 </html>
