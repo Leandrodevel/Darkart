@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astrologia & Sombra - Equalize-se</title>
+    <title>Astrologia do Dia - Equalize-se</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ícones Lucide -->
@@ -11,7 +11,7 @@
 </head>
 <body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
 
-    <!-- CABEÇALHO FIXO COM MENU HAMBÚRGUER -->
+    <!-- CABEÇALHO FIXO COM BOTÃO DE VOLTAR -->
     <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
         <!-- Nome/Logo do App -->
         <div class="flex items-center gap-2">
@@ -20,102 +20,84 @@
             </a>
         </div>
 
-        <!-- Menu Desktop -->
-        <nav class="hidden sm:flex items-center gap-2">
-            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
-            </a>
-            <a href="arquetipo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
-            </a>
-            <a href="horoscopo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
-                <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
-            </a>
-            <a href="calendario.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+        <!-- Botão de Voltar para o Início -->
+        <nav class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200/60 shadow-2xs">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-700"></i> Voltar ao Início
             </a>
         </nav>
-
-        <!-- Menu Hambúrguer (Lado direito - Mobile) -->
-        <div class="relative sm:hidden">
-            <button id="btn-menu" class="text-emerald-800 hover:text-emerald-950 p-2 rounded-xl hover:bg-emerald-50 transition-colors focus:outline-none cursor-pointer" aria-label="Abrir Menu">
-                <i data-lucide="menu" class="w-7 h-7"></i>
-            </button>
-
-            <!-- Lista de navegação do menu (Dropdown) -->
-            <nav id="dropdown-menu" class="absolute top-14 right-0 bg-white rounded-2xl shadow-xl w-60 py-3 border border-emerald-100/60 transition-all duration-200 transform opacity-0 invisible -translate-y-2 z-50">
-                <ul class="space-y-1 px-2">
-                    <li>
-                        <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                            <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
-                        </a>
-                    </li>
-                    <li>
-                        <a href="arquetipo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
-                        </a>
-                    </li>
-                    <li>
-                        <a href="horoscopo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
-                            <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
-                        </a>
-                    </li>
-                    <li>
-                        <a href="calendario.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
-                            <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto">
-        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-8 sm:p-10">
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
+        
+        <!-- Painel do Céu de Hoje (Sol e Lua) -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <span id="current-date-badge" class="inline-block px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-full mb-2 uppercase tracking-widest">Data de Hoje</span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Céu Astrológico de Hoje</h1>
+            </div>
             
-            <div class="text-center mb-8">
-                <span id="current-date-badge" class="inline-block px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-full mb-3 uppercase tracking-widest">Data</span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Arquétipo Zodiacal</h1>
-                <p class="text-xs text-slate-600 font-light mt-1">Conheça a essência psicológica, os elementos e o lado sombra de cada signo do zodíaco.</p>
-            </div>
-
-            <!-- Seletor de Signos -->
-            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5 mb-8">
-                <button onclick="selectSign('aries')" id="sign-btn-aries" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Áries</button>
-                <button onclick="selectSign('touro')" id="sign-btn-touro" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Touro</button>
-                <button onclick="selectSign('gemeos')" id="sign-btn-gemeos" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Gêmeos</button>
-                <button onclick="selectSign('cancer')" id="sign-btn-cancer" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Câncer</button>
-                <button onclick="selectSign('leao')" id="sign-btn-leao" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Leão</button>
-                <button onclick="selectSign('virgem')" id="sign-btn-virgem" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Virgem</button>
-                <button onclick="selectSign('libra')" id="sign-btn-libra" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Libra</button>
-                <button onclick="selectSign('escorpiao')" id="sign-btn-escorpiao" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Escorpião</button>
-                <button onclick="selectSign('sagitario')" id="sign-btn-sagitario" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Sagitário</button>
-                <button onclick="selectSign('capricornio')" id="sign-btn-capricornio" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Capricórnio</button>
-                <button onclick="selectSign('aquario')" id="sign-btn-aquario" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Aquário</button>
-                <button onclick="selectSign('peixes')" id="sign-btn-peixes" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Peixes</button>
-            </div>
-
-            <!-- Detalhe do Signo Selecionado -->
-            <div id="sign-detail-box" class="bg-emerald-50/40 border border-emerald-100 rounded-2xl p-6 sm:p-8 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-emerald-100 pb-4 gap-2">
-                    <div>
-                        <h2 id="sign-name" class="text-xl font-bold text-slate-900">Selecione um signo acima</h2>
-                        <p id="sign-element" class="text-xs text-emerald-800 font-semibold uppercase tracking-wider"></p>
-                    </div>
-                    <span id="sign-dates" class="text-xs text-slate-600 bg-white px-3 py-1 rounded-lg border border-emerald-100 shadow-2xs"></span>
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100">
+                    <span class="block text-2xl mb-1">☀️</span>
+                    <span class="text-xs text-slate-500 block font-medium">Sol de Hoje</span>
+                    <span class="font-bold text-amber-600 text-base">Virgem</span>
                 </div>
-                <div>
-                    <h3 class="text-xs font-semibold text-emerald-800 uppercase tracking-widest mb-1">Essência Psicológica</h3>
-                    <p id="sign-essence" class="text-sm text-slate-600 font-light leading-relaxed">Clique em um dos signos para desvendar sua estrutura arquetípica profunda.</p>
-                </div>
-                <div>
-                    <h3 class="text-xs font-semibold text-emerald-800 uppercase tracking-widest mb-1">O Lado Sombra</h3>
-                    <p id="sign-shadow" class="text-sm text-slate-600 font-light leading-relaxed">-</p>
+                <div class="bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100">
+                    <span class="block text-2xl mb-1">🌙</span>
+                    <span class="text-xs text-slate-500 block font-medium">Lua de Hoje</span>
+                    <span class="font-bold text-purple-600 text-base">Sagitário</span>
                 </div>
             </div>
-
         </div>
+
+        <!-- Consulta de Nascimento e Tendências -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <i data-lucide="compass" class="w-5 h-5 text-emerald-700"></i> Consulta por Data de Nascimento
+            </h2>
+            
+            <div class="mb-4">
+                <label class="block text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Sua Data de Nascimento</label>
+                <input type="date" id="dataNascimento" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-emerald-600 transition-colors">
+            </div>
+
+            <button onclick="calcularAstrologia()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition-all shadow-sm cursor-pointer">
+                Equalizar Minhas Energias
+            </button>
+        </div>
+
+        <!-- Resultado Dinâmico da Pesquisa -->
+        <div id="resultadoContainer" class="hidden">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-200 p-6 sm:p-8 space-y-2">
+                <h3 id="tituloSigno" class="text-xl font-bold text-emerald-800"></h3>
+                <p id="textoTendencia" class="text-slate-600 text-sm font-light leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- Seção Fixa: A Psicologia dos Signos & Cards Interativos -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-3">
+                <i data-lucide="sparkles" class="w-6 h-6 text-emerald-700"></i>
+                <h3 class="text-lg font-bold text-slate-900">A Psicologia e os Arquétipos dos Signos</h3>
+            </div>
+            <p class="text-slate-600 text-sm font-light leading-relaxed mb-6">
+                Na visão da psicologia analítica (inspirada por Carl Jung), os signos funcionam como arquétipos — padrões de comportamento e instintos do inconsciente coletivo. Clique abaixo em qualquer signo para explorar suas características psicológicas:
+            </p>
+
+            <!-- Seletor de Signos (Cards) -->
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5 mb-6" id="cardsSignosContainer">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- Exibição da Característica Selecionada -->
+            <div id="detalheSignoCard" class="hidden bg-emerald-50/40 border border-emerald-100 rounded-2xl p-5">
+                <h4 id="nomeSignoSelecionado" class="font-bold text-emerald-900 text-base mb-1"></h4>
+                <p id="descricaoSignoSelecionado" class="text-slate-600 text-sm font-light leading-relaxed"></p>
+            </div>
+        </div>
+
     </main>
 
     <!-- Rodapé -->
@@ -128,26 +110,7 @@
         // Inicializa os ícones do Lucide
         lucide.createIcons();
 
-        // Controle do Menu Hambúrguer
         document.addEventListener("DOMContentLoaded", () => {
-            const btnMenu = document.getElementById("btn-menu");
-            const dropdownMenu = document.getElementById("dropdown-menu");
-
-            if (btnMenu && dropdownMenu) {
-                btnMenu.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    dropdownMenu.classList.toggle("opacity-0");
-                    dropdownMenu.classList.toggle("invisible");
-                    dropdownMenu.classList.toggle("-translate-y-2");
-                });
-
-                document.addEventListener("click", (e) => {
-                    if (!dropdownMenu.contains(e.target) && !btnMenu.contains(e.target)) {
-                        dropdownMenu.classList.add("opacity-0", "invisible", "-translate-y-2");
-                    }
-                });
-            }
-
             // Exibe a data atual no badge superior de forma amigável
             const dateBadge = document.getElementById("current-date-badge");
             if (dateBadge) {
@@ -156,121 +119,133 @@
                 dateBadge.textContent = hoje.toLocaleDateString('pt-BR', opcoes);
             }
 
-            // Seleciona Áries por padrão ao carregar a página
-            selectSign('aries');
+            // Renderiza os cards de signos interativos automaticamente
+            renderizarCardsSignos();
         });
 
-        // Banco de Dados Local dos Signos
-        const signosData = {
-            aries: {
-                nome: "Áries",
-                elemento: "Fogo • Cardinal",
-                datas: "21/03 - 20/04",
-                essencia: "A força iniciadora, a coragem pura e o impulso vital para desbravar novos caminhos.",
-                sombra: "Impaciência excessiva, impulsividade cega e tendência a conflitos desnecessários."
+        // Banco de Dados Consolidado (Tendências + Psicologia)
+        const dadosSignos = {
+            "Áries": {
+                tendencia: "Hoje é um dia excelente para focar em metas profissionais. Sua energia estará em alta, mas evite discussões por impulso.",
+                psicologia: "Arquétipo do Pioneiro e do Guerreiro. Representa o impulso vital, a coragem de iniciar, a assertividade e a força de vontade, mas precisa vigiar a impaciência e a impulsividade."
             },
-            touro: {
-                nome: "Touro",
-                elemento: "Terra • Fixo",
-                datas: "21/04 - 20/05",
-                essencia: "A solidez, a apreciação sensorial da vida e a perseverança inabalável.",
-                sombra: "Teimosia inflexível, apego excessivo à zona de conforto e resistência à mudança."
+            "Touro": {
+                tendencia: "O momento pede mais atenção às finanças e ao conforto do lar. Um bom dia para desacelerar e cuidar de si mesmo.",
+                psicologia: "Arquétipo do Construtor. Relaciona-se com a busca por segurança, estabilidade sensorial, valorização material e constância, tendo como desafio lidar com a rigidez e a resistência a mudanças."
             },
-            gemeos: {
-                nome: "Gêmeos",
-                elemento: "Ar • Mutável",
-                datas: "21/05 - 20/06",
-                essencia: "A curiosidade intelectual, a versatilidade e a facilidade de comunicação.",
-                sombra: "Dispersão mental, superficialidade e dificuldade de aprofundar raízes."
+            "Gêmeos": {
+                tendencia: "Sua comunicação estará brilhante! Aproveite para resolver pendências, conversar com amigos e iniciar ideias criativas.",
+                psicologia: "Arquétipo do Mensageiro / Comunicador. Focado na curiosidade intelectual, adaptabilidade, troca de ideias e dualidade mental, precisando evitar a dispersão e a superficialidade."
             },
-            cancer: {
-                nome: "Câncer",
-                elemento: "Água • Cardinal",
-                datas: "21/06 - 21/07",
-                essencia: "A profundidade emocional, a intuição acurada e o acolhimento protetor.",
-                sombra: "Dependência emocional, apego ao passado e tendência a se fechar na própria carapaça."
+            "Câncer": {
+                tendencia: "Sua intuição está muito forte hoje. Confie nos seus instintos, especialmente em decisões que envolvem a família ou o coração.",
+                psicologia: "Arquétipo da Mãe / Protetor. Simboliza o mundo emocional profundo, a memória, o acolhimento, a raiz e a proteção, lidando com o desafio do apego excessivo e da hipersensibilidade."
             },
-            leao: {
-                nome: "Leão",
-                elemento: "Fogo • Fixo",
-                datas: "22/07 - 22/08",
-                essencia: "O brilho pessoal, a generosidade magnética e a expressão criativa autêntica.",
-                sombra: "Orgulho ferido, necessidade excessiva de validação externa e autoritarismo."
+            "Leão": {
+                tendencia: "O seu brilho pessoal atrai olhares positivos. É um dia excelente para se expressar e assumir a liderança em projetos.",
+                psicologia: "Arquétipo do Rei / Artista. Representa a autoexpressão autêntica, a dignidade, a criatividade e a necessidade de reconhecimento, tendo como sombra a vaidade ou a necessidade excessiva de aplausos."
             },
-            virgem: {
-                nome: "Virgem",
-                elemento: "Terra • Mutável",
-                datas: "23/08 - 22/09",
-                essencia: "A capacidade analítica, o cuidado com os detalhes e o serviço útil ao mundo.",
-                sombra: "Autocrítica impiedosa, perfeccionismo paralisante e mania de controle."
+            "Virgem": {
+                tendencia: "Com o Sol no seu signo, sua capacidade de organização e foco está potencializada. Excelente para resolver problemas práticos.",
+                psicologia: "Arquétipo do Analista / Servidor. Focado no aperfeiçoamento, na ordem, na utilidade prática e na atenção aos mínimos detalhes, combatendo o excesso de autocrítica e o perfeccionismo."
             },
-            libra: {
-                nome: "Libra",
-                elemento: "Ar • Cardinal",
-                datas: "23/09 - 22/10",
-                essencia: "A busca pela harmonia, a diplomacia e a valorização das parcerias.",
-                sombra: "Dificuldade em tomar decisões, medo profundo de conflitos e anulação pessoal."
+            "Libra": {
+                tendencia: "Busque o equilíbrio nas relações hoje. O dia favorece parcerias, acordos e momentos de harmonia estética ou artística.",
+                psicologia: "Arquétipo do Diplomata / O Justiceiro. Busca constante pela harmonia, alteridade, justiça e completude através do outro, tendo como grande desafio a indecisão crônica e o medo de conflitos."
             },
-            escorpiao: {
-                nome: "Escorpião",
-                elemento: "Água • Fixo",
-                datas: "23/10 - 21/11",
-                essencia: "O poder de transformação profunda, a intensidade emocional e a perspicácia.",
-                sombra: "Ressentimento, tendência ao controle obsessivo e desconfiança crônica."
+            "Escorpião": {
+                tendencia: "Um dia de grande profundidade emocional. Excelente para transformações internas e para focar em objetivos estratégicos.",
+                psicologia: "Arquétipo do Alquimista / Investigador. Simboliza a intensidade, a regeneração, a capacidade de mergulhar nos mistérios da psique e o renascimento através das crises."
             },
-            sagitario: {
-                nome: "Sagitário",
-                elemento: "Fogo • Mutável",
-                datas: "22/11 - 21/12",
-                essencia: "A expansão de horizontes, o otimismo filosófico e a busca pela verdade.",
-                sombra: "Exagero, dogmatismo velado e promessas que não podem ser cumpridas."
+            "Sagitário": {
+                tendencia: "A Lua no seu signo traz uma forte onda de otimismo, vontade de expandir horizontes e buscar novas aventuras.",
+                psicologia: "Arquétipo do Filósofo / Explorador. Representa a busca por expansão de horizontes, sentido da vida, fé, otimismo e liberdade, precisando cuidar da tendência ao excesso e à dispersão."
             },
-            capricornio: {
-                nome: "Capricórnio",
-                elemento: "Terra • Cardinal",
-                datas: "22/12 - 20/01",
-                essencia: "A disciplina construtiva, a maturidade precoce e a realização de grandes metas.",
-                sombra: "Rigidez excessiva, frieza emocional e carga de trabalho desmedida."
+            "Capricórnio": {
+                tendencia: "Foco total na disciplina e nos resultados. Seus esforços de longo prazo começam a mostrar sinais positivos.",
+                psicologia: "Arquétipo do Sábio / Administrador. Focado na estrutura, na responsabilidade de longo prazo, na ética do trabalho e na concretização, lidando com o risco do excesso de rigidez e autocobrança."
             },
-            aquario: {
-                nome: "Aquário",
-                elemento: "Ar • Fixo",
-                datas: "21/01 - 18/02",
-                essencia: "A visão de futuro, a inovação disruptiva e o amor pela liberdade coletiva.",
-                sombra: "Distanciamento emocional, rebeldia sem causa e frieza com individualidades."
+            "Aquário": {
+                tendencia: "Ideias inovadoras surgem com facilidade hoje. É um ótimo dia para se conectar com grupos e pensar no futuro.",
+                psicologia: "Arquétipo do Visionário / Revolucionário. Simboliza a inovação, a coletividade, a quebra de paradigmas tradicionais e a independência mental, equilibrando o distanciamento emocional."
             },
-            peixes: {
-                nome: "Peixes",
-                elemento: "Água • Mutável",
-                datas: "19/02 - 20/03",
-                essencia: "A compaixão universal, a conexão espiritual e a sensibilidade artística.",
-                sombra: "Fuga da realidade, tendência ao vitimismo e falta de limites claros."
+            "Peixes": {
+                tendencia: "Sua sensibilidade e criatividade estão em alta. Dedique um tempo para atividades artísticas, espirituais ou de descanso.",
+                psicologia: "Arquétipo do Místico / Poeta. Representa a transcendência, a compaixão universal, a empatia sem fronteiras e a conexão com o plano espiritual ou inconsciente profundo."
             }
         };
 
-        // Função chamada ao clicar em cada botão de signo
-        function selectSign(signoKey) {
-            const dados = signosData[signoKey];
-            if (!dados) return;
+        // Função para gerar os cards dinamicamente mantendo o padrão visual
+        function renderizarCardsSignos() {
+            const containerCards = document.getElementById("cardsSignosContainer");
+            containerCards.innerHTML = "";
 
-            // Atualiza os textos na interface
-            document.getElementById("sign-name").textContent = dados.nome;
-            document.getElementById("sign-element").textContent = dados.elemento;
-            document.getElementById("sign-dates").textContent = dados.datas;
-            document.getElementById("sign-essence").textContent = dados.essencia;
-            document.getElementById("sign-shadow").textContent = dados.sombra;
+            for (let signo in dadosSignos) {
+                const btn = document.createElement("button");
+                btn.id = `sign-card-${signo.toLowerCase()}`;
+                btn.className = "sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer";
+                btn.innerText = signo;
+                btn.onclick = () => mostrarDetalheSigno(signo);
+                containerCards.appendChild(btn);
+            }
+        }
 
-            // Remove o destaque visual de todos os botões e aplica apenas no selecionado
-            document.querySelectorAll(".sign-btn").forEach(btn => {
-                btn.classList.remove("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
-                btn.classList.add("bg-white", "text-slate-700");
+        // Função ao clicar em um card de signo específico
+        function mostrarDetalheSigno(signo) {
+            const cardDetalhe = document.getElementById("detalheSignoCard");
+            const titulo = document.getElementById("nomeSignoSelecionado");
+            const descricao = document.getElementById("descricaoSignoSelecionado");
+
+            cardDetalhe.classList.remove("hidden");
+            titulo.innerText = `Signo de ${signo} (Visão Psicológica)`;
+            descricao.innerText = dadosSignos[signo].psicologia;
+
+            // Gerencia classes ativas dos botões
+            document.querySelectorAll(".sign-btn").forEach(b => {
+                b.classList.remove("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
+                b.classList.add("bg-white", "text-slate-700");
             });
-            
-            const activeBtn = document.getElementById(`sign-btn-${signoKey}`);
+
+            const activeBtn = document.getElementById(`sign-card-${signo.toLowerCase()}`);
             if (activeBtn) {
                 activeBtn.classList.remove("bg-white", "text-slate-700");
                 activeBtn.classList.add("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
             }
+        }
+
+        // Lógica de cálculo do Signo Solar via Data de Nascimento
+        function calcularAstrologia() {
+            const dataInput = document.getElementById("dataNascimento").value;
+            const container = document.getElementById("resultadoContainer");
+            const titulo = document.getElementById("tituloSigno");
+            const texto = document.getElementById("textoTendencia");
+
+            if (!dataInput) {
+                alert("Por favor, selecione sua data de nascimento.");
+                return;
+            }
+
+            const data = new Date(dataInput);
+            const dia = data.getDate() + 1;
+            const mes = data.getMonth() + 1;
+
+            let signoSol = "";
+            if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 20)) signoSol = "Áries";
+            else if ((mes == 4 && dia >= 21) || (mes == 5 && dia <= 20)) signoSol = "Touro";
+            else if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) signoSol = "Gêmeos";
+            else if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) signoSol = "Câncer";
+            else if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) signoSol = "Leão";
+            else if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) signoSol = "Virgem";
+            else if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) signoSol = "Libra";
+            else if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) signoSol = "Escorpião";
+            else if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) signoSol = "Sagitário";
+            else if ((mes == 12 && dia >= 22) || (mes == 1 && dia <= 19)) signoSol = "Capricórnio";
+            else if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) signoSol = "Aquário";
+            else signoSol = "Peixes";
+
+            container.classList.remove("hidden");
+            titulo.innerText = `Seu Signo Solar: ${signoSol}`;
+            texto.innerText = dadosSignos[signoSol].tendencia;
         }
     </script>
 </body>
