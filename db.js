@@ -29,13 +29,16 @@ async function buscarDadosDoBanco() {
         }
 
         const resultado = await resposta.json();
+        const mensagemDoAutor = await resultado.record.mensagensDoAutor;
+       //console.log(mensagemDoAutor.texto); // Exibe a mensagem do autor em um alerta
         const dadosGlobais = resultado.record || {};
         const chaveHoje = obterChaveDataHoje();
 
         // Retorna os dados específicos do dia de hoje, se existirem
         return {
             dados: dadosGlobais[chaveHoje] || null,
-            todosOsDados: dadosGlobais
+            todosOsDados: dadosGlobais,
+            mensagemDoAutor: mensagemDoAutor
         };
 
     } catch (error) {
