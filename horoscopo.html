@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrologia & Sombra - Equalize-se</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
+
+    <!-- CABEÇALHO FIXO COM MENU HAMBÚRGUER -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <!-- Nome/Logo do App -->
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+        </div>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden sm:flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+            </a>
+            <a href="arquetipo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+            </a>
+            <a href="horoscopo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+            </a>
+            <a href="calendario.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+            </a>
+        </nav>
+
+        <!-- Menu Hambúrguer (Lado direito - Mobile) -->
+        <div class="relative sm:hidden">
+            <button id="btn-menu" class="text-emerald-800 hover:text-emerald-950 p-2 rounded-xl hover:bg-emerald-50 transition-colors focus:outline-none cursor-pointer" aria-label="Abrir Menu">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+
+            <!-- Lista de navegação do menu (Dropdown) -->
+            <nav id="dropdown-menu" class="absolute top-14 right-0 bg-white rounded-2xl shadow-xl w-60 py-3 border border-emerald-100/60 transition-all duration-200 transform opacity-0 invisible -translate-y-2 z-50">
+                <ul class="space-y-1 px-2">
+                    <li>
+                        <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+                        </a>
+                    </li>
+                    <li>
+                        <a href="arquetipo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="horoscopo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                            <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+                        </a>
+                    </li>
+                    <li>
+                        <a href="calendario.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-8 sm:p-10">
+            
+            <div class="text-center mb-8">
+                <span id="current-date-badge" class="inline-block px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-full mb-3 uppercase tracking-widest">Data</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Arquétipo Zodiacal</h1>
+                <p class="text-xs text-slate-600 font-light mt-1">Conheça a essência psicológica, os elementos e o lado sombra de cada signo do zodíaco.</p>
+            </div>
+
+            <!-- Seletor de Signos -->
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5 mb-8">
+                <button onclick="selectSign('aries')" id="sign-btn-aries" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Áries</button>
+                <button onclick="selectSign('touro')" id="sign-btn-touro" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Touro</button>
+                <button onclick="selectSign('gemeos')" id="sign-btn-gemeos" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Gêmeos</button>
+                <button onclick="selectSign('cancer')" id="sign-btn-cancer" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Câncer</button>
+                <button onclick="selectSign('leao')" id="sign-btn-leao" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Leão</button>
+                <button onclick="selectSign('virgem')" id="sign-btn-virgem" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Virgem</button>
+                <button onclick="selectSign('libra')" id="sign-btn-libra" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Libra</button>
+                <button onclick="selectSign('escorpiao')" id="sign-btn-escorpiao" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Escorpião</button>
+                <button onclick="selectSign('sagitario')" id="sign-btn-sagitario" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Sagitário</button>
+                <button onclick="selectSign('capricornio')" id="sign-btn-capricornio" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Capricórnio</button>
+                <button onclick="selectSign('aquario')" id="sign-btn-aquario" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Aquário</button>
+                <button onclick="selectSign('peixes')" id="sign-btn-peixes" class="sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer">Peixes</button>
+            </div>
+
+            <!-- Detalhe do Signo Selecionado -->
+            <div id="sign-detail-box" class="bg-emerald-50/40 border border-emerald-100 rounded-2xl p-6 sm:p-8 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-emerald-100 pb-4 gap-2">
+                    <div>
+                        <h2 id="sign-name" class="text-xl font-bold text-slate-900">Selecione um signo acima</h2>
+                        <p id="sign-element" class="text-xs text-emerald-800 font-semibold uppercase tracking-wider"></p>
+                    </div>
+                    <span id="sign-dates" class="text-xs text-slate-600 bg-white px-3 py-1 rounded-lg border border-emerald-100 shadow-2xs"></span>
+                </div>
+                <div>
+                    <h3 class="text-xs font-semibold text-emerald-800 uppercase tracking-widest mb-1">Essência Psicológica</h3>
+                    <p id="sign-essence" class="text-sm text-slate-600 font-light leading-relaxed">Clique em um dos signos para desvendar sua estrutura arquetípica profunda.</p>
+                </div>
+                <div>
+                    <h3 class="text-xs font-semibold text-emerald-800 uppercase tracking-widest mb-1">O Lado Sombra</h3>
+                    <p id="sign-shadow" class="text-sm text-slate-600 font-light leading-relaxed">-</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500">
+        Equalize-se &copy; 2026
+    </footer>
+
+    <!-- Scripts e Lógica da Página -->
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+
+        // Controle do Menu Hambúrguer
+        document.addEventListener("DOMContentLoaded", () => {
+            const btnMenu = document.getElementById("btn-menu");
+            const dropdownMenu = document.getElementById("dropdown-menu");
+
+            if (btnMenu && dropdownMenu) {
+                btnMenu.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle("opacity-0");
+                    dropdownMenu.classList.toggle("invisible");
+                    dropdownMenu.classList.toggle("-translate-y-2");
+                });
+
+                document.addEventListener("click", (e) => {
+                    if (!dropdownMenu.contains(e.target) && !btnMenu.contains(e.target)) {
+                        dropdownMenu.classList.add("opacity-0", "invisible", "-translate-y-2");
+                    }
+                });
+            }
+
+            // Exibe a data atual no badge superior de forma amigável
+            const dateBadge = document.getElementById("current-date-badge");
+            if (dateBadge) {
+                const hoje = new Date();
+                const opcoes = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateBadge.textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+            }
+
+            // Seleciona Áries por padrão ao carregar a página
+            selectSign('aries');
+        });
+
+        // Banco de Dados Local dos Signos
+        const signosData = {
+            aries: {
+                nome: "Áries",
+                elemento: "Fogo • Cardinal",
+                datas: "21/03 - 20/04",
+                essencia: "A força iniciadora, a coragem pura e o impulso vital para desbravar novos caminhos.",
+                sombra: "Impaciência excessiva, impulsividade cega e tendência a conflitos desnecessários."
+            },
+            touro: {
+                nome: "Touro",
+                elemento: "Terra • Fixo",
+                datas: "21/04 - 20/05",
+                essencia: "A solidez, a apreciação sensorial da vida e a perseverança inabalável.",
+                sombra: "Teimosia inflexível, apego excessivo à zona de conforto e resistência à mudança."
+            },
+            gemeos: {
+                nome: "Gêmeos",
+                elemento: "Ar • Mutável",
+                datas: "21/05 - 20/06",
+                essencia: "A curiosidade intelectual, a versatilidade e a facilidade de comunicação.",
+                sombra: "Dispersão mental, superficialidade e dificuldade de aprofundar raízes."
+            },
+            cancer: {
+                nome: "Câncer",
+                elemento: "Água • Cardinal",
+                datas: "21/06 - 21/07",
+                essencia: "A profundidade emocional, a intuição acurada e o acolhimento protetor.",
+                sombra: "Dependência emocional, apego ao passado e tendência a se fechar na própria carapaça."
+            },
+            leao: {
+                nome: "Leão",
+                elemento: "Fogo • Fixo",
+                datas: "22/07 - 22/08",
+                essencia: "O brilho pessoal, a generosidade magnética e a expressão criativa autêntica.",
+                sombra: "Orgulho ferido, necessidade excessiva de validação externa e autoritarismo."
+            },
+            virgem: {
+                nome: "Virgem",
+                elemento: "Terra • Mutável",
+                datas: "23/08 - 22/09",
+                essencia: "A capacidade analítica, o cuidado com os detalhes e o serviço útil ao mundo.",
+                sombra: "Autocrítica impiedosa, perfeccionismo paralisante e mania de controle."
+            },
+            libra: {
+                nome: "Libra",
+                elemento: "Ar • Cardinal",
+                datas: "23/09 - 22/10",
+                essencia: "A busca pela harmonia, a diplomacia e a valorização das parcerias.",
+                sombra: "Dificuldade em tomar decisões, medo profundo de conflitos e anulação pessoal."
+            },
+            escorpiao: {
+                nome: "Escorpião",
+                elemento: "Água • Fixo",
+                datas: "23/10 - 21/11",
+                essencia: "O poder de transformação profunda, a intensidade emocional e a perspicácia.",
+                sombra: "Ressentimento, tendência ao controle obsessivo e desconfiança crônica."
+            },
+            sagitario: {
+                nome: "Sagitário",
+                elemento: "Fogo • Mutável",
+                datas: "22/11 - 21/12",
+                essencia: "A expansão de horizontes, o otimismo filosófico e a busca pela verdade.",
+                sombra: "Exagero, dogmatismo velado e promessas que não podem ser cumpridas."
+            },
+            capricornio: {
+                nome: "Capricórnio",
+                elemento: "Terra • Cardinal",
+                datas: "22/12 - 20/01",
+                essencia: "A disciplina construtiva, a maturidade precoce e a realização de grandes metas.",
+                sombra: "Rigidez excessiva, frieza emocional e carga de trabalho desmedida."
+            },
+            aquario: {
+                nome: "Aquário",
+                elemento: "Ar • Fixo",
+                datas: "21/01 - 18/02",
+                essencia: "A visão de futuro, a inovação disruptiva e o amor pela liberdade coletiva.",
+                sombra: "Distanciamento emocional, rebeldia sem causa e frieza com individualidades."
+            },
+            peixes: {
+                nome: "Peixes",
+                elemento: "Água • Mutável",
+                datas: "19/02 - 20/03",
+                essencia: "A compaixão universal, a conexão espiritual e a sensibilidade artística.",
+                sombra: "Fuga da realidade, tendência ao vitimismo e falta de limites claros."
+            }
+        };
+
+        // Função chamada ao clicar em cada botão de signo
+        function selectSign(signoKey) {
+            const dados = signosData[signoKey];
+            if (!dados) return;
+
+            // Atualiza os textos na interface
+            document.getElementById("sign-name").textContent = dados.nome;
+            document.getElementById("sign-element").textContent = dados.elemento;
+            document.getElementById("sign-dates").textContent = dados.datas;
+            document.getElementById("sign-essence").textContent = dados.essencia;
+            document.getElementById("sign-shadow").textContent = dados.sombra;
+
+            // Remove o destaque visual de todos os botões e aplica apenas no selecionado
+            document.querySelectorAll(".sign-btn").forEach(btn => {
+                btn.classList.remove("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
+                btn.classList.add("bg-white", "text-slate-700");
+            });
+            
+            const activeBtn = document.getElementById(`sign-btn-${signoKey}`);
+            if (activeBtn) {
+                activeBtn.classList.remove("bg-white", "text-slate-700");
+                activeBtn.classList.add("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
+            }
+        }
+    </script>
+</body>
+</html>

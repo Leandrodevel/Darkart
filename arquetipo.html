@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equalize-se - Teste de Arquétipo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans pt-24 pb-12">
+
+    <!-- CABEÇALHO FIXO COM MENU HAMBÚRGUER -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <!-- Nome/Logo do App -->
+        <div class="flex items-center gap-2">
+            <span class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </span>
+        </div>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden sm:flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+            </a>
+            <a href="arquetipo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+            </a>
+            <a href="horoscopo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+            </a>
+            <a href="calendario.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+            </a>
+        </nav>
+
+        <!-- Menu Hambúrguer (Lado direito - Mobile) -->
+        <div class="relative sm:hidden">
+            <button id="btn-menu" class="text-emerald-800 hover:text-emerald-950 p-2 rounded-xl hover:bg-emerald-50 transition-colors focus:outline-none cursor-pointer" aria-label="Abrir Menu">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+
+            <!-- Lista de navegação do menu (Dropdown) -->
+            <nav id="dropdown-menu" class="absolute top-14 right-0 bg-white rounded-2xl shadow-xl w-60 py-3 border border-emerald-100/60 transition-all duration-200 transform opacity-0 invisible -translate-y-2 z-50">
+                <ul class="space-y-1 px-2">
+                    <li>
+                        <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+                        </a>
+                    </li>
+                    <li>
+                        <a href="arquetipo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="horoscopo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+                        </a>
+                    </li>
+                    <li>
+                        <a href="calendario.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (TESTE ARQUETÍPICO) -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto">
+        
+        <!-- Container do Quiz -->
+        <div id="quiz-container" class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-8 sm:p-12 relative overflow-hidden transition-all">
+            
+            <!-- Barra de Progresso -->
+            <div class="w-full bg-emerald-100/60 h-2.5 rounded-full mb-8 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-emerald-600 to-purple-600 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <div class="text-center mb-10">
+                <span id="question-category" class="inline-block px-4 py-1.5 bg-emerald-50 border border-emerald-200/60 text-emerald-800 text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">Dimensão</span>
+                <h2 id="question-text" class="text-xl sm:text-2xl font-bold text-slate-900 leading-relaxed">
+                    Carregando questionamento...
+                </h2>
+            </div>
+
+            <!-- Botões de Escala de Resposta (-3 a +3) -->
+            <div class="flex flex-col items-center space-y-6">
+                <div class="grid grid-cols-7 gap-2 sm:gap-3 w-full max-w-lg">
+                    <button onclick="handleAnswer(-3)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-red-200 bg-red-50/50 hover:bg-red-100/70 text-red-700 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">-3</button>
+                    <button onclick="handleAnswer(-2)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-red-200/70 bg-red-50/30 hover:bg-red-100/50 text-red-600 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">-2</button>
+                    <button onclick="handleAnswer(-1)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-red-100 bg-red-50/10 hover:bg-red-100/30 text-red-500 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">-1</button>
+                    <button onclick="handleAnswer(0)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">0</button>
+                    <button onclick="handleAnswer(1)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-emerald-100 bg-emerald-50/10 hover:bg-emerald-100/30 text-emerald-600 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">+1</button>
+                    <button onclick="handleAnswer(2)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-emerald-200/70 bg-emerald-50/30 hover:bg-emerald-100/50 text-emerald-700 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">+2</button>
+                    <button onclick="handleAnswer(3)" class="flex flex-col items-center justify-center h-16 sm:h-20 rounded-2xl border border-emerald-300 bg-emerald-50/60 hover:bg-emerald-100 text-emerald-800 font-bold text-base sm:text-lg transition-all transform hover:scale-105 cursor-pointer shadow-xs">+3</button>
+                </div>
+
+                <div class="flex justify-between w-full max-w-lg text-xs font-semibold uppercase tracking-wider text-slate-500 pt-3 border-t border-slate-100 px-1">
+                    <span class="text-red-600">Discordo (-3)</span>
+                    <span class="text-slate-600">Neutro (0)</span>
+                    <span class="text-emerald-700">Concordo (+3)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Resultados do Teste -->
+        <div id="result-container" class="hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-8 sm:p-10 text-center relative transition-all">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full mb-4 shadow-sm">
+                <i data-lucide="sparkles" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Perfil Arquetípico Mapeado</h2>
+            <p class="text-slate-600 text-sm mb-6">Sua assinatura mental e espiritual cruzou o espectro do Equalize-se:</p>
+            
+            <div class="bg-slate-50/80 border border-emerald-100/80 rounded-2xl p-6 mb-6 text-left space-y-4">
+                <div>
+                    <h3 id="result-title" class="text-xl font-bold text-emerald-800 mb-2">Calculando...</h3>
+                    <p id="result-description" class="text-sm text-slate-600 leading-relaxed">Decifrando padrões de crença e psique...</p>
+                </div>
+                <div class="border-t border-emerald-100 pt-4">
+                    <span class="block text-emerald-800 text-xs font-semibold uppercase tracking-wider mb-2">Proximidade com Arquétipos do Sistema:</span>
+                    <div id="match-list" class="space-y-2 text-xs text-slate-700"></div>
+                </div>
+            </div>
+
+            <button onclick="restartQuiz()" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-700 to-purple-700 hover:from-emerald-800 hover:to-purple-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md cursor-pointer">
+                <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i> Recomeçar a Investigação
+            </button>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500">
+        Equalize-se &copy; 2026
+    </footer>
+
+    <!-- Inicialização de Ícones e Menu Hambúrguer Mobile -->
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const btnMenu = document.getElementById("btn-menu");
+            const dropdownMenu = document.getElementById("dropdown-menu");
+
+            if (btnMenu && dropdownMenu) {
+                btnMenu.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle("opacity-0");
+                    dropdownMenu.classList.toggle("invisible");
+                    dropdownMenu.classList.toggle("-translate-y-2");
+                });
+
+                document.addEventListener("click", (e) => {
+                    if (!dropdownMenu.contains(e.target) && !btnMenu.contains(e.target)) {
+                        dropdownMenu.classList.add("opacity-0", "invisible", "-translate-y-2");
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Script Separado do Quiz -->
+    <script src="quiz.js"></script>
+</body>
+</html>

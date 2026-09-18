@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equalize-se - Numerologia</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
+
+    <!-- CABEÇALHO FIXO COM MENU HAMBÚRGUER -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <!-- Nome/Logo do App -->
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+        </div>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden sm:flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+            </a>
+            <a href="arquetipo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+            </a>
+            <a href="horoscopo.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+            </a>
+            <a href="calendario.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+            </a>
+            <a href="numerologia.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                <i data-lucide="hash" class="w-4 h-4 text-emerald-700"></i> Numerologia
+            </a>
+        </nav>
+
+        <!-- Menu Hambúrguer (Lado direito - Mobile) -->
+        <div class="relative sm:hidden">
+            <button id="btn-menu" class="text-emerald-800 hover:text-emerald-950 p-2 rounded-xl hover:bg-emerald-50 transition-colors focus:outline-none cursor-pointer" aria-label="Abrir Menu">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+
+            <!-- Lista de navegação do menu (Dropdown) -->
+            <nav id="dropdown-menu" class="absolute top-14 right-0 bg-white rounded-2xl shadow-xl w-60 py-3 border border-emerald-100/60 transition-all duration-200 transform opacity-0 invisible -translate-y-2 z-50">
+                <ul class="space-y-1 px-2">
+                    <li>
+                        <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="home" class="w-4 h-4 text-emerald-700"></i> Início
+                        </a>
+                    </li>
+                    <li>
+                        <a href="arquetipo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-emerald-700"></i> Teste de arquétipo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="horoscopo.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="compass" class="w-4 h-4 text-emerald-700"></i> Astrologia
+                        </a>
+                    </li>
+                    <li>
+                        <a href="calendario.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-emerald-700 rounded-xl transition-colors">
+                            <i data-lucide="moon" class="w-4 h-4 text-emerald-700"></i> Calendário lunar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="numerologia.html" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-emerald-50/80 rounded-xl transition-colors">
+                            <i data-lucide="hash" class="w-4 h-4 text-emerald-700"></i> Numerologia
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto">
+        
+        <!-- Título da Página -->
+        <section class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Estudo Numerológico</h1>
+            <p class="text-emerald-800 font-medium text-base">Descubra a vibração dos números na sua jornada</p>
+        </section>
+
+        <!-- CARD 1: Numerologia do Dia (Mantido no topo isolado) -->
+        <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-2xl p-6 shadow-sm mb-8">
+            <div class="flex items-center gap-3 mb-3 text-emerald-700">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <h2 class="text-lg font-semibold text-slate-900">Energia do Dia (<span id="data-hoje-txt">-</span>)</h2>
+            </div>
+            <p id="num-dia-significado" class="text-slate-600 text-sm leading-relaxed">-</p>
+        </div>
+
+        <!-- CARD 2: Análise Pessoal Completa (Nome + Data de Nascimento juntos) -->
+        <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-2xl p-6 sm:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4 text-emerald-700">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                <h2 class="text-xl font-semibold text-slate-900">Seu Perfil Profundo</h2>
+            </div>
+            <p class="text-sm text-slate-600 mb-6">Preencha seu nome completo e sua data de nascimento para revelar as camadas da sua essência, da sua imagem e da sua jornada:</p>
+            
+            <div class="flex flex-col gap-4 mb-6">
+                <!-- Input Nome -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nome Completo</label>
+                    <input type="text" id="input-nome" placeholder="Ex: Leandro Pessanha" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                </div>
+
+                <!-- Input Data de Nascimento (Abaixo do nome) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Data de Nascimento</label>
+                    <input type="date" id="input-nascimento" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                </div>
+
+                <button id="btn-calcular-completo" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-sm mt-2">
+                    Revelar Meu Perfil
+                </button>
+            </div>
+
+            <!-- Aviso caso faltem dados -->
+            <p id="aviso-erro" class="hidden text-rose-600 text-xs font-medium mb-4">Por favor, preencha tanto o nome quanto a data de nascimento para continuar.</p>
+
+            <!-- Resultados Descritivos Completos -->
+            <div id="resultado-completo-container" class="hidden space-y-4">
+                
+                <!-- O seu eu interior -->
+                <div class="bg-purple-50/70 border border-purple-100 rounded-xl p-5 shadow-xs">
+                    <div class="flex items-center gap-2 mb-2 text-purple-700">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-purple-900">O seu eu interior</h3>
+                    </div>
+                    <p id="res-interior-desc" class="text-slate-700 text-sm leading-relaxed">-</p>
+                </div>
+
+                <!-- A forma como o mundo te vê -->
+                <div class="bg-emerald-50/70 border border-emerald-100 rounded-xl p-5 shadow-xs">
+                    <div class="flex items-center gap-2 mb-2 text-emerald-700">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-900">A forma como o mundo te vê</h3>
+                    </div>
+                    <p id="res-exterior-desc" class="text-slate-700 text-sm leading-relaxed">-</p>
+                </div>
+
+                <!-- A sua jornada de vida -->
+                <div class="bg-amber-50/70 border border-amber-100 rounded-xl p-5 shadow-xs">
+                    <div class="flex items-center gap-2 mb-2 text-amber-700">
+                        <i data-lucide="compass" class="w-4 h-4"></i>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-900">A sua jornada de vida</h3>
+                    </div>
+                    <p id="res-jornada-desc" class="text-slate-700 text-sm leading-relaxed">-</p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider">
+        EQUALIZE-SE • TODOS OS DIREITOS RESERVADOS
+    </footer>
+
+    <!-- Script da Lógica Numerológica -->
+    <script>
+        const DESCRICOES_NUMEROS = {
+            1: {
+                dia: "A energia de hoje traz foco em novos começos, independência e coragem para dar o primeiro passo por conta própria.",
+                jornada: "Sua jornada de vida é marcada pela independência, originalidade e forte capacidade de liderança. Sua missão é desbravar caminhos.",
+                interior: "Seu eu interior é pioneiro e ambicioso; sua alma anseia por autonomia, inovação e ser a força criativa das próprias realizações.",
+                exterior: "A forma como o mundo te vê é como alguém autêntico, decidido, corajoso e que exala uma forte presença de liderança natural."
+            },
+            2: {
+                dia: "O dia favorece a empatia, parcerias, união e a capacidade de escutar a intuição com suavidade.",
+                jornada: "Sua jornada de vida é guiada pela sensibilidade, diplomacia e pelo dom de unir as pessoas através da cooperação e do afeto.",
+                interior: "Seu eu interior é extremamente sensível e amoroso; sua alma busca harmonia profunda, paz interior e conexões verdadeiras.",
+                exterior: "A forma como o mundo te vê é como uma pessoa pacífica, acolhedora, mediadora e dotada de grande tato para lidar com os outros."
+            },
+            3: {
+                dia: "Uma energia leve e contagiante toma conta do dia, ideal para a criatividade, conversas alegres e expansão.",
+                jornada: "Sua jornada de vida brilha através da comunicação, da arte e da alegria de viver, inspirando leveza por onde passa.",
+                interior: "Seu eu interior é altamente expressivo e sonhador; sua alma deseja se manifestar com liberdade, espalhando otimismo e alegria.",
+                exterior: "A forma como o mundo te vê é como alguém carismático, comunicativo, divertido, magnético e dono de uma criatividade invejável."
+            },
+            4: {
+                dia: "O dia pede foco em bases sólidas, organização de tarefas práticas e responsabilidade com o trabalho.",
+                jornada: "Sua jornada de vida é construída sobre a base do esforço, da honestidade, da dedicação e da busca por segurança material e emocional.",
+                interior: "Seu eu interior é prático e busca estabilidade; sua alma anseia por ordem, segurança, lealdade e bases duradouras.",
+                exterior: "A forma como o mundo te vê é como uma pessoa organizada, trabalhadora, confiável, pontual e extremamente responsável."
+            },
+            5: {
+                dia: "O clima é de movimento e adaptabilidade. Perfeito para abraçar o inesperado e buscar novas experiências.",
+                jornada: "Sua jornada de vida é moldada pela liberdade, versatilidade e pela sede constante de aprender com as transformações do mundo.",
+                interior: "Seu eu interior é livre e curioso; sua alma repudia a rotina e deseja explorar horizontes amplos, aventuras e novas ideias.",
+                exterior: "A forma como o mundo te vê é como alguém dinâmico, moderno, versátil, magnético e que lida com mudanças com facilidade."
+            },
+            6: {
+                dia: "A energia do dia convida ao acolhimento do lar, à cura de relações e ao cuidado com quem você ama.",
+                jornada: "Sua jornada de vida é guiada pelo amor incondicional, pela responsabilidade afetiva e pelo desejo profundo de harmonizar o ambiente ao redor.",
+                interior: "Seu eu interior é amoroso e protetor; sua alma quer paz familiar, acolhimento, beleza e a sensação de dever cumprido com o próximo.",
+                exterior: "A forma como o mundo te vê é como uma figura acolhedora, justa, conselheira, cuidadosa e essencialmente humana."
+            },
+            7: {
+                dia: "Dia voltado para o recolhimento, silêncio, estudos profundos e conexão com a sua intuição.",
+                jornada: "Sua jornada de vida envolve a busca pela verdade oculta, sabedoria interior, conhecimento acadêmico ou espiritualidade profunda.",
+                interior: "Seu eu interior é altamente introspectivo e sábio; sua alma busca respostas profundas, mistérios da vida e momentos de silêncio.",
+                exterior: "A forma como o mundo te vê é como alguém misterioso, analítico, intelectual, reservado e de olhar perspicaz."
+            },
+            8: {
+                dia: "Excelente momento para negócios, organização financeira e tomada de decisões estratégicas de alto valor.",
+                jornada: "Sua jornada de vida está conectada ao poder pessoal, à justiça, à liderança de grandes projetos e à abundância material.",
+                interior: "Seu eu interior é realizador e forte; sua alma almeja o sucesso, a concretização de grandes metas e o reconhecimento pelo seu valor.",
+                exterior: "A forma como o mundo te vê é como uma pessoa segura de si, eficiente, voltada para resultados, justa e de postura executiva."
+            },
+            9: {
+                dia: "Hora ideal para finalizar pendências, perdoar, desapegar do passado e praticar a generosidade universal.",
+                jornada: "Sua jornada de vida possui um caráter humanitário e compassivo, focado em ensinar, perdoar e concluir ciclos com sabedoria.",
+                interior: "Seu eu interior é universal e altruísta; sua alma anseia por um mundo melhor, carregando um amor profundo pela humanidade inteira.",
+                exterior: "A forma como o mundo te vê é como alguém generoso, inspirador, compreensivo, tolerante e dotado de uma sabedoria ímpar."
+            }
+        };
+
+        function reduzirAUnicoDigito(soma) {
+            while (soma > 9) {
+                soma = String(soma).split('').reduce((acc, char) => acc + parseInt(char, 10), 0);
+            }
+            return soma;
+        }
+
+        // Carregar energia do dia
+        function calcularNumerologiaDoDia() {
+            const hoje = new Date();
+            const ano = String(hoje.getFullYear());
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+
+            document.getElementById('data-hoje-txt').textContent = `${dia}/${mes}/${ano}`;
+
+            const somaDigitos = (str) => str.split('').reduce((acc, char) => acc + parseInt(char, 10), 0);
+            let total = somaDigitos(dia) + somaDigitos(mes) + somaDigitos(ano);
+            let resultadoFinal = reduzirAUnicoDigito(total);
+
+            const dados = DESCRICOES_NUMEROS[resultadoFinal];
+            document.getElementById('num-dia-significado').textContent = dados.dia;
+        }
+
+        function obterValorLetra(letra) {
+            const tabela = {
+                'a': 1, 'j': 1, 's': 1,
+                'b': 2, 'k': 2, 't': 2,
+                'c': 3, 'l': 3, 'u': 3,
+                'd': 4, 'm': 4, 'v': 4,
+                'e': 5, 'n': 5, 'w': 5,
+                'f': 6, 'o': 6, 'x': 6,
+                'g': 7, 'p': 7, 'y': 7,
+                'h': 8, 'q': 8, 'z': 8,
+                'i': 9, 'r': 9
+            };
+            return tabela[letra] || 0;
+        }
+
+        // Análise Completa ao clicar no botão
+        function calcularPerfilCompleto() {
+            const nomeInput = document.getElementById('input-nome').value.toLowerCase().trim();
+            const dataInput = document.getElementById('input-nascimento').value;
+            const avisoErro = document.getElementById('aviso-erro');
+            const containerResultado = document.getElementById('resultado-completo-container');
+
+            // Validação rigorosa: exige ambos preenchidos
+            if (!nomeInput || !dataInput) {
+                avisoErro.classList.remove('hidden');
+                containerResultado.classList.add('hidden');
+                return;
+            }
+
+            avisoErro.classList.add('hidden');
+
+            // 1. Processar Nome (Vogais e Consoantes)
+            const vogais = ['a', 'e', 'i', 'o', 'u'];
+            let somaVogais = 0;
+            let somaConsoantes = 0;
+
+            for (let i = 0; i < nomeInput.length; i++) {
+                const charLimpo = nomeInput[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const valor = obterValorLetra(charLimpo);
+                
+                if (valor > 0) {
+                    if (vogais.includes(charLimpo)) {
+                        somaVogais += valor;
+                    } else {
+                        somaConsoantes += valor;
+                    }
+                }
+            }
+
+            let resVogaisFinal = reduzirAUnicoDigito(somaVogais || 1);
+            let resConsoantesFinal = reduzirAUnicoDigito(somaConsoantes || 1);
+
+            // 2. Processar Data de Nascimento
+            const partes = dataInput.split('-');
+            let resNascFinal = 1;
+            if (partes.length === 3) {
+                const [ano, mes, dia] = partes;
+                let somaNasc = (dia + mes + ano).split('').reduce((acc, char) => acc + parseInt(char, 10), 0);
+                resNascFinal = reduzirAUnicoDigito(somaNasc);
+            }
+
+            // 3. Atribuir descrições sem dados numéricos técnicos
+            const dadosInterior = DESCRICOES_NUMEROS[resVogaisFinal];
+            const dadosExterior = DESCRICOES_NUMEROS[resConsoantesFinal];
+            const dadosJornada = DESCRICOES_NUMEROS[resNascFinal];
+
+            document.getElementById('res-interior-desc').textContent = dadosInterior.interior;
+            document.getElementById('res-exterior-desc').textContent = dadosExterior.exterior;
+            document.getElementById('res-jornada-desc').textContent = dadosJornada.jornada;
+
+            containerResultado.classList.remove('hidden');
+        }
+
+        // Eventos
+        document.getElementById('btn-calcular-completo').addEventListener('click', calcularPerfilCompleto);
+        
+        document.getElementById('input-nome').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calcularPerfilCompleto();
+        });
+        
+        document.getElementById('input-nascimento').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calcularPerfilCompleto();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            calcularNumerologiaDoDia();
+            lucide.createIcons();
+        });
+    </script>
+
+    <!-- Script do Menu Hambúrguer -->
+    <script>
+        const btnMenu = document.getElementById('btn-menu');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+
+        btnMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdownMenu.classList.contains('opacity-100');
+            if (isOpen) {
+                dropdownMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                dropdownMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+            } else {
+                dropdownMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
+                dropdownMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+            }
+        });
+
+        window.addEventListener('click', () => {
+            dropdownMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+            dropdownMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+        });
+    </script>
+</body>
+</html>

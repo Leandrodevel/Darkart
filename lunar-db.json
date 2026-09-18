@@ -1,0 +1,119 @@
+{
+  "etapas": {
+    "Lua Nova - Início": {
+      "fase": "Lua Nova",
+      "etapa": "Início da Transição",
+      "icon": "moon",
+      "description": "O céu escurece por completo, marcando o exato recomeço do ciclo. É o momento de maior silêncio cósmico, onde a semente é plantada na terra escura antes de germinar.",
+      "tip": "Recolha-se um pouco mais hoje. Acenda uma vela branca, limpe sua mente de ruídos e escreva em um papel a sua intenção mais forte para as próximas semanas."
+    },
+    "Lua Nova - Segundo Dia": {
+      "fase": "Lua Nova",
+      "etapa": "Segundo Dia de Sementeira",
+      "icon": "moon",
+      "description": "A energia de plantio continua fresca. As intenções começam a assentar no campo sutil, exigindo clareza mental e foco absoluto naquilo que você deseja atrair.",
+      "tip": "Evite espalhar seus planos para outras pessoas. Mantenha sua energia guardada e cultive pensamentos de abundância em silêncio."
+    },
+    "Lua Nova - Meio": {
+      "fase": "Lua Nova",
+      "etapa": "O Auge do Planejamento",
+      "icon": "moon",
+      "description": "Metade da fase escura. O foco aqui é estruturar os passos práticos. O invisível começa a ganhar contornos de estratégia no plano físico.",
+      "tip": "Organize sua agenda ou seu ambiente de trabalho. Crie bases sólidas para que seus projetos consigam crescer sem obstáculos."
+    },
+    "Lua Nova - Final": {
+      "fase": "Lua Nova",
+      "etapa": "Fim do Recolhimento",
+      "icon": "moon",
+      "description": "A última noite de escuridão antes do primeiro facho de luz aparecer. A preparação interna está concluída e a ansiedade pelo início deve dar lugar à confiança.",
+      "tip": "Faça uma respiração profunda de encerramento desta fase introspectiva e prepare-se mentalmente para a ação que se aproxima."
+    },
+
+    "Lua Crescente - Início": {
+      "fase": "Lua Crescente",
+      "etapa": "Início da Expansão",
+      "icon": "trending-up",
+      "description": "O famoso 'fio de prata' surge no céu. A luz retorna timidamente, dando o sinal verde para o movimento, o ganho de ritmo e o despertar dos projetos.",
+      "tip": "Dê o primeiro passo prático em direção àquela meta que estava parada. Tome uma atitude corajosa hoje."
+    },
+    "Lua Crescente - Segundo Dia": {
+      "fase": "Lua Crescente",
+      "etapa": "Aceleração e Ritmo",
+      "icon": "trending-up",
+      "description": "A lua ganha corpo visível e a energia social e física se eleva consideravelmente. É uma fase de forte propulsão e otimismo.",
+      "tip": "Invista em networking, faça contatos importantes ou inicie novos hábitos de saúde e autocuidado que exijam disciplina."
+    },
+    "Lua Crescente - Meio": {
+      "fase": "Lua Crescente",
+      "etapa": "O Auge do Crescimento",
+      "icon": "trending-up",
+      "description": "Metade do ciclo de expansão. O vento sopra a favor e os obstáculos parecem menores diante da sua vontade de realizar.",
+      "tip": "Foque nas tarefas que exigem mais energia física e mental. Aproveite este pico de alta produtividade para acelerar entregas."
+    },
+    "Lua Crescente - Final": {
+      "fase": "Lua Crescente",
+      "etapa": "Preparação para o Clímax",
+      "icon": "trending-up",
+      "description": "A lua exibe sua metade iluminada (Quarto Crescente), apontando para o ápice luminoso que está prestes a chegar nos próximos dias.",
+      "tip": "Revise o que já progrediu nesta semana e ajuste os ponteiros para receber a grande carga magnética da Lua Cheia."
+    },
+
+    "Lua Cheia - Início": {
+      "fase": "Lua Cheia",
+      "etapa": "Início do Magnetismo",
+      "icon": "sun",
+      "description": "O disco lunar começa a parecer perfeitamente redondo. A vibração coletiva se altera, as emoções ganham intensidade e a intuição fica afiada.",
+      "tip": "Fique atento aos seus sonhos e sinais da intuição. Evite discussões passionais, direcionando toda essa carga eletrizante para a criatividade."
+    },
+    "Lua Crescente Final / Cheia - Segundo Dia": {
+      "fase": "Lua Cheia",
+      "etapa": "Expansão Emocional",
+      "icon": "sun",
+      "description": "A sensibilidade atinge patamares elevados. O magnetismo pessoal está no máximo, facilitando conexões profundas e revelações internas.",
+      "tip": "Pratique a empatia e o perdão. É um dia excelente para expressar sentimentos verdadeiros e fortalecer laços afetivos."
+    },
+    "Lua Cheia - Meio": {
+      "fase": "Lua Cheia",
+      "etapa": "O Auge da Plenitude",
+      "icon": "sun",
+      "description": "A noite da Lua Cheia em sua glória máxima. Toda a energia vital do cosmos está espalhada, iluminando tanto as nossas belezas quanto as nossas sombras.",
+      "tip": "Coloque seus cristais sob a luz da lua para purificar e recarregar as energias. Faça rituais de gratidão profunda e celebração."
+    },
+    "Lua Cheia - Final": {
+      "fase": "Lua Cheia",
+      "etapa": "Despedida do Clímax",
+      "icon": "sun",
+      "description": "A lua começa a perder milimetricamente o seu brilho total, iniciando a transição gradual rumo à diminuição e à introspecção.",
+      "tip": "Aproveite para ancorar as ideias que transbordaram nos últimos dias e comece a desacelerar o ritmo acelerado."
+    },
+
+    "Lua Minguante - Início": {
+      "fase": "Lua Minguante",
+      "etapa": "Início da Limpeza",
+      "icon": "moon",
+      "description": "A luz diminui visivelmente, abrindo espaço para a fase mais purificadora de todo o ciclo mensal. O foco absoluto muda para a faxina energética.",
+      "tip": "Faça uma boa limpeza física em sua casa, abra as janelas para renovar o ar e livre-se de objetos quebrados ou acumulados sem uso."
+    },
+    "Lua Minguante - Segundo Dia": {
+      "fase": "Lua Minguante",
+      "etapa": "Desapego e Corte",
+      "icon": "moon",
+      "description": "Momento ideal para cortar o que drena sua energia: hábitos nocivos, relações tóxicas ou padrões mentais repetitivos e limitantes.",
+      "tip": "Escreva em um papel tudo o que você deseja mandar embora da sua vida (medos, mágoas, vícios) e queime esse papel com segurança."
+    },
+    "Lua Minguante - Meio": {
+      "fase": "Lua Minguante",
+      "etapa": "O Auge da Desintoxicação",
+      "icon": "moon",
+      "description": "O meio da fase minguante traz um alívio profundo para quem soube se desapegar. O campo áurico fica mais leve e limpo de influências densas.",
+      "tip": "Tome um banho relaxante de ervas de limpeza (como guiné, arruda ou sal grosso diluído do pescoço para baixo) para coroar o processo."
+    },
+    "Lua Minguante - Final": {
+      "fase": "Lua Minguante",
+      "etapa": "O Vazio Fértil",
+      "icon": "moon",
+      "description": "Os últimos estertores da lua velha no horizonte antes do silêncio total da Lua Nova. A energia está zerada, pronta para o repouso definitivo.",
+      "tip": "Descanse bastante, durma cedo e permita que sua mente desacelere por completo para receber o próximo ciclo renovado."
+    }
+  }
+}

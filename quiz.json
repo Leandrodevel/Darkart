@@ -1,0 +1,154 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "category": "Espiritismo e Reencarnação",
+      "text": "Acredito que a vida terrena é uma escola evolutiva e que passamos por múltiplas reencarnações para lapidar o espírito e corrigir desvios do passado."
+    },
+    {
+      "id": 2,
+      "category": "Espiritismo e Caridade",
+      "text": "O lema 'Fora da caridade não há salvação' resume perfeitamente o meu propósito de evolução e dever moral perante a sociedade."
+    },
+    {
+      "id": 3,
+      "category": "Umbanda e Orixás",
+      "text": "Sinto uma forte conexão com a energia dos Orixás, guias espirituais, caboclos e pretos velhos como divindades de amparo e sabedoria na Terra."
+    },
+    {
+      "id": 4,
+      "category": "Umbanda e Caridade",
+      "text": "Os rituais de descarrego, passes energéticos e a caridade nos terreiros são ferramentas fundamentais para a limpeza e elevação do espírito."
+    },
+    {
+      "id": 5,
+      "category": "Reiki e Energia Vital",
+      "text": "Acredito que podemos canalizar energia vital universal pelas mãos para harmonizar os chakras e promover curas físicas, emocionais e espirituais."
+    },
+    {
+      "id": 6,
+      "category": "Reiki e Autocura",
+      "text": "O equilíbrio energético começa de dentro para fora; a imposição de mãos e a meditação diária são essenciais para manter meu campo vibracional limpo."
+    },
+    {
+      "id": 7,
+      "category": "Budismo e Desapego",
+      "text": "O sofrimento humano nasce do apego e da ilusão do ego. A libertação vem através da meditação, da compaixão e da prática da atenção plena (mindfulness)."
+    },
+    {
+      "id": 8,
+      "category": "Budismo e Iluminação",
+      "text": "A busca pela iluminação interior e pelo Nirvana é o caminho mais elevado para superar o ciclo de ilusões do mundo material."
+    },
+    {
+      "id": 9,
+      "category": "Universalismo e Conexão",
+      "text": "Todas as religiões e filosofias portam fragmentos da mesma verdade divina. Nenhuma via isolada detém o monopólio absoluto de Deus."
+    },
+    {
+      "id": 10,
+      "category": "Universalismo e Fraternidade",
+      "text": "Vejo a humanidade como uma única família cósmica, transcendendo dogmas sectários e barreiras culturais em prol da fraternidade universal."
+    },
+    {
+      "id": 11,
+      "category": "Magia Natural (Ervas)",
+      "text": "O uso de banhos de ervas, defumações e chás fitoterápicos possui um poder sagrado e medicinal capaz de alterar profundamente o campo energético."
+    },
+    {
+      "id": 12,
+      "category": "Magia Natural (Ervas)",
+      "text": "A natureza vegetal guarda inteligências sutis que podem ser ativadas para proteção, limpeza espiritual e prosperidade."
+    },
+    {
+      "id": 13,
+      "category": "Cristais e Radiestesia",
+      "text": "Os cristais, pedras preciosas e elementos minerais emitem frequências vibracionais específicas que purificam e ampliam a nossa energia pessoal."
+    },
+    {
+      "id": 14,
+      "category": "Cristais e Radiestesia",
+      "text": "Utilizar geometria sagrada, pêndulos e cristais nos ambientes é indispensável para blindar a casa contra energias densas."
+    },
+    {
+      "id": 15,
+      "category": "Psicologia e Sombra",
+      "text": "O verdadeiro crescimento espiritual passa obrigatoriamente pela integração da 'Sombra' descrita por Jung, acolhendo nossos traumas e instintos reprimidos."
+    },
+    {
+      "id": 16,
+      "category": "Psicologia e Autoconhecimiento",
+      "text": "A análise psicológica, o autoconhecimento profundo e a inteligência emocional caminham lado a lado com qualquer prática mística ou religiosa."
+    },
+    {
+      "id": 17,
+      "category": "Hermetismo e Leis Universais",
+      "text": "O universo é regido por leis imutáveis, como o Princípio de Correspondência ('O que está em cima é como o que está embaixo') e a Lei do Mentalismo."
+    },
+    {
+      "id": 18,
+      "category": "Hermetismo e Alquimia",
+      "text": "Conhecer os segredos herméticos permite ao adepto transmutar estados mentais densos em virtudes elevadas, fazendo a verdadeira alquimia interior."
+    },
+    {
+      "id": 19,
+      "category": "Lei da Atração e Frequência",
+      "text": "Nossos pensamentos e sentimentos criam ondas eletromagnéticas que atraem experiências e realidades equivalentes para a nossa vida (frequência vibracional)."
+    },
+    {
+      "id": 20,
+      "category": "Lei da Atração e Cocriação",
+      "text": "Somos cocriadores ativos da nossa realidade material através da visualização criativa, foco mental e alinhamento de intenções claras."
+    },
+    {
+      "id": 21,
+      "category": "Sustentação Espiritual Geral",
+      "text": "Sinto que forças invisíveis, mentores ou anjos da guarda acompanham e orientam meus passos diariamente nos momentos de decisão."
+    },
+    {
+      "id": 22,
+      "category": "Misticismo Prático",
+      "text": "Prefiro experiências místicas diretas, intuição e vivência prática da espiritualidade em vez de seguir dogmas rígidos ou estruturas eclesiásticas."
+    },
+    {
+      "id": 23,
+      "category": "Autonomia Espiritual",
+      "text": "O ser humano é o único sacerdote de seu próprio templo interior; intermediários religiosos são secundários perante a conexão direta com o Divino."
+    },
+    {
+      "id": 24,
+      "category": "Energia e Intuição",
+      "text": "Confio cegamente na minha intuição e nos calafrios ou percepções sutis que sinto ao entrar em determinados ambientes ou lidar com pessoas."
+    },
+    {
+      "id": 25,
+      "category": "Evolução e Consciência",
+      "text": "O principal objetivo da existência é a expansão da consciência e o despertar gradual para a nossa verdadeira essência divina e cósmica."
+    },
+    {
+      "id": 26,
+      "category": "Sintonia Vibracional",
+      "text": "Evito ambientes de fofoca, reclamação e baixas vibrações porque compreendo perfeitamente o impacto nocivo que causam na minha aura."
+    },
+    {
+      "id": 27,
+      "category": "Equilíbrio Material e Espiritual",
+      "text": "A matéria e o espírito não são opostos inconciliáveis; o dinheiro e o sucesso material podem ser manifestações sagradas quando usados com ética."
+    },
+    {
+      "id": 28,
+      "category": "Cura Ancestral",
+      "text": "Tenho grande respeito pelas medicinas da floresta, rezadores, benzedeiras e sabedorias ancestrais de cura que resistiram ao tempo."
+    },
+    {
+      "id": 29,
+      "category": "Fé Racional",
+      "text": "A fé verdadeira não precisa anular a ciência, a lógica ou o questionamento investigativo; pelo contrário, ambas se complementam."
+    },
+    {
+      "id": 30,
+      "category": "Propósito de Vida",
+      "text": "Sinto que vim a este mundo com uma missão espiritual específica de auxiliar na elevação da vibração coletiva da humanidade."
+    }
+  ]
+}
