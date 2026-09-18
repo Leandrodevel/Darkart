@@ -123,11 +123,15 @@
             <div id="lista-frases-do-dia" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[320px] overflow-y-auto pr-1">
                 <!-- Os cards gerados aparecem aqui dinamicamente -->
             </div>
-               <div class="">
-        <button onclick="abrirModalFrase()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center justify-center border-2 border-white/40" title="Enviar Mensagem do Dia">
-            Deixe sua mensagens para o mundo<i data-lucide="message-square-plus" class="w-6 h-6"></i>
-        </button>
-               </div>
+       <div class="flex flex-col items-center justify-center gap-3 text-center">
+    <p class="text-sm text-gray-600 dark:text-gray-300 font-medium max-w-xs">
+        Compartilhe um momento, uma inspiração ou uma boa energia com o mundo!
+    </p>
+    <button onclick="abrirModalFrase()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/40 font-medium" title="Enviar Mensagem do Dia">
+        <span>Deixe sua mensagem</span>
+        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+    </button>
+</div>
         </section>
 
         <!-- GRID DE CARDS DO DIA (Astrologia, Fase da Lua e Numerologia) -->
