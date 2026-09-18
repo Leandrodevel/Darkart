@@ -234,8 +234,16 @@
             document.getElementById("input-mensagem-usuario").value = "";
         }
 
-        // Função Global para Reagir às Mensagens
+        // Função Global para Reagir às Mensagens (Com trava no localStorage e envio assíncrono)
         async function reagirMensagem(dataIso, indexMensagem, tipoReacao) {
+            const chaveLocal = `reacao_${dataIso}_${indexMensagem}`;
+            
+            // Verifica se o usuário já reagiu a esta mensagem neste dispositivo
+            if (localStorage.getItem(chaveLocal)) {
+                alert("Você já enviou sua reação para esta mensagem!");
+                return;
+            }
+
             try {
                 const getResp = await fetch(API_URL, {
                     headers: { 'X-Master-Key': API_KEY }
@@ -252,7 +260,7 @@
                     }
                     jsonAtual[dataIso].mensagensDoDia[indexMensagem].reacoes[tipoReacao]++;
 
-                    // Salva de volta no servidor
+                    // Salva de volta no servidor em segundo plano
                     const putResp = await fetch(API_URL, {
                         method: 'PUT',
                         headers: {
@@ -263,7 +271,10 @@
                     });
 
                     if (putResp.ok) {
-                        // Recarrega os dados para atualizar os contadores na tela instantaneamente
+                        // Salva no localStorage para bloquear novos cliques nesta mensagem
+                        localStorage.setItem(chaveLocal, tipoReacao);
+                        
+                        // Atualiza os dados na tela suavemente sem recarregar a página inteira
                         carregarDadosDinamicos();
                     }
                 }
@@ -344,7 +355,7 @@
             }
         }
 
-        // Função que busca os dados do servidor / API (Movida para o escopo principal para ser acessível pelo setInterval)
+        // Função que busca os dados do servidor / API
         async function carregarDadosDinamicos() {
             if (typeof buscarDadosDoBanco === 'function') {
                 try {
@@ -472,7 +483,7 @@
             // Executa a primeira vez logo ao carregar a página
             await carregarDadosDinamicos();
 
-            // Atualiza os dados a cada 5 segundos de forma silenciosa
+            // Atualiza os dados de forma automática a cada 5 segundos
             setInterval(carregarDadosDinamicos, 5000);
         });
 
