@@ -372,32 +372,33 @@
                             }
                         }
 
-                        const getResp = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
-                        if (getResp.ok) {
-                            const dadosGlobais = await getResp.json();
-                            const registroHoje = dadosGlobais.record[hojeChave];
-                            
-                            if (registroHoje && registroHoje.mensagensDoDia && registroHoje.mensagensDoDia.length > 0) {
-                                const containerSecao = document.getElementById("secao-frases-container");
-                                const listaContainer = document.getElementById("lista-frases-do-dia");
-                                containerSecao.classList.remove("hidden");
-                                listaContainer.innerHTML = "";
+                      const getResp = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+if (getResp.ok) {
+    const dadosGlobais = await getResp.json();
+    const registroHoje = dadosGlobais.record[hojeChave];
+    
+    if (registroHoje && registroHoje.mensagensDoDia && registroHoje.mensagensDoDia.length > 0) {
+        const containerSecao = document.getElementById("secao-frases-container");
+        const listaContainer = document.getElementById("lista-frases-do-dia");
+        containerSecao.classList.remove("hidden");
+        listaContainer.innerHTML = "";
 
-                                registroHoje.mensagensDoDia.forEach(msg => {
-                                    const card = document.createElement("div");
-                                    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
-                                    card.innerHTML = `
-                                        <p class="text-sm text-slate-800 italic mb-2">"${msg.texto}"</p>
-                                        <div class="flex items-center justify-end gap-1 text-[11px] text-slate-400 font-medium">
-                                            <i data-lucide="clock" class="w-3 h-3"></i>
-                                            <span>Hoje às ${msg.horario}</span>
-                                        </div>
-                                    `;
-                                    listaContainer.appendChild(card);
-                                });
-                                lucide.createIcons();
-                            }
-                        }
+        // .slice().reverse() cria uma cópia invertida para mostrar as mais recentes primeiro
+        registroHoje.mensagensDoDia.slice().reverse().forEach(msg => {
+            const card = document.createElement("div");
+            card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+            card.innerHTML = `
+                <p class="text-sm text-slate-800 italic mb-2">"${msg.texto}"</p>
+                <div class="flex items-center justify-end gap-1 text-[11px] text-slate-400 font-medium">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <span>Hoje às ${msg.horario}</span>
+                </div>
+            `;
+            listaContainer.appendChild(card);
+        });
+        lucide.createIcons();
+    }
+}
 
                     } catch (e) {
                         console.error("Erro ao carregar dados dinâmicos do servidor:", e);
