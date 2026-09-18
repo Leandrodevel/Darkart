@@ -2,7 +2,7 @@
   "name": "Equalize-se",
   "short_name": "Equalize-se",
   "description": "Plataforma de autoconhecimento, astrologia, numerologia e energias",
-  "start_url": "./index.php",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
