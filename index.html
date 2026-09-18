@@ -252,7 +252,8 @@
             const novaMensagemObj = {
                 texto: texto,
                 horario: horaFormatada,
-                dataIso: dataHojeIso
+                dataIso: dataHojeIso,
+                reacoes: { coracao: 0, amem: 0, rindo: 0, flor: 0 }
             };
 
             try {
@@ -383,20 +384,82 @@ if (getResp.ok) {
         containerSecao.classList.remove("hidden");
         listaContainer.innerHTML = "";
 
-        // .slice().reverse() cria uma cópia invertida para mostrar as mais recentes primeiro
-        registroHoje.mensagensDoDia.slice().reverse().forEach(msg => {
-            const card = document.createElement("div");
-            card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
-            card.innerHTML = `
-                <p class="text-sm text-slate-800 italic mb-2">"${msg.texto}"</p>
-                <div class="flex items-center justify-end gap-1 text-[11px] text-slate-400 font-medium">
-                    <i data-lucide="clock" class="w-3 h-3"></i>
-                    <span>Hoje às ${msg.horario}</span>
-                </div>
-            `;
-            listaContainer.appendChild(card);
+     // Função para reagir (pode colocar no seu escopo global)
+async function reagirMensagem(dataIso, indexMensagem, tipoReacao) {
+    try {
+        const getResp = await fetch(API_URL, {
+            headers: { 'X-Master-Key': API_KEY }
         });
-        lucide.createIcons();
+        if (!getResp.ok) return;
+        
+        const resJson = await getResp.json();
+        const jsonAtual = resJson.record || {};
+
+        // Incrementa a reação na mensagem correspondente
+        if (jsonAtual[dataIso] && jsonAtual[dataIso].mensagensDoDia[indexMensagem]) {
+            if (!jsonAtual[dataIso].mensagensDoDia[indexMensagem].reacoes) {
+                jsonAtual[dataIso].mensagensDoDia[indexMensagem].reacoes = { coracao: 0, amem: 0, rindo: 0, flor: 0 };
+            }
+            jsonAtual[dataIso].mensagensDoDia[indexMensagem].reacoes[tipoReacao]++;
+
+            // Salva de volta no servidor
+            const putResp = await fetch(API_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': API_KEY
+                },
+                body: JSON.stringify(jsonAtual)
+            });
+
+            if (putResp.ok) {
+                // Recarrega a lista para atualizar os contadores na tela
+                window.location.reload(); // ou chame sua função de renderização
+            }
+        }
+    } catch (erro) {
+        console.error("Erro ao registrar reação:", erro);
+    }
+}
+
+// No seu loop de exibição (.forEach com o índice):
+registroHoje.mensagensDoDia.slice().reverse().forEach((msg, indexOriginal) => {
+    // Como invertemos a lista com .reverse(), o índice real no array original fica:
+    const indexReal = registroHoje.mensagensDoDia.length - 1 - indexOriginal;
+    const reacoes = msg.reacoes || { coracao: 0, amem: 0, rindo: 0, flor: 0 };
+
+    const card = document.createElement("div");
+    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+    card.innerHTML = `
+        <p class="text-sm text-slate-800 italic mb-3">"${msg.texto}"</p>
+        
+        <div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">
+            <!-- Botões de Reação -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'coracao')" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all">
+                    <span>❤️</span> <span class="font-semibold text-slate-600">${reacoes.coracao}</span>
+                </button>
+                <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'amem')" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all">
+                    <span>🙏</span> <span class="font-semibold text-slate-600">${reacoes.amem}</span>
+                </button>
+                <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'rindo')" class="flex items-center gap-1 bg-slate-50 hover:bg-yellow-50 border border-slate-200 hover:border-yellow-200 px-2.5 py-1 rounded-full text-xs transition-all">
+                    <span>😂</span> <span class="font-semibold text-slate-600">${reacoes.rindo}</span>
+                </button>
+                <button onclick="reagirMensagem('${msg.dataIso}', ${indexReal}, 'flor')" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all">
+                    <span>🌸</span> <span class="font-semibold text-slate-600">${reacoes.flor}</span>
+                </button>
+            </div>
+
+            <!-- Horário -->
+            <div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">
+                <i data-lucide="clock" class="w-3 h-3"></i>
+                <span>${msg.horario}</span>
+            </div>
+        </div>
+    `;
+    listaContainer.appendChild(card);
+});
+lucide.createIcons();
     }
 }
 
@@ -459,6 +522,7 @@ if (getResp.ok) {
             setTextoSeExistir("lua-valor", fase);
             setTextoSeExistir("lua-significado", significado);
         }
+        
     </script>
 </body>
 </html>
