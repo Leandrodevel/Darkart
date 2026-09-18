@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equalize-se - Conexão e Autoconhecimento</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO ESTILO APLICATIVO -->
+        <nav class="bg-white/90 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3">
+            <div class="max-w-md mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-emerald-100/80 rounded-2xl shadow-2xs">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-bold">Início</span>
+                </a>
+                <a href="numerologia.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="hash" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Numerologia</span>
+                </a>
+                <a href="arquetipo.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-purple-50 rounded-2xl transition-all">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Arquétipos</span>
+                </a>
+                <a href="horoscopo.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-amber-50 rounded-2xl transition-all">
+                        <i data-lucide="compass" class="w-5 h-5 text-amber-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Astrologia</span>
+                </a>
+                <a href="calendario.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-indigo-50 rounded-2xl transition-all">
+                        <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Calendário</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Seção de Boas-Vindas / Data de Referência -->
+        <section class="text-center pt-2">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Sintonia Diária</h1>
+            <p id="data-hoje" class="text-emerald-800 font-semibold text-sm sm:text-base inline-block px-4 py-1.5 bg-emerald-50/80 border border-emerald-200/60 rounded-full">Carregando data de referência...</p>
+        </section>
+
+        <!-- 1. CONTAINER DE CARDS DE FRASES DO DIA (EM CIMA, COM ROLAGEM A PARTIR DE 5 MENSAGENS) -->
+        <section id="secao-frases-container" class="w-full space-y-3 hidden">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Pensamentos & Frases do Dia</h3>
+            <div id="lista-frases-do-dia" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[320px] overflow-y-auto pr-1">
+                <!-- Os cards gerados aparecem aqui dinamicamente -->
+            </div>
+        </section>
+
+        <!-- GRID DE CARDS DO DIA (Astrologia, Fase da Lua e Numerologia) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Astrologia -->
+            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-4 text-amber-600">
+                        <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100"><i data-lucide="sun" class="w-6 h-6"></i></div>
+                        <h2 class="text-lg font-bold text-slate-900">Astrologia do Dia</h2>
+                    </div>
+                    <p id="astro-valor" class="text-xl font-extrabold text-amber-700 mb-2">Calculando...</p>
+                    <p id="astro-significado" class="text-sm text-slate-600 leading-relaxed">Energia regente do Sol e tendências astrológicas para hoje.</p>
+                </div>
+            </div>
+            <!-- Fase da Lua -->
+            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-4 text-indigo-600">
+                        <div class="p-3 bg-indigo-50 rounded-2xl border border-indigo-100"><i data-lucide="moon" class="w-6 h-6"></i></div>
+                        <h2 class="text-lg font-bold text-slate-900">Fase da Lua</h2>
+                    </div>
+                    <p id="lua-valor" class="text-xl font-extrabold text-indigo-700 mb-2">Calculando...</p>
+                    <p id="lua-significado" class="text-sm text-slate-600 leading-relaxed">Influência lunar atual sobre as emoções e intuição.</p>
+                </div>
+            </div>
+            <!-- Numerologia -->
+            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-4 text-emerald-700">
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100"><i data-lucide="hash" class="w-6 h-6"></i></div>
+                        <h2 class="text-lg font-bold text-slate-900">Numerologia do Dia</h2>
+                    </div>
+                    <p id="num-valor" class="text-xl font-extrabold text-emerald-800 mb-2">Calculando...</p>
+                    <p id="num-significado" class="text-sm text-slate-600 leading-relaxed">Vibração numérica matemática do dia corrente.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. VÍDEO DO DIA (MOVIDO PARA O FINAL) -->
+        <section class="w-full pt-4">
+            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-4 sm:p-6 shadow-sm">
+                <div class="relative w-full overflow-hidden rounded-2xl shadow-md bg-black" style="padding-top: 56.25%;">
+                    <iframe id="video-iframe" class="absolute top-0 left-0 w-full h-full border-0" src="" title="Vídeo do dia" allowfullscreen></iframe>
+                </div>
+                <div class="mt-4 px-2">
+                    <h2 id="video-titulo" class="text-base sm:text-lg font-semibold text-slate-900 leading-snug">Vídeo de Inspiração do Dia</h2>
+                    <p id="video-descricao" class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">Carregando descrição do conteúdo recomendado...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BOTÃO FLUTUANTE NA LATERAL -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button onclick="abrirModalFrase()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center justify-center border-2 border-white/40" title="Enviar Mensagem do Dia">
+            <i data-lucide="message-square-plus" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- MODAL / CAIXA DE TEXTO FLUTUANTE -->
+    <div id="modal-frase" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-emerald-100 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Mensagem Inspiradora do Dia</h3>
+                <button onclick="fecharModalFrase()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Escreva uma frase curta (máximo 140 caracteres). Permitido apenas 1 envio por dia.</p>
+            
+            <textarea id="input-mensagem-usuario" maxlength="140" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none mb-4" placeholder="Digite sua reflexão de hoje..."></textarea>
+            
+            <div class="flex justify-end gap-2">
+                <button onclick="fecharModalFrase()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-all">Cancelar</button>
+                <button onclick="enviarMensagemServidor()" id="btn-enviar-msg" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8">
+        EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS
+    </footer>
+
+    <!-- Script de Conexão com o Banco (db.js) -->
+    <script src="db.js"></script>
+    <script>
+        lucide.createIcons();
+
+        function abrirModalFrase() {
+            const hojeIso = obterChaveDataHoje();
+            const ultimoEnvio = localStorage.getItem('equalize_ultimo_envio');
+            
+            if (ultimoEnvio === hojeIso) {
+                alert("Você já enviou a sua mensagem permitida para hoje! Ela ficará ativa até amanhã.");
+                return;
+            }
+            document.getElementById("modal-frase").classList.remove("hidden");
+        }
+
+        function fecharModalFrase() {
+            document.getElementById("modal-frase").classList.add("hidden");
+            document.getElementById("input-mensagem-usuario").value = "";
+        }
+
+        async function enviarMensagemServidor() {
+            const texto = document.getElementById("input-mensagem-usuario").value.trim();
+            if (!texto) {
+                alert("Por favor, escreva uma mensagem antes de enviar.");
+                return;
+            }
+
+            const btn = document.getElementById("btn-enviar-msg");
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            const agora = new Date();
+            const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const dataHojeIso = obterChaveDataHoje();
+
+            const novaMensagemObj = {
+                texto: texto,
+                horario: horaFormatada,
+                dataIso: dataHojeIso
+            };
+
+            try {
+                const getResp = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                
+                let jsonAtual = {};
+                if (getResp.ok) {
+                    const resJson = await getResp.json();
+                    jsonAtual = resJson.record || {};
+                }
+
+                if (!jsonAtual[dataHojeIso]) {
+                    jsonAtual[dataHojeIso] = {
+                        videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" },
+                        resumoDiario: {},
+                        mensagensDoDia: []
+                    };
+                }
+
+                if (!jsonAtual[dataHojeIso].mensagensDoDia) {
+                    jsonAtual[dataHojeIso].mensagensDoDia = [];
+                }
+
+                jsonAtual[dataHojeIso].mensagensDoDia.push(novaMensagemObj);
+
+                const putResp = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(jsonAtual)
+                });
+
+                if (!putResp.ok) throw new Error("Erro ao atualizar o servidor JSON.");
+
+                localStorage.setItem('equalize_ultimo_envio', dataHojeIso);
+
+                alert("Mensagem enviada e publicada com sucesso!");
+                fecharModalFrase();
+                window.location.reload();
+
+            } catch (error) {
+                console.error("Erro no envio:", error);
+                alert("Houve um erro ao enviar a mensagem para o servidor. Tente novamente.");
+                btn.innerText = "Enviar";
+                btn.disabled = false;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const hoje = new Date();
+            
+            const opcoesData = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const elData = document.getElementById("data-hoje");
+            if (elData) {
+                elData.innerText = `Data de referência: ${hoje.toLocaleDateString('pt-BR', opcoesData)}`;
+            }
+
+            const dia = hoje.getDate();
+            const mes = hoje.getMonth() + 1;
+            const ano = hoje.getFullYear();
+            const somaNumeros = `${dia}${mes}${ano}`.split('').reduce((acc, curr) => acc + parseInt(curr), 0);
+            const reduzirUnidade = (n) => n > 9 ? String(n).split('').reduce((a, c) => a + parseInt(c), 0) : n;
+            const numeroDia = reduzirUnidade(somaNumeros);
+
+            const significadosNumerologia = {
+                1: "Dia de novos começos, iniciativa e liderança pessoal.",
+                2: "Momento de cooperação, diplomacia, paciência e parcerias.",
+                3: "Foco na comunicação, expressão criativa, alegria e expansão.",
+                4: "Construção sólida, organização, foco no trabalho e estabilidade.",
+                5: "Energia de mudanças, versatilidade, liberdade e novas experiências.",
+                6: "Harmonia familiar, cuidado com o lar, responsabilidade e afeto.",
+                7: "Intuição acentuada, estudo, introspecção e busca espiritual.",
+                8: "Poder pessoal, foco em realizações materiais, justiça e finanças.",
+                9: "Conclusão de ciclos, generosidade, compaixão e desapego."
+            };
+
+            setTextoSeExistir("num-valor", `Vibração ${numeroDia}`);
+            setTextoSeExistir("num-significado", significadosNumerologia[numeroDia] || "Dia de energias equilibradas.");
+
+            calcularFaseLua(hoje);
+            calcularSignoSolar(hoje);
+
+            if (typeof buscarDadosDoBanco === 'function') {
+                try {
+                    const resposta = await buscarDadosDoBanco();
+                    const hojeChave = obterChaveDataHoje();
+
+                    if (resposta && resposta.dados) {
+                        const videoDoDia = resposta.dados.videoDoDia;
+                        if (videoDoDia) {
+                            setTextoSeExistir("video-titulo", videoDoDia.titulo);
+                            setTextoSeExistir("video-descricao", videoDoDia.descricao);
+                            const iframeVideo = document.getElementById("video-iframe");
+                            if (iframeVideo && videoDoDia.youtubeId) {
+                                iframeVideo.src = `https://www.youtube.com/embed/${videoDoDia.youtubeId}`;
+                            }
+                        }
+                    }
+
+                    const getResp = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                    if (getResp.ok) {
+                        const dadosGlobais = await getResp.json();
+                        const registroHoje = dadosGlobais.record[hojeChave];
+                        
+                        if (registroHoje && registroHoje.mensagensDoDia && registroHoje.mensagensDoDia.length > 0) {
+                            const containerSecao = document.getElementById("secao-frases-container");
+                            const listaContainer = document.getElementById("lista-frases-do-dia");
+                            containerSecao.classList.remove("hidden");
+                            listaContainer.innerHTML = "";
+
+                            registroHoje.mensagensDoDia.forEach(msg => {
+                                const card = document.createElement("div");
+                                card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+                                card.innerHTML = `
+                                    <p class="text-sm text-slate-800 italic mb-2">"${msg.texto}"</p>
+                                    <div class="flex items-center justify-end gap-1 text-[11px] text-slate-400 font-medium">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        <span>Hoje às ${msg.horario}</span>
+                                    </div>
+                                `;
+                                listaContainer.appendChild(card);
+                            });
+                            lucide.createIcons();
+                        }
+                    }
+
+                } catch (e) {
+                    console.error("Erro ao carregar dados dinâmicos do servidor:", e);
+                }
+            }
+        });
+
+        function setTextoSeExistir(id, texto) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = texto;
+        }
+
+        function calcularSignoSolar(data) {
+            const dia = data.getDate();
+            const mes = data.getMonth() + 1;
+            let signo = "Peixes", significado = "Foco em sensibilidade, intuição e conclusão de ciclos sutis.";
+            if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) { signo = "Áries"; significado = "Energia de coragem, impulso, liderança e iniciativa renovada."; }
+            else if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) { signo = "Touro"; significado = "Constância, valorização dos sentidos, foco prático e solidez."; }
+            else if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) { signo = "Gêmeos"; significado = "Curiosidade intelectual, versatilidade, trocas e comunicação fluida."; }
+            else if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) { signo = "Câncer"; significado = "Acolhimento emocional, conexão com as raízes, intuição e proteção."; }
+            else if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) { signo = "Leão"; significado = "Brilho pessoal, expressão criativa, autoconfiança e generosidade."; }
+            else if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) { signo = "Virgem"; significado = "Organização mental, foco nos detalhes, aprimoramento e utilidade.";}
+            else if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) { signo = "Libra"; significado = "Busca por equilíbrio, diplomacia, estética e harmonia nas relações."; }
+            else if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) { signo = "Escorpião"; significado = "Profundidade emocional, transformação, intensidade e clareza oculta."; }
+            else if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) { signo = "Sagitário"; significado = "Expansão, otimismo, busca por novos horizontes e aprendizados."; }
+            else if ((mes == 12 && dia >= 22) || (mes == 1 && dia <= 19)) { signo = "Capricórnio"; significado = "Responsabilidade, foco em metas de longo prazo, disciplina e estrutura."; }
+            else if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) { signo = "Aquário"; significado = "Inovação, visão de futuro, originalidade e coletividade."; }
+            setTextoSeExistir("astro-valor", `Sol em ${signo}`);
+            setTextoSeExistir("astro-significado", significado);
+        }
+
+        function calcularFaseLua(data) {
+            const ano = data.getFullYear();
+            const mes = data.getMonth() + 1;
+            const dia = data.getDate();
+            let m = mes, a = ano;
+            if (m < 3) { a--; m += 12; }
+            m++;
+            let c = 365.25 * a, e = 30.6 * m;
+            let jd = c + e + dia - 694039.09;
+            jd /= 29.53058867;
+            let b_val = parseInt(jd);
+            jd -= b_val;
+            let idadeDias = jd * 29.53;
+            let fase = "Lua Crescente", significado = "Fase voltada ao desenvolvimento, plantio de ideias e crescimento.";
+            if (idadeDias < 1.84) { fase = "Lua Nova"; significado = "Momento excelente para intenções, recomeços e plantio de sementes."; }
+            else if (idadeDias < 9.22) { fase = "Lua Crescente"; significado = "Impulso para dar andamento a projetos e fortalecer alicerces."; }
+            else if (idadeDias < 18.45) { fase = "Lua Cheia"; significado = "Apogeu energético, intuição expandida, clareza e forte iluminação emocional."; }
+            else if (idadeDias < 27.68) { fase = "Lua Minguante"; significado = "Período ideal para limpezas, encerramentos e desapegos."; }
+            setTextoSeExistir("lua-valor", fase);
+            setTextoSeExistir("lua-significado", significado);
+        }
+    </script>
+</body>
+</html>
