@@ -31,7 +31,15 @@ self.addEventListener('activate', event => {
 
 // Estratégia Network First para garantir dados e conteúdos atualizados ao abrir
 self.addEventListener('fetch', event => {
+  // Ignora métodos que não sejam GET
   if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+
+  // Ignora esquemas sem suporte a cache (como chrome-extension://, file://, etc.)
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return;
+  }
 
   event.respondWith(
     fetch(event.request)
