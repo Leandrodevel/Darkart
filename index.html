@@ -771,8 +771,7 @@
             setTextoSeExistir("astro-valor", `Sol em ${signo}`);
             setTextoSeExistir("astro-significado", significado);
         }
-
-        function calcularFaseLua(data) {
+function calcularFaseLua(data) {
             const ano = data.getFullYear();
             const mes = data.getMonth() + 1;
             const dia = data.getDate();
@@ -789,6 +788,10 @@
             if (idadeDias < 1.84) { fase = "Lua Nova"; significado = "Momento excelente para intenções, recomeços e plantio de sementes."; }
             else if (idadeDias < 9.22) { fase = "Lua Crescente"; significado = "Impulso para dar andamento a projetos e fortalecer alicerces."; }
             else if (idadeDias < 18.45) { fase = "Lua Cheia"; significado = "Apogeu energético, intuição expandida, clareza e forte iluminação emocional."; }
-            else if (idadeDias < 27.68) { fase = "Lua Minguante"; significado = "Período ideal pa
-</body>
+            else if (idadeDias < 27.68) { fase = "Lua Minguante"; significado = "Período ideal para limpezas, encerramentos e desapegos."; }
+            setTextoSeExistir("lua-valor", fase);
+            setTextoSeExistir("lua-significado", significado);
+        }
+    </script>
+         </body>
 </html>
