@@ -152,9 +152,16 @@
     </div>
 
     <!-- Rodapé -->
-    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8">
-        EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS
+        <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 flex justify-between items-center border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+        
+        <!-- Ícone do Cadeado Discreto para o Admin -->
+        <a href="admin.html" class="opacity-20 hover:opacity-100 transition-opacity p-1 text-slate-400 hover:text-emerald-700" title="Painel Administrativo">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+        </a>
     </footer>
+    
 
     <!-- Script de Conexão com o Banco (db.js) -->
     <script src="db.js"></script>
