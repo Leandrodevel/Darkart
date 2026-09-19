@@ -6,10 +6,14 @@
 const GITHUB_USER = "Leandrodevel";       // Ex: "seu-nome-de-usuario"
 const GITHUB_REPO = "Darkart";       // Ex: "meu-site-esoterico"
 const GITHUB_PATH = "dados.json";                // O caminho do arquivo JSON no repositório
-const GITHUB_TOKEN = "ghp_1E4KGum3cj74dcrPwSto0up9fekwQXoWJ9vJ"; // Cole o seu token gerado aqui
+const GITHUB_TOKEN = "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"; // Cole o seu token gerado aqui
     // O token que você gerou no Passo 1
 
+
+
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+
+https://api.github.com/repos/Leandrodevel/Darkart/contents/dados.json
 
 function obterChaveDataHoje() {
     const hoje = new Date();
@@ -19,9 +23,23 @@ function obterChaveDataHoje() {
     return `${ano}-${mes}-${dia}`;
 }
 
+
+
 // ------------------------------------------
 // FUNÇÃO CENTRAL: Ler o JSON completo do GitHub
-// ------------------------------------------
+
+
+/*------------------
+
+fetch(`https://api.github.com/repos/Leandrodevel/Darkart/contents/dados.json`, {
+    headers: {
+        'Authorization': 'token ' + "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",
+        'Accept': 'application/vnd.github.v3+json'
+    }
+}).then(r => r.json()).then(console.log).catch(console.error);
+
+
+-----------------------*/
 async function lerArquivoGitHub() {
     try {
         const resposta = await fetch(GITHUB_API_URL, {
@@ -31,21 +49,32 @@ async function lerArquivoGitHub() {
             },
             cache: 'no-store'
         });
-        if (!resposta.ok) throw new Error(`Erro ao ler do GitHub: ${resposta.status}`);
+
+        if (!resposta.ok) {
+            const erroTexto = await resposta.text();
+            throw new Error(`Status ${resposta.status} - Resposta: ${erroTexto}`);
+        }
         
         const dadosJson = await resposta.json();
-        // O GitHub retorna o conteúdo em Base64, precisamos decodificar para texto/objeto
-        const conteudoDecodificado = decodeURIComponent(escape(atob(dadosJson.content)));
+        
+        // Remove todas as quebras de linha e espaços que o GitHub coloca no Base64
+        const base64Limpo = dadosJson.content.replace(/[\r\n\s]/g, '');
+        
+        // Decodifica o Base64 para texto de forma segura e compatível com UTF-8
+        const binarioString = atob(base64Limpo);
+        const bytes = Uint8Array.from(binarioString, (m) => m.codePointAt(0));
+        const conteudoDecodificado = new TextDecoder().decode(bytes);
         
         return {
             conteudoObjeto: JSON.parse(conteudoDecodificado),
-            sha: dadosJson.sha // O SHA é obrigatório pelo GitHub para atualizar o arquivo depois
+            sha: dadosJson.sha
         };
     } catch (error) {
-        console.error("Erro ao buscar dados do GitHub:", error);
+        console.error("Erro detalhado ao ler do GitHub:", error);
         return null;
     }
 }
+
 
 // ------------------------------------------
 // FUNÇÃO CENTRAL: Salvar/Atualizar o JSON no GitHub
@@ -111,7 +140,8 @@ async function salvarDadosAjudaServidor(dadosAjudaGlobais) {
 // ------------------------------------------
 async function buscarDadosDoBanco() {
     const dados = await lerArquivoGitHub();
-    if (!dados) return null;
+    if (!dados){
+        return null};
 
     const todosOsDados = dados.conteudoObjeto;
     const dataHoje = obterChaveDataHoje();
