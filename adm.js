@@ -2,42 +2,65 @@
 // PAINEL ADMINISTRATIVO - adm.js
 // ==========================================
 
-// Carregar credenciais salvas no localStorage ou usar os valores padrão
-let ID_VALIDO = localStorage.getItem('adm_id') || "203077";
-let SENHA_VALIDA = localStorage.getItem('adm_senha') || "099190";
-let NOME_ADM = localStorage.getItem('adm_apelido') || "Leandro";
-
+let adminLogado = null; 
 let dbPrincipalGlobal = {};
 let dbAjudaGlobal = {};
 let relatorioAtualModal = { dataKey: null, index: null };
 let hojeIso = obterChaveDataHoje();
 
-document.addEventListener('DOMContentLoaded', () => {
-    atualizarNomeAdmUI();
+const SEO_MASTER = {
+    id: "203077",
+    senha: "099190",
+    apelido: "Leandro",
+    nivel: "seo"
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await carregarEstruturaAdminsServidor();
+
     if (document.getElementById('label-data-hoje')) {
         document.getElementById('label-data-hoje').textContent = hojeIso.split('-').reverse().join('/');
     }
 
     lucide.createIcons();
-    if (localStorage.getItem('logado_adm') === 'true') {
+    
+    const admSalvoJson = localStorage.getItem('adm_sessao_atual');
+    if (admSalvoJson) {
+        adminLogado = JSON.parse(admSalvoJson);
         liberarPainel();
     }
 });
 
-function atualizarNomeAdmUI() {
-    if (document.getElementById('nome-adm-logado')) {
-        document.getElementById('nome-adm-logado').textContent = NOME_ADM;
-        document.getElementById('modal-nome-adm').textContent = NOME_ADM;
+async function carregarEstruturaAdminsServidor() {
+    const resAjuda = await buscarDadosAjudaServidor();
+    if (resAjuda) {
+        dbAjudaGlobal = resAjuda;
+    }
+
+    if (!dbAjudaGlobal.configAdm) {
+        dbAjudaGlobal.configAdm = {
+            admins: [SEO_MASTER]
+        };
+        await salvarDadosAjudaServidor(dbAjudaGlobal);
+    } else if (!dbAjudaGlobal.configAdm.admins) {
+        dbAjudaGlobal.configAdm.admins = [SEO_MASTER];
     }
 }
 
-function fazerLogin() {
+async function fazerLogin() {
     const idDigitado = document.getElementById('input-id').value.trim();
     const senhaDigitada = document.getElementById('input-senha').value.trim();
     const erroEl = document.getElementById('erro-login');
 
-    if (idDigitado === ID_VALIDO && senhaDigitada === SENHA_VALIDA) {
-        localStorage.setItem('logado_adm', 'true');
+    await carregarEstruturaAdminsServidor();
+    const listaAdmins = dbAjudaGlobal.configAdm.admins;
+
+    const admEncontrado = listaAdmins.find(a => a.id === idDigitado && a.senha === senhaDigitada);
+
+    if (admEncontrado) {
+        adminLogado = admEncontrado;
+        localStorage.setItem('adm_sessao_atual', JSON.stringify(adminLogado));
+        erroEl.classList.add('hidden');
         liberarPainel();
     } else {
         erroEl.classList.remove('hidden');
@@ -45,7 +68,8 @@ function fazerLogin() {
 }
 
 function fazerLogout() {
-    localStorage.removeItem('logado_adm');
+    localStorage.removeItem('adm_sessao_atual');
+    adminLogado = null;
     document.getElementById('painel-admin').classList.add('hidden');
     document.getElementById('tela-login').classList.remove('hidden');
     document.getElementById('input-id').value = '';
@@ -56,18 +80,35 @@ async function liberarPainel() {
     document.getElementById('tela-login').classList.add('hidden');
     document.getElementById('painel-admin').classList.remove('hidden');
 
+    atualizarInterfacePorNivel();
     await carregarDadosServidorGeral();
 
     if (document.getElementById('video-nova-data')) {
         document.getElementById('video-nova-data').value = hojeIso;
     }
-    
-    // Preencher inputs de configuração
-    document.getElementById('config-apelido').value = NOME_ADM;
-    document.getElementById('config-id').value = ID_VALIDO;
-    document.getElementById('config-senha').value = SENHA_VALIDA;
 
     lucide.createIcons();
+}
+
+function atualizarInterfacePorNivel() {
+    if (!adminLogado) return;
+
+    document.getElementById('nome-adm-logado').textContent = `${adminLogado.apelido} (${adminLogado.nivel.toUpperCase()})`;
+    document.getElementById('modal-nome-adm').textContent = adminLogado.apelido;
+
+    // Preenche os dados nos campos de edição de perfil próprio
+    document.getElementById('meu-config-apelido').value = adminLogado.apelido;
+    document.getElementById('meu-config-id').value = adminLogado.id;
+    document.getElementById('meu-config-senha').value = '';
+
+    const painelSeo = document.getElementById('painel-exclusivo-seo');
+
+    if (adminLogado.nivel === 'seo') {
+        painelSeo.classList.remove('hidden');
+        carregarListaAdminsCadastrados();
+    } else {
+        painelSeo.classList.add('hidden');
+    }
 }
 
 async function carregarDadosServidorGeral() {
@@ -77,32 +118,21 @@ async function carregarDadosServidorGeral() {
             dbPrincipalGlobal = resPrincipal.todosOsDados || {};
         }
 
-        const resAjuda = await buscarDadosAjudaServidor();
-        if (resAjuda) {
-            dbAjudaGlobal = resAjuda;
-        }
-
         limparMensagensDiasAntigos();
         carregarListaVideosCards();
         carregarMensagensDiaAtual();
         carregarAutor();
         carregarRelatosAjuda();
-
     } catch (error) {
         console.error("Erro ao carregar dados:", error);
     }
 }
 
-// Envio automático em tempo real para o JSONBin Principal
 async function sincronizarBinPrincipal() {
     try {
         await fetch(API_URL, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': API_KEY,
-                'X-Access-Key': API_KEY
-            },
+            headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY, 'X-Access-Key': API_KEY },
             body: JSON.stringify(dbPrincipalGlobal)
         });
     } catch (e) {
@@ -110,7 +140,6 @@ async function sincronizarBinPrincipal() {
     }
 }
 
-// Envio automático em tempo real para o JSONBin de Ajuda
 async function sincronizarBinAjuda() {
     try {
         await salvarDadosAjudaServidor(dbAjudaGlobal);
@@ -134,17 +163,127 @@ function mudarAba(aba) {
     abas.forEach(a => {
         const btn = document.getElementById(`btn-${a}`);
         const sec = document.getElementById(`aba-${a}`);
+        if (!btn) return;
+        
         if (a === aba) {
             btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-accent bg-emerald-500/10 text-accent transition w-24";
-            sec.classList.remove('hidden');
+            if(sec) sec.classList.remove('hidden');
         } else {
             btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24";
-            sec.classList.add('hidden');
+            if(sec) sec.classList.add('hidden');
         }
     });
 }
 
-// --- ABA 1: VÍDEOS ---
+// --- EDITAR PRÓPRIO PERFIL (Qualquer Admin ou SEO) ---
+async function salvarMeuPerfil() {
+    const novoApelido = document.getElementById('meu-config-apelido').value.trim();
+    const novoId = document.getElementById('meu-config-id').value.trim();
+    const novaSenha = document.getElementById('meu-config-senha').value.trim();
+
+    if (!novoApelido || !novoId) {
+        alert('O apelido e o ID não podem ficar vazios.');
+        return;
+    }
+
+    await carregarEstruturaAdminsServidor();
+    const listaAdmins = dbAjudaGlobal.configAdm.admins;
+
+    // Verifica se o ID novo já pertence a outra pessoa
+    const idExistente = listaAdmins.find(a => a.id === novoId && a.id !== adminLogado.id);
+    if (idExistente) {
+        alert('Este ID já está em uso por outro administrador.');
+        return;
+    }
+
+    // Localiza o adm atual na lista do servidor e atualiza
+    const index = listaAdmins.findIndex(a => a.id === adminLogado.id || a.apelido === adminLogado.apelido);
+    if (index !== -1) {
+        listaAdmins[index].apelido = novoApelido;
+        listaAdmins[index].id = novoId;
+        if (novaSenha !== "") {
+            listaAdmins[index].senha = novaSenha;
+        }
+
+        // Atualiza a sessão local
+        adminLogado = listaAdmins[index];
+        localStorage.setItem('adm_sessao_atual', JSON.stringify(adminLogado));
+
+        await sincronizarBinAjuda();
+        atualizarInterfacePorNivel();
+        alert('Seus dados foram atualizados com sucesso!');
+    }
+}
+
+// --- GERENCIAMENTO DE ADMINISTRADORES (Exclusivo SEO) ---
+function carregarListaAdminsCadastrados() {
+    const container = document.getElementById('lista-admins-cadastrados');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const admins = dbAjudaGlobal.configAdm.admins || [];
+    admins.forEach((adm, index) => {
+        let badgeNivel = adm.nivel === 'seo' ? '<span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">SEO</span>' : '<span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded">Administrador</span>';
+        
+        container.innerHTML += `
+            <div class="bg-black/30 p-3 rounded-lg border border-gray-800 flex justify-between items-center text-sm">
+                <div>
+                    <strong class="text-gray-200">${adm.apelido}</strong> 
+                    <span class="text-xs text-gray-400 font-mono ml-2">(ID: ${adm.id})</span>
+                    <div class="mt-1">${badgeNivel}</div>
+                </div>
+                ${adm.nivel !== 'seo' ? `<button onclick="removerAdministrador(${index})" class="text-red-400 hover:text-red-300 p-1" title="Excluir Administrador"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '<span class="text-xs text-gray-500 italic">Principal</span>'}
+            </div>
+        `;
+    });
+    lucide.createIcons();
+}
+
+async function cadastrarNovoAdministrador() {
+    const apelido = document.getElementById('novo-adm-apelido').value.trim();
+    const id = document.getElementById('novo-adm-id').value.trim();
+    const senha = document.getElementById('novo-adm-senha').value.trim();
+
+    if (!apelido || !id || !senha) {
+        alert('Preencha todos os campos para cadastrar o administrador.');
+        return;
+    }
+
+    if (!dbAjudaGlobal.configAdm) dbAjudaGlobal.configAdm = { admins: [] };
+    if (!dbAjudaGlobal.configAdm.admins) dbAjudaGlobal.configAdm.admins = [];
+
+    const existe = dbAjudaGlobal.configAdm.admins.some(a => a.id === id);
+    if (existe) {
+        alert('Já existe um administrador cadastrado com este ID.');
+        return;
+    }
+
+    dbAjudaGlobal.configAdm.admins.push({
+        id: id,
+        senha: senha,
+        apelido: apelido,
+        nivel: "administrador"
+    });
+
+    document.getElementById('novo-adm-apelido').value = '';
+    document.getElementById('novo-adm-id').value = '';
+    document.getElementById('novo-adm-senha').value = '';
+
+    carregarListaAdminsCadastrados();
+    await sincronizarBinAjuda();
+    alert('Novo administrador cadastrado com sucesso!');
+}
+
+async function removerAdministrador(index) {
+    if (confirm('Deseja remover este administrador?')) {
+        dbAjudaGlobal.configAdm.admins.splice(index, 1);
+        carregarListaAdminsCadastrados();
+        await sincronizarBinAjuda();
+        alert('Administrador removido com sucesso.');
+    }
+}
+
+// --- VÍDEOS ---
 function carregarListaVideosCards() {
     const container = document.getElementById('lista-cards-videos');
     if (!container) return;
@@ -162,9 +301,7 @@ function carregarListaVideosCards() {
                 <div class="bg-black/30 border border-gray-800 p-4 rounded-xl flex flex-col justify-between space-y-2">
                     <div class="flex justify-between items-start">
                         <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/25">${dataKey.split('-').reverse().join('/')}</span>
-                        <button onclick="apagarVideoData('${dataKey}')" class="text-red-400 hover:text-red-300 p-1" title="Apagar Vídeo">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
+                        <button onclick="apagarVideoData('${dataKey}')" class="text-red-400 hover:text-red-300 p-1" title="Apagar Vídeo"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-gray-100">${vid.titulo || 'Sem Título'}</h4>
@@ -193,24 +330,11 @@ async function adicionarOuAtualizarVideo() {
         return;
     }
 
-    if (dbPrincipalGlobal[data] && dbPrincipalGlobal[data].videoDoDia && dbPrincipalGlobal[data].videoDoDia.youtubeId) {
-        if (!confirm(`Já existe um vídeo cadastrado para a data ${data}. Deseja substituí-lo?`)) {
-            return;
-        }
-    }
-
     if (!dbPrincipalGlobal[data]) {
-        dbPrincipalGlobal[data] = {
-            "resumoDiario": { "data": data.split('-').reverse().join('/') },
-            "mensagensDoDia": []
-        };
+        dbPrincipalGlobal[data] = { "resumoDiario": { "data": data.split('-').reverse().join('/') }, "mensagensDoDia": [] };
     }
 
-    dbPrincipalGlobal[data].videoDoDia = {
-        "titulo": titulo,
-        "descricao": descricao,
-        "youtubeId": youtubeId
-    };
+    dbPrincipalGlobal[data].videoDoDia = { "titulo": titulo, "descricao": descricao, "youtubeId": youtubeId };
 
     document.getElementById('video-novo-titulo').value = '';
     document.getElementById('video-novo-id').value = '';
@@ -218,7 +342,7 @@ async function adicionarOuAtualizarVideo() {
 
     carregarListaVideosCards();
     await sincronizarBinPrincipal();
-    alert('Vídeo postado e atualizado no servidor com sucesso!');
+    alert('Vídeo postado com sucesso!');
 }
 
 async function apagarVideoData(dataKey) {
@@ -227,12 +351,12 @@ async function apagarVideoData(dataKey) {
             dbPrincipalGlobal[dataKey].videoDoDia = { "titulo": "", "descricao": "", "youtubeId": "" };
             carregarListaVideosCards();
             await sincronizarBinPrincipal();
-            alert('Vídeo apagado do servidor com sucesso.');
+            alert('Vídeo apagado com sucesso.');
         }
     }
 }
 
-// --- ABA 2: MENSAGENS DO DIA ---
+// --- MENSAGENS DO DIA ---
 function carregarMensagensDiaAtual() {
     const container = document.getElementById('lista-mensagens-dia');
     if (!container) return;
@@ -253,9 +377,7 @@ function carregarMensagensDiaAtual() {
             <div class="bg-black/30 border border-gray-800 p-4 rounded-xl flex flex-col justify-between space-y-3">
                 <div class="flex justify-between items-center">
                     <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/25">🕒 ${msg.horario}</span>
-                    <button onclick="removerMensagemDia(${indexReal})" class="text-red-400 hover:text-red-300 p-1" title="Excluir Mensagem">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="removerMensagemDia(${indexReal})" class="text-red-400 hover:text-red-300 p-1" title="Excluir Mensagem"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>
                 <p class="text-sm text-gray-100 font-medium">${msg.texto}</p>
                 <div class="flex items-center gap-3 pt-2 border-t border-gray-800/60 text-xs text-gray-400">
@@ -307,7 +429,7 @@ async function removerMensagemDia(index) {
     }
 }
 
-// --- ABA 3: MENSAGEM DO AUTOR ---
+// --- MENSAGEM DO AUTOR ---
 function carregarAutor() {
     const autorObj = dbPrincipalGlobal.mensagensDoAutor || { autor: "", data: hojeIso, texto: "" };
     if (document.getElementById('autor-nome')) {
@@ -326,14 +448,10 @@ async function publicarNovaAutor() {
         return;
     }
 
-    dbPrincipalGlobal.mensagensDoAutor = {
-        "autor": nome,
-        "data": hojeIso,
-        "texto": texto
-    };
+    dbPrincipalGlobal.mensagensDoAutor = { "autor": nome, "data": hojeIso, "texto": texto };
     document.getElementById('autor-data').value = hojeIso;
     await sincronizarBinPrincipal();
-    alert('Mensagem do autor postada e sincronizada no servidor!');
+    alert('Mensagem do autor postada com sucesso!');
 }
 
 async function excluirMensagemAutor() {
@@ -341,11 +459,11 @@ async function excluirMensagemAutor() {
         dbPrincipalGlobal.mensagensDoAutor = { "autor": "", "data": hojeIso, "texto": "" };
         carregarAutor();
         await sincronizarBinPrincipal();
-        alert('Mensagem do autor excluída e sincronizada.');
+        alert('Mensagem do autor excluída.');
     }
 }
 
-// --- ABA 4: PEDIDOS DE AJUDA ---
+// --- PEDIDOS DE AJUDA ---
 function carregarRelatosAjuda() {
     const container = document.getElementById('lista-relatos');
     if (!container) return;
@@ -353,6 +471,7 @@ function carregarRelatosAjuda() {
 
     let todosRelatos = [];
     Object.keys(dbAjudaGlobal).forEach(dataKey => {
+        if (dataKey === 'configAdm') return;
         let relatos = dbAjudaGlobal[dataKey].relatosAjuda || [];
         relatos.forEach((relato, index) => {
             todosRelatos.push({ ...relato, dataKey, indexOriginal: index });
@@ -374,14 +493,12 @@ function carregarRelatosAjuda() {
         let statusResposta = item.resposta ? `<span class="text-emerald-400 text-xs flex items-center gap-1 font-medium"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Respondido</span>` : `<span class="text-amber-400 text-xs flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Pendente</span>`;
         
         container.innerHTML += `
-            <div class="bg-black/30 hover:bg-black/45 transition p-4 rounded-xl border border-gray-800 space-y-3 shadow-sm flex flex-col justify-between cursor-pointer" onclick="abrirModalResposta('${item.dataKey}', ${item.indexOriginal}, '${item.texto.replace(/'/g, "\\'")}', '${(item.resposta || '').replace(/'/g, "\\'")}')">
+            <div class="bg-black/35 hover:bg-black/45 transition p-4 rounded-xl border border-gray-800 space-y-3 shadow-sm flex flex-col justify-between cursor-pointer" onclick="abrirModalResposta('${item.dataKey}', ${item.indexOriginal}, '${item.texto.replace(/'/g, "\\'")}', '${(item.resposta || '').replace(/'/g, "\\'")}')">
                 <div class="flex justify-between items-center text-xs text-gray-400 border-b border-gray-800/60 pb-2">
                     <span class="font-semibold text-emerald-400 flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${item.autor} <span class="text-gray-500 font-normal">(${item.dataKey.includes('-') ? item.dataKey.split('-').reverse().join('/') : item.dataKey})</span></span>
                     <div class="flex items-center gap-3">
                         <span>${item.dataHora || ''}</span>
-                        <button onclick="event.stopPropagation(); excluirRelato('${item.dataKey}', ${item.indexOriginal})" class="text-red-400 hover:text-red-300" title="Excluir Relato">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
+                        <button onclick="event.stopPropagation(); excluirRelato('${item.dataKey}', ${item.indexOriginal})" class="text-red-400 hover:text-red-300" title="Excluir Relato"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>
                 <div>
@@ -401,7 +518,7 @@ function carregarRelatosAjuda() {
 function abrirModalResposta(dataKey, index, textoViajante, respostaAtual) {
     relatorioAtualModal = { dataKey, index };
     document.getElementById('modal-texto-viajante').textContent = textoViajante;
-    let textoLimpo = respostaAtual.includes(`— ${NOME_ADM}`) ? respostaAtual.replace(`— ${NOME_ADM}`, '').trim() : respostaAtual;
+    let textoLimpo = respostaAtual.includes(`— ${adminLogado.apelido}`) ? respostaAtual.replace(`— ${adminLogado.apelido}`, '').trim() : respostaAtual;
     document.getElementById('modal-input-resposta').value = textoLimpo;
     document.getElementById('modal-resposta').classList.remove('hidden');
     document.getElementById('modal-resposta').classList.add('flex');
@@ -418,14 +535,14 @@ async function salvarRespostaModal() {
 
     if (dataKey !== null && index !== null && dbAjudaGlobal[dataKey] && dbAjudaGlobal[dataKey].relatosAjuda[index]) {
         if (textoResposta !== "") {
-            dbAjudaGlobal[dataKey].relatosAjuda[index].resposta = `${textoResposta} — ${NOME_ADM}`;
+            dbAjudaGlobal[dataKey].relatosAjuda[index].resposta = `${textoResposta} — ${adminLogado.apelido}`;
         } else {
             dbAjudaGlobal[dataKey].relatosAjuda[index].resposta = "";
         }
         carregarRelatosAjuda();
         fecharModalResposta();
         await sincronizarBinAjuda();
-        alert('Resposta enviada e sincronizada com sucesso!');
+        alert('Resposta enviada com sucesso!');
     }
 }
 
@@ -435,27 +552,4 @@ async function excluirRelato(dataKey, index) {
         carregarRelatosAjuda();
         await sincronizarBinAjuda();
     }
-}
-
-// --- ABA 5: CONFIGURAÇÕES DO ADM ---
-function salvarConfiguracoesAdm() {
-    const novoApelido = document.getElementById('config-apelido').value.trim();
-    const novoId = document.getElementById('config-id').value.trim();
-    const novaSenha = document.getElementById('config-senha').value.trim();
-
-    if (!novoApelido || !novoId || !novaSenha) {
-        alert('Preencha todos os campos de configuração.');
-        return;
-    }
-
-    NOME_ADM = novoApelido;
-    ID_VALIDO = novoId;
-    SENHA_VALIDA = novaSenha;
-
-    localStorage.setItem('adm_apelido', NOME_ADM);
-    localStorage.setItem('adm_id', ID_VALIDO);
-    localStorage.setItem('adm_senha', SENHA_VALIDA);
-
-    atualizarNomeAdmUI();
-    alert('Configurações atualizadas com sucesso!');
 }
