@@ -6,7 +6,7 @@
 const GITHUB_USER = "Leandrodevel";       // Ex: "seu-nome-de-usuario"
 const GITHUB_REPO = "Darkart";       // Ex: "meu-site-esoterico"
 const GITHUB_PATH = "dados.json";                // O caminho do arquivo JSON no repositório
-const GITHUB_TOKEN = "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"; // Cole o seu token gerado aqui
+const GITHUB_TOKEN = ""; // Cole o seu token gerado aqui
     // O token que você gerou no Passo 1
 
 
