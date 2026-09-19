@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - Equalize-se</title>
+    <meta name="description" content="Conheça o propósito do Equalize-se: um espaço humano dedicado ao autoconhecimento, apoio, clareza e palavras de conforto para o seu dia a dia.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Configurações do PWA para o Equalize-se -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Equalize-se">
+
+    <!-- Script para registrar o Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then(reg => {
+            console.log('Service Worker do Equalize-se registrado com sucesso.');
+            window.addEventListener('focus', () => { reg.update(); });
+          }).catch(err => {
+            console.log('Falha ao registrar o Service Worker:', err);
+          });
+        });
+      }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
+
+    <!-- CABEÇALHO FIXO COM BOTÃO DE VOLTAR -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <!-- Nome/Logo do App -->
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+        </div>
+
+        <!-- Botão de Voltar para o Início -->
+        <nav class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200/60 shadow-2xs cursor-pointer">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-700"></i> Voltar ao Início
+            </a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
+        
+        <!-- Bloco Principal de Apresentação -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-10 text-center space-y-4">
+            <div class="inline-flex p-3 bg-emerald-50 text-emerald-700 rounded-2xl mb-1 border border-emerald-100">
+                <i data-lucide="heart-handshake" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Feito por Pessoas, para Pessoas</h1>
+            <p class="text-slate-600 text-base sm:text-lg font-light leading-relaxed max-w-2xl mx-auto">
+                O <strong class="font-semibold text-emerald-800">Equalize-se</strong> nasceu do desejo genuíno de criar um refúgio digital seguro, acolhedor e humano na internet. 
+            </p>
+        </div>
+
+        <!-- Pilares / Objetivos -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- Pilar 1 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 flex flex-col items-text text-left">
+                <div class="p-3 bg-emerald-50 text-emerald-700 rounded-2xl w-fit mb-4 border border-emerald-100">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Conhecimento Útil</h3>
+                <p class="text-slate-600 text-sm font-light leading-relaxed">
+                    Unimos sabedorias como astrologia, numerologia e arquétipos para ajudar você a decifrar padrões e entender melhor a sua própria jornada.
+                </p>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 flex flex-col items-text text-left">
+                <div class="p-3 bg-purple-50 text-purple-700 rounded-2xl w-fit mb-4 border border-purple-100">
+                    <i data-lucide="message-circle-heart" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Apoio e Conforto</h3>
+                <p class="text-slate-600 text-sm font-light leading-relaxed">
+                    Mais do que ferramentas, queremos oferecer uma palavra de incentivo, leveza e suporte emocional para os dias em que tudo o que precisamos é de clareza.
+                </p>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 flex flex-col items-text text-left">
+                <div class="p-3 bg-emerald-50 text-emerald-700 rounded-2xl w-fit mb-4 border border-emerald-100">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Essência Humana</h3>
+                <p class="text-slate-600 text-sm font-light leading-relaxed">
+                    Um projeto desenhado com carinho e dedicação por pessoas reais, pensando em como fazer a tecnologia servir ao bem-estar e ao desenvolvimento pessoal.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mensagem Final de Conexão -->
+        <div class="bg-emerald-900/5 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-200/60 p-6 sm:p-8 text-center space-y-3">
+            <h3 class="font-bold text-emerald-900 text-lg">Sinta-se em Casa</h3>
+            <p class="text-slate-600 text-sm font-light leading-relaxed max-w-xl mx-auto">
+                Esperamos que cada página deste site traga um momento de pausa, reflexão positiva e inspiração para o seu dia. Explore os recursos e equalize as suas energias sempre que precisar!
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500 space-y-1">
+        <p>Equalize-se &copy; 2026 — Desenvolvido com dedicação por pessoas reais.</p>
+        <p class="text-emerald-700 font-medium"><a href="index.html" class="hover:underline">Voltar à Página Principal</a></p>
+    </footer>
+
+    <!-- Scripts e Lógica -->
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>
