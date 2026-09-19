@@ -77,40 +77,74 @@
         </header>
 
         <!-- MENU DE NAVEGAÇÃO ESTILO APLICATIVO -->
-        <nav class="bg-white/90 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3">
-            <div class="max-w-md mx-auto flex justify-around items-center">
-                <a href="index.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 bg-emerald-100/80 rounded-2xl shadow-2xs">
-                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
-                    </div>
-                    <span class="text-[11px] font-bold">Início</span>
-                </a>
-                <a href="numerologia.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
-                        <i data-lucide="hash" class="w-5 h-5 text-emerald-700"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Numerologia</span>
-                </a>
-                <a href="arquetipo.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-purple-50 rounded-2xl transition-all">
-                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-600"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Arquétipos</span>
-                </a>
-                <a href="horoscopo.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-amber-50 rounded-2xl transition-all">
-                        <i data-lucide="compass" class="w-5 h-5 text-amber-600"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Astrologia</span>
-                </a>
-                <a href="calendario.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-indigo-50 rounded-2xl transition-all">
-                        <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Calendário</span>
-                </a>
+
+
+<nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+    <div class="max-w-lg mx-auto flex justify-around items-center">
+        
+    
+
+        <!-- 1. ORIENTAÇÕES (Dropdown para baixo) -->
+        <div class="relative group">
+            <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
+                <div class="p-2 hover:bg-orange-50 rounded-2xl transition-all">
+                    <i data-lucide="compass" class="w-5 h-5 text-orange-600"></i>
+                </div>
+                <span class="text-[11px] font-medium">Orientações</span>
+            </button>
+            <!-- Dropdown posicionado abaixo do botão -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+                <a href="rezas.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Rezas</a>
+                <a href="defumacao.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Defumação</a>
+                <a href="banhos.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Banhos</a>
+                <a href="rituais.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Rituais</a>
             </div>
-        </nav>
+        </div>
+
+        <!-- 2. INTERESSES (Dropdown para baixo) -->
+        <div class="relative group">
+            <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
+                <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                    <i data-lucide="hash" class="w-5 h-5 text-emerald-700"></i>
+                </div>
+                <span class="text-[11px] font-medium">Interesses</span>
+            </button>
+            <!-- Dropdown posicionado abaixo do botão -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+                <a href="numerologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Numerologia</a>
+                <a href="astrologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Astrologia</a>
+                <a href="oraculos.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Oráculos</a>
+            </div>
+        </div>
+
+        <!-- 3. CONHECIMENTOS (Dropdown para baixo) -->
+        <div class="relative group">
+            <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
+                <div class="p-2 hover:bg-purple-50 rounded-2xl transition-all">
+                    <i data-lucide="book-open" class="w-5 h-5 text-purple-600"></i>
+                </div>
+                <span class="text-[11px] font-medium">Conhecimentos</span>
+            </button>
+            <!-- Dropdown posicionado abaixo do botão -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[180px] z-50">
+                <a href="hermetismo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Hermetismo</a>
+                <a href="wicca.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Wicca</a>
+                <a href="umbanda.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Umbanda</a>
+                <a href="espiritismo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Espiritismo</a>
+                <a href="magia-velas.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Magia das Velas e Cores</a>
+            </div>
+        </div>
+
+        <!-- 4. EBOOKS -->
+        <a href="ebooks.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+            <div class="p-2 hover:bg-pink-50 rounded-2xl transition-all">
+                <i data-lucide="bookmark" class="w-5 h-5 text-pink-600"></i>
+            </div>
+            <span class="text-[11px] font-medium">Ebooks</span>
+        </a>
+
+    </div>
+</nav>
 
         <!-- Seção de Boas-Vindas / Data de Referência -->
         <section class="text-center pt-2">
