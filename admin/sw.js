@@ -1,4 +1,4 @@
-const CACHE_NAME = 'equalize-se-v1';
+const CACHE_NAME = 'equalize-adm-v1';
 const urlsToCache = [
   './index.html',
   './manifest.json',

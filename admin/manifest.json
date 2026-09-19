@@ -1,7 +1,7 @@
 {
-  "name": "Equalize-se",
-  "short_name": "Equalize-se",
-  "description": "Plataforma de autoconhecimento, astrologia, numerologia e energias",
+  "name": "Eqz - adm",
+  "short_name": "Eqz",
+  "description": "página de administração do EQZ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
