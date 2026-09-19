@@ -1,487 +1,255 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equalize-se - Painel Administrativo</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Painel Administrativo - Acesso Restrito</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Ícones Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Configurações do PWA para o Equalize-se -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Equalize-se">
-
-    <!-- Script para registrar o Service Worker -->
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').then(reg => {
-            console.log('Service Worker do Equalize-se registrado com sucesso.');
-            window.addEventListener('focus', () => { reg.update(); });
-          }).catch(err => {
-            console.log('Falha ao registrar o Service Worker:', err);
-          });
-        });
-      }
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121212',
+                        cardBg: '#1e1e1e',
+                        accent: '#10b981'
+                    }
+                }
+            }
+        }
     </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative">
+<body class="bg-darkBg text-gray-100 min-h-screen font-sans flex flex-col items-center justify-center p-4">
 
-    <!-- TELA DE LOGIN (Oculta se autenticado) -->
-    <div id="login-container" class="max-w-md w-full mx-auto px-4 my-auto">
-        <div class="bg-white/90 backdrop-blur-md border border-emerald-100 rounded-3xl p-8 shadow-xl text-center space-y-6">
-            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto text-emerald-700">
-                <i data-lucide="lock" class="w-6 h-6"></i>
+    <!-- TELA DE LOGIN -->
+    <div id="tela-login" class="bg-cardBg border border-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
+        <div class="text-center space-y-2">
+            <div class="inline-flex p-3 bg-emerald-500/15 rounded-full text-accent mb-2">
+                <i data-lucide="lock" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-xl font-bold">Acesso Restrito</h1>
+            <p class="text-xs text-gray-400">Entre com seu ID e senha de Administrador</p>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">ID de Acesso</label>
+                <input type="text" id="input-id" placeholder="Digite seu ID" class="w-full bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent">
             </div>
             <div>
-                <h1 class="text-2xl font-extrabold text-slate-900">Acesso Restrito</h1>
-                <p class="text-xs text-slate-500 mt-1">Entre com a senha de administrador para gerenciar o portal</p>
+                <label class="block text-xs text-gray-400 mb-1">Senha</label>
+                <input type="password" id="input-senha" placeholder="Digite sua senha" class="w-full bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent" onkeypress="if(event.key === 'Enter') fazerLogin()">
             </div>
-            <div class="space-y-4 text-left">
+            <button onclick="fazerLogin()" class="w-full bg-accent hover:bg-emerald-600 text-black font-semibold py-3 rounded-lg transition text-sm flex items-center justify-center gap-2">
+                <i data-lucide="log-in" class="w-4 h-4"></i> Entrar no Painel
+            </button>
+            <p id="erro-login" class="text-xs text-red-400 text-center hidden">ID ou senha incorretos!</p>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO (Oculto até logar) -->
+    <div id="painel-admin" class="hidden w-full max-w-5xl min-h-screen pb-12">
+        <!-- Header -->
+        <header class="bg-cardBg border-b border-gray-800 p-4 shadow-md sticky top-0 z-40 rounded-b-xl mb-6">
+            <div class="max-w-5xl mx-auto flex justify-between items-center">
+                <h1 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="shield-check" class="text-accent"></i> Painel Admin
+                </h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-xs text-gray-400 hidden sm:inline">ADM: <strong class="text-accent" id="nome-adm-logado">Leandro</strong></span>
+                    <button onclick="fazerLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-3 py-2 rounded-lg flex items-center gap-1 transition text-sm" title="Sair">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navegação por Abas (Com Configurações) -->
+        <nav class="flex justify-center gap-3 sm:gap-6 mb-6 overflow-x-auto pb-2 px-2">
+            <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-accent bg-emerald-500/10 text-accent transition w-24">
+                <i data-lucide="video" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Vídeos</span>
+            </button>
+            <button onclick="mudarAba('mensagens')" id="btn-mensagens" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Mensagens</span>
+            </button>
+            <button onclick="mudarAba('autor')" id="btn-autor" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+                <i data-lucide="user-pen" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Autor</span>
+            </button>
+            <button onclick="mudarAba('ajuda')" id="btn-ajuda" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+                <i data-lucide="help-circle" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Ajuda</span>
+            </button>
+            <button onclick="mudarAba('config')" id="btn-config" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Config</span>
+            </button>
+        </nav>
+
+        <!-- ABA 1: VÍDEOS DO DIA -->
+        <section id="aba-video" class="space-y-6">
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
+                <h2 class="text-md font-semibold mb-4 text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="film" class="w-4 h-4"></i> Cadastrar / Gerenciar Vídeo do Dia
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Data do Vídeo</label>
+                        <input type="date" id="video-nova-data" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">YouTube ID</label>
+                        <input type="text" id="video-novo-id" placeholder="Ex: Nq2HMAeH36U" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs text-gray-400 mb-1">Título do Vídeo</label>
+                        <input type="text" id="video-novo-titulo" placeholder="Título chamativo do vídeo..." class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs text-gray-400 mb-1">Descrição</label>
+                        <textarea id="video-nova-descricao" rows="2" placeholder="Resumo ou descrição do vídeo..." class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button onclick="adicionarOuAtualizarVideo()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-4 py-2.5 rounded-lg flex items-center gap-2 transition">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Postar Vídeo (Envia Imediatamente)
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-4">
+                <h3 class="text-md font-semibold text-gray-300 flex items-center gap-2">
+                    <i data-lucide="list-video" class="w-4 h-4 text-emerald-400"></i> Vídeos Cadastrados
+                </h3>
+                <div id="lista-cards-videos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- ABA 2: MENSAGENS DO DIA -->
+        <section id="aba-mensagens" class="hidden space-y-6">
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-3">
+                <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="message-square-plus" class="w-4 h-4"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-300"></span>)
+                </h2>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="nova-msg-texto" placeholder="Escreva a mensagem do dia..." class="flex-1 bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent" onkeypress="if(event.key === 'Enter') adicionarMensagemDia()">
+                    <button onclick="adicionarMensagemDia()" class="bg-accent hover:bg-emerald-600 text-black font-semibold px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap">
+                        <i data-lucide="send" class="w-4 h-4"></i> Enviar Imediatamente
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-4">
+                <h3 class="text-md font-semibold text-gray-300 flex items-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4 text-emerald-400"></i> Mensagens Atuais do Dia
+                </h3>
+                <div id="lista-mensagens-dia" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- ABA 3: MENSAGEM DO AUTOR -->
+        <section id="aba-autor" class="hidden space-y-6">
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4"></i> Mensagem do Autor
+                    </h2>
+                    <button onclick="excluirMensagemAutor()" class="text-red-400 hover:text-red-300 text-xs flex items-center gap-1 bg-red-500/10 px-3 py-1.5 rounded-lg border border-red-500/20 transition">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir Mensagem
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Nome do Autor</label>
+                        <input type="text" id="autor-nome" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Data (Gerada Automaticamente)</label>
+                        <input type="date" id="autor-data" disabled class="w-full bg-black/20 border border-gray-800 text-gray-400 rounded-lg p-2.5 text-sm cursor-not-allowed">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs text-gray-400 mb-1">Texto da Mensagem</label>
+                        <textarea id="autor-texto" rows="3" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm"></textarea>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="publicarNovaAutor()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition">
+                        <i data-lucide="send" class="w-4 h-4"></i> Postar Imediatamente
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 4: PEDIDOS DE AJUDA -->
+        <section id="aba-ajuda" class="hidden space-y-6">
+            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
+                <h2 class="text-md font-semibold mb-4 text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="heart-handshake" class="w-4 h-4"></i> Pedidos de Ajuda
+                </h2>
+                <div id="lista-relatos" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- ABA 5: CONFIGURAÇÕES DO ADM -->
+        <section id="aba-config" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 shadow-sm max-w-lg mx-auto space-y-4">
+                <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2 border-b border-gray-800 pb-3">
+                    <i data-lucide="settings" class="w-5 h-5"></i> Configurações de Acesso & Perfil
+                </h2>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Senha de Acesso</label>
-                    <input type="password" id="input-senha" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Digite a senha">
+                    <label class="block text-xs text-gray-400 mb-1">Novo Apelido / Nome do ADM</label>
+                    <input type="text" id="config-apelido" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
                 </div>
-                <button onclick="fazerLogin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-semibold shadow-sm transition-all cursor-pointer">Entrar no Painel</button>
-                <div class="text-center">
-                    <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-700 font-medium transition-all">← Voltar para a página inicial</a>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Novo ID de Acesso</label>
+                    <input type="text" id="config-id" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
                 </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nova Senha</label>
+                    <input type="password" id="config-senha" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div class="pt-2 flex justify-end">
+                    <button onclick="salvarConfiguracoesAdm()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition">
+                        <i data-lucide="check" class="w-4 h-4"></i> Salvar Configurações
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL DE RESPOSTA PARA AJUDA -->
+    <div id="modal-resposta" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="reply" class="w-4 h-4"></i> Responder Pedido de Ajuda
+                </h3>
+                <button onclick="fecharModalResposta()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 mb-1">Mensagem do Viajante:</p>
+                <p id="modal-texto-viajante" class="text-sm bg-black/40 p-3 rounded-lg border border-gray-800 text-gray-200 italic"></p>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Sua Resposta (Assinada por <span class="text-emerald-400 font-semibold" id="modal-nome-adm"></span>):</label>
+                <textarea id="modal-input-resposta" rows="4" placeholder="Escreva sua resposta..." class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent text-gray-100"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="fecharModalResposta()" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-medium transition">Cancelar</button>
+                <button onclick="salvarRespostaModal()" class="px-4 py-2 rounded-lg bg-accent hover:bg-emerald-600 text-black font-semibold text-xs transition flex items-center gap-1.5">
+                    <i data-lucide="send" class="w-4 h-4"></i> Enviar Resposta (Imediato)
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- PAINEL ADMINISTRATIVO (Exibido após o login) -->
-    <main id="painel-container" class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6 hidden">
-        
-        <!-- CABEÇALHO DO PAINEL -->
-        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Painel Administrativo</h1>
-                <p class="text-xs text-slate-500 font-medium mt-0.5">Gerenciamento completo (Equalize-se)</p>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <a href="ajuda.html" target="_blank" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-emerald-200">
-                    <i data-lucide="heart-handshake" class="w-4 h-4"></i> Ver site
-                </a>
-                <button onclick="fazerLogout()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
-                    <i data-lucide="log-out" class="w-4 h-4"></i> Sair
-                </button>
-            </div>
-        </header>
-
-        <!-- SEÇÃO: POSTAR NOVA MENSAGEM (Livre) -->
-        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
-            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i data-lucide="message-square-plus" class="w-5 h-5 text-emerald-700"></i> Postar Mensagem Livremente
-            </h2>
-            <div class="space-y-3">
-                <textarea id="adm-texto-msg" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escreva sua mensagem sem limitações de envio..."></textarea>
-                <div class="flex justify-end">
-                    <button onclick="salvarMensagem()" id="btn-salvar-msg" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer">Publicar Mensagem</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO: GERENCIAR VÍDEOS DIÁRIOS -->
-        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
-            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i data-lucide="video" class="w-5 h-5 text-purple-600"></i> Gerenciar Vídeos Diários
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <input type="text" id="adm-vid-data" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Data (AAAA-MM-DD)">
-                <input type="text" id="adm-vid-titulo" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="Título do Vídeo">
-                <input type="text" id="adm-vid-id" class="p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500" placeholder="YouTube ID (ex: dQw4w9WgXcQ)">
-            </div>
-            <textarea id="adm-vid-desc" rows="2" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none" placeholder="Descrição do vídeo..."></textarea>
-            <div class="flex justify-end">
-                <button onclick="salvarVideo()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer">Cadastrar / Atualizar Vídeo</button>
-            </div>
-
-            <!-- Lista de Vídeos Postados -->
-            <div class="mt-4 pt-4 border-t border-slate-100">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Vídeos Cadastrados no Servidor</h3>
-                <div id="lista-videos-adm" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
-                    <!-- Preenchido via script -->
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO: GERENCIAR PEDIDOS DE AJUDA / ACOLHIMENTO -->
-        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
-            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i data-lucide="heart-handshake" class="w-5 h-5 text-teal-600"></i> Pedidos de Ajuda e Acolhimento
-            </h2>
-            <p class="text-xs text-slate-500">Responda aos relatos enviados pelos usuários. A resposta aparecerá diretamente na página de acolhimento deles.</p>
-            
-            <div id="lista-ajuda-adm" class="space-y-4 max-h-[400px] overflow-y-auto pr-1">
-                <!-- Preenchido via script -->
-                <p class="text-xs text-slate-400 text-center py-4">Carregando pedidos de ajuda...</p>
-            </div>
-        </section>
-
-        <!-- SEÇÃO: GERENCIAR TODAS AS MENSAGENS -->
-        <section class="bg-white/80 backdrop-blur-sm border border-emerald-100/60 rounded-3xl p-6 shadow-sm space-y-4">
-            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i data-lucide="list-checks" class="w-5 h-5 text-indigo-600"></i> Todas as Mensagens Cadastradas
-            </h2>
-            <div id="lista-mensagens-adm" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
-                <!-- Preenchido via script -->
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8">
-        EQUALIZE-SE &copy; 2026 • PAINEL ADMINISTRATIVO
-    </footer>
-
-    <!-- SCRIPT DE SINCRONIZAÇÃO EXTERNO -->
-    <script src="ajuda_sinc.js"></script>
-
-    <!-- Lógica de Controle do Painel Admin -->
-    <script>
-        lucide.createIcons();
-
-        let editandoIndexData = null;
-        let editandoMsgIndex = null;
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const logado = sessionStorage.getItem("equalize_admin_logado");
-            if (logado === "true") {
-                mostrarPainel();
-            }
-        });
-
-        function obterChaveDataHoje() {
-            const hoje = new Date();
-            const ano = hoje.getFullYear();
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            return `${ano}-${mes}-${dia}`;
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
-
-        function fazerLogin() {
-            const senha = document.getElementById("input-senha").value;
-            if (senha === "eqz791-2026") {
-                sessionStorage.setItem("equalize_admin_logado", "true");
-                mostrarPainel();
-            } else {
-                alert("Senha incorreta!");
-            }
-        }
-
-        function fazerLogout() {
-            sessionStorage.removeItem("equalize_admin_logado");
-            document.getElementById("login-container").classList.remove("hidden");
-            document.getElementById("painel-container").classList.add("hidden");
-            document.getElementById("input-senha").value = "";
-        }
-
-        async function mostrarPainel() {
-            document.getElementById("login-container").classList.add("hidden");
-            document.getElementById("painel-container").classList.remove("hidden");
-            document.getElementById("adm-vid-data").value = obterChaveDataHoje();
-            await carregarDadosAdm();
-        }
-
-        async function carregarDadosAdm() {
-            try {
-                // Utiliza a função importada do arquivo ajuda_sinc.js
-                const dadosGlobais = await buscarDadosAjudaServidor();
-
-                renderizarVideosAdm(dadosGlobais);
-                renderizarPedidosAjudaAdm(dadosGlobais);
-                renderizarMensagensAdm(dadosGlobais);
-
-            } catch (error) {
-                console.error("Erro ao carregar painel:", error);
-                alert("Erro ao conectar com o banco de dados.");
-            }
-        }
-
-        function renderizarVideosAdm(dadosGlobais) {
-            const container = document.getElementById("lista-videos-adm");
-            container.innerHTML = "";
-
-            let temVideos = false;
-            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
-                const diaObj = dadosGlobais[dataKey];
-                if (diaObj && diaObj.videoDoDia && diaObj.videoDoDia.youtubeId) {
-                    temVideos = true;
-                    const v = diaObj.videoDoDia;
-                    const item = document.createElement("div");
-                    item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-3 flex items-center justify-between text-xs";
-                    item.innerHTML = `
-                        <div>
-                            <span class="font-bold text-purple-700">[${dataKey}]</span> 
-                            <span class="font-semibold text-slate-800">${escapeHtml(v.titulo || 'Sem Título')}</span>
-                            <span class="text-slate-400 block truncate max-w-xs">ID: ${escapeHtml(v.youtubeId)}</span>
-                        </div>
-                        <button onclick="apagarVideo('${dataKey}')" class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-all cursor-pointer" title="Apagar Vídeo">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    `;
-                    container.appendChild(item);
-                }
-            });
-
-            if (!temVideos) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">Nenhum vídeo cadastrado.</p>';
-            }
-            lucide.createIcons();
-        }
-
-        function renderizarPedidosAjudaAdm(dadosGlobais) {
-            const container = document.getElementById("lista-ajuda-adm");
-            container.innerHTML = "";
-
-            let temRelatos = false;
-            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
-                const diaObj = dadosGlobais[dataKey];
-                if (diaObj && Array.isArray(diaObj.relatosAjuda) && diaObj.relatosAjuda.length > 0) {
-                    diaObj.relatosAjuda.slice().reverse().forEach((relato, indexInvertido) => {
-                        temRelatos = true;
-                        const indexReal = diaObj.relatosAjuda.length - 1 - indexInvertido;
-
-                        const item = document.createElement("div");
-                        item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-4 space-y-3 text-xs";
-                        item.innerHTML = `
-                            <div class="flex justify-between items-center text-slate-400">
-                                <span class="font-bold text-teal-700">Autor: ${escapeHtml(relato.autor || 'Anônimo')}</span>
-                                <span>${escapeHtml(relato.dataHora || dataKey)}</span>
-                            </div>
-                            <p class="text-slate-800 bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm">"${escapeHtml(relato.texto)}"</p>
-                            <div class="space-y-1.5 pt-1">
-                                <label class="block font-semibold text-slate-700 uppercase tracking-wider">Resposta de Acolhimento</label>
-                                <textarea id="resp-${dataKey}-${indexReal}" rows="2" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-teal-500 resize-none" placeholder="Digite a orientação ou resposta espiritual...">${escapeHtml(relato.resposta || "")}</textarea>
-                                <div class="flex justify-end">
-                                    <button onclick="salvarRespostaAjuda('${dataKey}', ${indexReal})" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer">
-                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Salvar Resposta
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                        container.appendChild(item);
-                    });
-                }
-            });
-
-            if (!temRelatos) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Nenhum pedido de ajuda ou relato enviado até o momento.</p>';
-            }
-            lucide.createIcons();
-        }
-
-        async function salvarRespostaAjuda(dataKey, indexReal) {
-            const textoResposta = document.getElementById(`resp-${dataKey}-${indexReal}`).value.trim();
-
-            try {
-                let dados = await buscarDadosAjudaServidor();
-
-                if (dados[dataKey] && dados[dataKey].relatosAjuda && dados[dataKey].relatosAjuda[indexReal]) {
-                    dados[dataKey].relatosAjuda[indexReal].resposta = textoResposta;
-
-                    const sucesso = await salvarDadosAjudaServidor(dados);
-                    if (!sucesso) throw new Error("Erro ao salvar resposta.");
-
-                    alert("Resposta de acolhimento salva com sucesso!");
-                    await carregarDadosAdm();
-                }
-            } catch (error) {
-                console.error("Erro ao salvar resposta de ajuda:", error);
-                alert("Erro ao salvar a resposta no servidor.");
-            }
-        }
-
-        function renderizarMensagensAdm(dadosGlobais) {
-            const container = document.getElementById("lista-mensagens-adm");
-            container.innerHTML = "";
-
-            let totalMensagens = 0;
-            Object.keys(dadosGlobais).sort().reverse().forEach(dataKey => {
-                const diaObj = dadosGlobais[dataKey];
-                if (diaObj && diaObj.mensagensDoDia && diaObj.mensagensDoDia.length > 0) {
-                    diaObj.mensagensDoDia.forEach((msg, index) => {
-                        totalMensagens++;
-                        const item = document.createElement("div");
-                        item.className = "bg-white/90 border border-slate-200/80 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs";
-                        item.innerHTML = `
-                            <div class="space-y-1 flex-1">
-                                <div class="flex items-center gap-2 text-slate-400 font-medium">
-                                    <span class="text-emerald-700 font-bold">Data: ${dataKey}</span>
-                                    <span>•</span>
-                                    <span>Às ${escapeHtml(msg.horario || '00:00')}</span>
-                                </div>
-                                <p class="text-slate-800 italic">"${escapeHtml(msg.texto)}"</p>
-                            </div>
-                            <div class="flex items-center gap-2 self-end sm:self-center">
-                                <button onclick="prepararEdicaoMensagem('${dataKey}', ${index}, '${encodeURIComponent(msg.texto)}')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl font-semibold transition-all flex items-center gap-1 cursor-pointer">
-                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
-                                </button>
-                                <button onclick="apagarMensagem('${dataKey}', ${index})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl font-semibold transition-all flex items-center gap-1 cursor-pointer">
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir
-                                </button>
-                            </div>
-                        `;
-                        container.appendChild(item);
-                    });
-                }
-            });
-
-            if (totalMensagens === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Nenhuma mensagem cadastrada no sistema.</p>';
-            }
-            lucide.createIcons();
-        }
-
-        async function salvarMensagem() {
-            const texto = document.getElementById("adm-texto-msg").value.trim();
-            if (!texto) {
-                alert("Escreva uma mensagem antes de publicar.");
-                return;
-            }
-
-            const dataHojeIso = obterChaveDataHoje();
-            const agora = new Date();
-            const horarioFormatado = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-            try {
-                let dados = await buscarDadosAjudaServidor();
-
-                if (!dados[dataHojeIso]) {
-                    dados[dataHojeIso] = { videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" }, resumoDiario: {}, mensagensDoDia: [], relatosAjuda: [] };
-                }
-                if (!dados[dataHojeIso].mensagensDoDia) dados[dataHojeIso].mensagensDoDia = [];
-                if (!dados[dataHojeIso].relatosAjuda) dados[dataHojeIso].relatosAjuda = [];
-
-                if (editandoIndexData !== null && editandoMsgIndex !== null) {
-                    dados[editandoIndexData].mensagensDoDia[editandoMsgIndex].texto = texto;
-                    editandoIndexData = null;
-                    editandoMsgIndex = null;
-                    document.getElementById("btn-salvar-msg").innerText = "Publicar Mensagem";
-                } else {
-                    dados[dataHojeIso].mensagensDoDia.push({
-                        texto: texto,
-                        horario: horarioFormatado,
-                        dataIso: dataHojeIso
-                    });
-                }
-
-                const sucesso = await salvarDadosAjudaServidor(dados);
-                if (!sucesso) throw new Error("Erro ao salvar no servidor.");
-
-                document.getElementById("adm-texto-msg").value = "";
-                alert("Mensagem salva com sucesso!");
-                await carregarDadosAdm();
-
-            } catch (error) {
-                console.error("Erro ao salvar mensagem:", error);
-                alert("Erro ao salvar mensagem no servidor.");
-            }
-        }
-
-        function prepararEdicaoMensagem(dataKey, index, textoEncoded) {
-            editandoIndexData = dataKey;
-            editandoMsgIndex = index;
-            document.getElementById("adm-texto-msg").value = decodeURIComponent(textoEncoded);
-            document.getElementById("btn-salvar-msg").innerText = "Atualizar Mensagem";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        async function apagarMensagem(dataKey, index) {
-            if (!confirm("Tem certeza que deseja excluir esta mensagem?")) return;
-
-            try {
-                let dados = await buscarDadosAjudaServidor();
-
-                if (dados[dataKey] && dados[dataKey].mensagensDoDia) {
-                    dados[dataKey].mensagensDoDia.splice(index, 1);
-
-                    const sucesso = await salvarDadosAjudaServidor(dados);
-                    if (!sucesso) throw new Error("Erro ao excluir mensagem.");
-
-                    alert("Mensagem excluída com sucesso!");
-                    await carregarDadosAdm();
-                }
-            } catch (error) {
-                console.error("Erro ao apagar mensagem:", error);
-                alert("Erro ao excluir a mensagem.");
-            }
-        }
-
-        async function salvarVideo() {
-            const dataVid = document.getElementById("adm-vid-data").value.trim();
-            const titulo = document.getElementById("adm-vid-titulo").value.trim();
-            const youtubeId = document.getElementById("adm-vid-id").value.trim();
-            const descricao = document.getElementById("adm-vid-desc").value.trim();
-
-            if (!dataVid || !youtubeId) {
-                alert("Preencha ao menos a Data e o ID do YouTube.");
-                return;
-            }
-
-            try {
-                let dados = await buscarDadosAjudaServidor();
-
-                if (!dados[dataVid]) {
-                    dados[dataVid] = { resumoDiario: { data: dataVid }, mensagensDoDia: [], relatosAjuda: [] };
-                }
-                if (!dados[dataVid].relatosAjuda) dados[dataVid].relatosAjuda = [];
-
-                dados[dataVid].videoDoDia = {
-                    titulo: titulo || "Vídeo Diário",
-                    descricao: descricao || "",
-                    youtubeId: youtubeId
-                };
-
-                const sucesso = await salvarDadosAjudaServidor(dados);
-                if (!sucesso) throw new Error("Erro ao salvar vídeo.");
-
-                document.getElementById("adm-vid-titulo").value = "";
-                document.getElementById("adm-vid-id").value = "";
-                document.getElementById("adm-vid-desc").value = "";
-                alert("Vídeo cadastrado/atualizado com sucesso!");
-                await carregarDadosAdm();
-
-            } catch (error) {
-                console.error("Erro ao salvar vídeo:", error);
-                alert("Erro ao atualizar o vídeo.");
-            }
-        }
-
-        async function apagarVideo(dataKey) {
-            if (!confirm(`Deseja apagar o vídeo vinculado à data ${dataKey}?`)) return;
-
-            try {
-                let dados = await buscarDadosAjudaServidor();
-
-                if (dados[dataKey] && dados[dataKey].videoDoDia) {
-                    delete dados[dataKey].videoDoDia;
-
-                    const sucesso = await salvarDadosAjudaServidor(dados);
-                    if (!sucesso) throw new Error("Erro ao apagar vídeo.");
-
-                    alert("Vídeo apagado com sucesso!");
-                    await carregarDadosAdm();
-                }
-            } catch (error) {
-                console.error("Erro ao apagar vídeo:", error);
-                alert("Erro ao apagar o vídeo.");
-            }
-        }
-    </script>
+    <script src="adm_config.js"></script>
+    <script src="adm.js"></script>
 </body>
 </html>
