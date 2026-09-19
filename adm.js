@@ -1,5 +1,5 @@
 // ==========================================
-// PAINEL ADMINISTRATIVO - adm.js
+// PAINEL ADMINISTRATIVO - adm.js (Tema Claro)
 // ==========================================
 
 let adminLogado = null; 
@@ -166,10 +166,10 @@ function mudarAba(aba) {
         if (!btn) return;
         
         if (a === aba) {
-            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-accent bg-emerald-500/10 text-accent transition w-24";
+            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm";
             if(sec) sec.classList.remove('hidden');
         } else {
-            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24";
+            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer";
             if(sec) sec.classList.add('hidden');
         }
     });
@@ -216,29 +216,6 @@ async function salvarMeuPerfil() {
 }
 
 // --- GERENCIAMENTO DE ADMINISTRADORES (Exclusivo SEO) ---
-function carregarListaAdminsCadastrados() {
-    const container = document.getElementById('lista-admins-cadastrados');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const admins = dbAjudaGlobal.configAdm.admins || [];
-    admins.forEach((adm, index) => {
-        let badgeNivel = adm.nivel === 'seo' ? '<span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">SEO</span>' : '<span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded">Administrador</span>';
-        
-        container.innerHTML += `
-            <div class="bg-black/30 p-3 rounded-lg border border-gray-800 flex justify-between items-center text-sm">
-                <div>
-                    <strong class="text-gray-200">${adm.apelido}</strong> 
-                    <span class="text-xs text-gray-400 font-mono ml-2">(ID: ${adm.id})</span>
-                    <div class="mt-1">${badgeNivel}</div>
-                </div>
-                ${adm.nivel !== 'seo' ? `<button onclick="removerAdministrador(${index})" class="text-red-400 hover:text-red-300 p-1" title="Excluir Administrador"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '<span class="text-xs text-gray-500 italic">Principal</span>'}
-            </div>
-        `;
-    });
-    lucide.createIcons();
-}
-
 async function cadastrarNovoAdministrador() {
     const apelido = document.getElementById('novo-adm-apelido').value.trim();
     const id = document.getElementById('novo-adm-id').value.trim();
@@ -283,6 +260,29 @@ async function removerAdministrador(index) {
     }
 }
 
+function carregarListaAdminsCadastrados() {
+    const container = document.getElementById('lista-admins-cadastrados');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const admins = dbAjudaGlobal.configAdm.admins || [];
+    admins.forEach((adm, index) => {
+        let badgeNivel = adm.nivel === 'seo' ? '<span class="text-xs bg-blue-100 text-blue-700 font-medium px-2 py-0.5 rounded">SEO</span>' : '<span class="text-xs bg-gray-100 text-gray-700 font-medium px-2 py-0.5 rounded">Administrador</span>';
+        
+        container.innerHTML += `
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center text-sm">
+                <div>
+                    <strong class="text-gray-900">${adm.apelido}</strong> 
+                    <span class="text-xs text-gray-500 font-mono ml-2">(ID: ${adm.id})</span>
+                    <div class="mt-1">${badgeNivel}</div>
+                </div>
+                ${adm.nivel !== 'seo' ? `<button onclick="removerAdministrador(${index})" class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="Excluir Administrador"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '<span class="text-xs text-gray-400 italic">Principal</span>'}
+            </div>
+        `;
+    });
+    lucide.createIcons();
+}
+
 // --- VÍDEOS ---
 function carregarListaVideosCards() {
     const container = document.getElementById('lista-cards-videos');
@@ -298,16 +298,16 @@ function carregarListaVideosCards() {
             temVideos = true;
             const vid = diaObj.videoDoDia;
             container.innerHTML += `
-                <div class="bg-black/30 border border-gray-800 p-4 rounded-xl flex flex-col justify-between space-y-2">
+                <div class="bg-white border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-2 shadow-sm">
                     <div class="flex justify-between items-start">
-                        <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/25">${dataKey.split('-').reverse().join('/')}</span>
-                        <button onclick="apagarVideoData('${dataKey}')" class="text-red-400 hover:text-red-300 p-1" title="Apagar Vídeo"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <span class="text-xs font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">${dataKey.split('-').reverse().join('/')}</span>
+                        <button onclick="apagarVideoData('${dataKey}')" class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="Apagar Vídeo"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                     <div>
-                        <h4 class="text-sm font-semibold text-gray-100">${vid.titulo || 'Sem Título'}</h4>
-                        <p class="text-xs text-gray-400 line-clamp-2 mt-1">${vid.descricao || 'Sem descrição.'}</p>
+                        <h4 class="text-sm font-semibold text-gray-900">${vid.titulo || 'Sem Título'}</h4>
+                        <p class="text-xs text-gray-600 line-clamp-2 mt-1">${vid.descricao || 'Sem descrição.'}</p>
                     </div>
-                    <div class="text-[11px] text-gray-500 font-mono">ID: ${vid.youtubeId}</div>
+                    <div class="text-[11px] text-gray-400 font-mono">ID: ${vid.youtubeId}</div>
                 </div>
             `;
         }
@@ -374,13 +374,13 @@ function carregarMensagensDiaAtual() {
         let reacoes = msg.reacoes || { coracao: 0, amem: 0, flor: 0 };
 
         container.innerHTML += `
-            <div class="bg-black/30 border border-gray-800 p-4 rounded-xl flex flex-col justify-between space-y-3">
+            <div class="bg-white border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/25">🕒 ${msg.horario}</span>
-                    <button onclick="removerMensagemDia(${indexReal})" class="text-red-400 hover:text-red-300 p-1" title="Excluir Mensagem"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <span class="text-xs font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">🕒 ${msg.horario}</span>
+                    <button onclick="removerMensagemDia(${indexReal})" class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="Excluir Mensagem"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>
-                <p class="text-sm text-gray-100 font-medium">${msg.texto}</p>
-                <div class="flex items-center gap-3 pt-2 border-t border-gray-800/60 text-xs text-gray-400">
+                <p class="text-sm text-gray-900 font-medium">${msg.texto}</p>
+                <div class="flex items-center gap-3 pt-2 border-t border-gray-100 text-xs text-gray-500">
                     <span class="flex items-center gap-1">❤️ ${reacoes.coracao || 0}</span>
                     <span class="flex items-center gap-1">🙏 ${reacoes.amem || 0}</span>
                     <span class="flex items-center gap-1">🌸 ${reacoes.flor || 0}</span>
@@ -490,24 +490,24 @@ function carregarRelatosAjuda() {
     }
 
     todosRelatos.forEach((item) => {
-        let statusResposta = item.resposta ? `<span class="text-emerald-400 text-xs flex items-center gap-1 font-medium"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Respondido</span>` : `<span class="text-amber-400 text-xs flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Pendente</span>`;
+        let statusResposta = item.resposta ? `<span class="text-emerald-600 text-xs flex items-center gap-1 font-medium"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Respondido</span>` : `<span class="text-amber-600 text-xs flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Pendente</span>`;
         
         container.innerHTML += `
-            <div class="bg-black/35 hover:bg-black/45 transition p-4 rounded-xl border border-gray-800 space-y-3 shadow-sm flex flex-col justify-between cursor-pointer" onclick="abrirModalResposta('${item.dataKey}', ${item.indexOriginal}, '${item.texto.replace(/'/g, "\\'")}', '${(item.resposta || '').replace(/'/g, "\\'")}')">
-                <div class="flex justify-between items-center text-xs text-gray-400 border-b border-gray-800/60 pb-2">
-                    <span class="font-semibold text-emerald-400 flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${item.autor} <span class="text-gray-500 font-normal">(${item.dataKey.includes('-') ? item.dataKey.split('-').reverse().join('/') : item.dataKey})</span></span>
+            <div class="bg-white hover:bg-gray-50 transition p-4 rounded-xl border border-gray-200 space-y-3 shadow-sm flex flex-col justify-between cursor-pointer" onclick="abrirModalResposta('${item.dataKey}', ${item.indexOriginal}, '${item.texto.replace(/'/g, "\\'")}', '${(item.resposta || '').replace(/'/g, "\\'")}')">
+                <div class="flex justify-between items-center text-xs text-gray-500 border-b border-gray-100 pb-2">
+                    <span class="font-semibold text-blue-600 flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${item.autor} <span class="text-gray-400 font-normal">(${item.dataKey.includes('-') ? item.dataKey.split('-').reverse().join('/') : item.dataKey})</span></span>
                     <div class="flex items-center gap-3">
                         <span>${item.dataHora || ''}</span>
-                        <button onclick="event.stopPropagation(); excluirRelato('${item.dataKey}', ${item.indexOriginal})" class="text-red-400 hover:text-red-300" title="Excluir Relato"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="event.stopPropagation(); excluirRelato('${item.dataKey}', ${item.indexOriginal})" class="text-red-500 hover:text-red-700 cursor-pointer" title="Excluir Relato"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-100 mb-2">${item.texto}</p>
-                    ${item.resposta ? `<div class="bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-lg text-xs text-emerald-300 mt-2"><strong>Resposta:</strong> ${item.resposta}</div>` : ''}
+                    <p class="text-sm text-gray-800 mb-2">${item.texto}</p>
+                    ${item.resposta ? `<div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg text-xs text-emerald-800 mt-2"><strong>Resposta:</strong> ${item.resposta}</div>` : ''}
                 </div>
-                <div class="flex justify-between items-center pt-2 border-t border-gray-800/40">
+                <div class="flex justify-between items-center pt-2 border-t border-gray-100">
                     <div>${statusResposta}</div>
-                    <span class="text-xs text-accent flex items-center gap-1"><i data-lucide="message-square-text" class="w-3.5 h-3.5"></i> ${item.resposta ? 'Editar Resposta' : 'Responder'}</span>
+                    <span class="text-xs text-blue-600 hover:underline flex items-center gap-1"><i data-lucide="message-square-text" class="w-3.5 h-3.5"></i> ${item.resposta ? 'Editar Resposta' : 'Responder'}</span>
                 </div>
             </div>
         `;

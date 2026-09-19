@@ -1,75 +1,69 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - Acesso Restrito</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#121212',
-                        cardBg: '#1e1e1e',
-                        accent: '#10b981'
-                    }
-                }
-            }
-        }
-    </script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Configurações do PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
-<body class="bg-darkBg text-gray-100 min-h-screen font-sans flex flex-col items-center justify-center p-4">
+<body class="bg-gray-50 text-gray-800 min-h-screen font-sans flex flex-col items-center justify-center p-4">
 
     <!-- TELA DE LOGIN -->
-    <div id="tela-login" class="bg-cardBg border border-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
+    <div id="tela-login" class="bg-white border border-gray-200 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-6">
         <div class="text-center space-y-2">
-            <div class="inline-flex p-3 bg-emerald-500/15 rounded-full text-accent mb-2">
+            <div class="inline-flex p-3 bg-blue-50 rounded-full text-blue-600 mb-2">
                 <i data-lucide="lock" class="w-8 h-8"></i>
             </div>
-            <h1 class="text-xl font-bold">Acesso Restrito</h1>
-            <p class="text-xs text-gray-400">Entre com seu ID e senha de Administrador</p>
+            <h1 class="text-xl font-bold text-gray-900">Acesso Restrito</h1>
+            <p class="text-xs text-gray-500">Entre com seu ID e senha de Administrador</p>
         </div>
 
         <div class="space-y-4">
             <div>
-                <label class="block text-xs text-gray-400 mb-1">ID de Acesso</label>
-                <input type="text" id="input-id" placeholder="Digite seu ID" class="w-full bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent">
+                <label class="block text-xs font-medium text-gray-600 mb-1">ID de Acesso</label>
+                <input type="text" id="input-id" placeholder="Digite seu ID" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition text-gray-800">
             </div>
             <div>
-                <label class="block text-xs text-gray-400 mb-1">Senha</label>
-                <input type="password" id="input-senha" placeholder="Digite sua senha" class="w-full bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent" onkeypress="if(event.key === 'Enter') fazerLogin()">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Senha</label>
+                <input type="password" id="input-senha" placeholder="Digite sua senha" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition text-gray-800" onkeypress="if(event.key === 'Enter') fazerLogin()">
             </div>
-            <button onclick="fazerLogin()" class="w-full bg-accent hover:bg-emerald-600 text-black font-semibold py-3 rounded-lg transition text-sm flex items-center justify-center gap-2">
+            <button onclick="fazerLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm">
                 <i data-lucide="log-in" class="w-4 h-4"></i> Entrar no Painel
             </button>
-            <p id="erro-login" class="text-xs text-red-400 text-center hidden">ID ou senha incorretos!</p>
+            <p id="erro-login" class="text-xs text-red-500 text-center hidden font-medium">ID ou senha incorretos!</p>
         </div>
     </div>
 
     <!-- PAINEL ADMINISTRATIVO -->
     <div id="painel-admin" class="hidden w-full max-w-5xl min-h-screen pb-12">
-        <header class="bg-cardBg border-b border-gray-800 p-4 shadow-md sticky top-0 z-40 rounded-b-xl mb-6">
+        <header class="bg-white border-b border-gray-200 p-4 shadow-sm sticky top-0 z-40 rounded-b-xl mb-6">
             <div class="max-w-5xl mx-auto flex justify-between items-center">
-                <h1 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="shield-check" class="text-accent"></i> Painel Admin
+                <h1 class="text-lg font-bold flex items-center gap-2 text-gray-900">
+                    <i data-lucide="shield-check" class="text-blue-600"></i> Painel Admin
                 </h1>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs text-gray-400 hidden sm:inline">Logado: <strong class="text-accent" id="nome-adm-logado"></strong></span>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500 hidden sm:inline">Logado: <strong class="text-blue-600" id="nome-adm-logado"></strong></span>
                     
                     <!-- Botão Olho: Ir para a página inicial -->
-                    <a href="index.html" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-gray-200 p-2 rounded-lg flex items-center gap-1 transition text-sm" title="Visualizar Site">
+                    <a href="index.html" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Visualizar Site">
                         <i data-lucide="eye" class="w-4 h-4"></i>
                     </a>
 
                     <!-- Botão Engrenagem: Ir para Configurações -->
+                    <button onclick="mudarAba('config')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Configurações">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </button>
 
                     <!-- Botão Sair -->
-                    <button onclick="fazerLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 p-2 rounded-lg flex items-center gap-1 transition text-sm" title="Sair">
+                    <button onclick="fazerLogout()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Sair">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -77,24 +71,23 @@
         </header>
 
         <nav class="flex justify-center gap-3 sm:gap-6 mb-6 overflow-x-auto pb-2 px-2">
-            <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-accent bg-emerald-500/10 text-accent transition w-24">
+            <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm">
                 <i data-lucide="video" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Vídeos</span>
             </button>
-            <button onclick="mudarAba('mensagens')" id="btn-mensagens" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+            <button onclick="mudarAba('mensagens')" id="btn-mensagens" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
                 <i data-lucide="message-square" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Mensagens</span>
             </button>
-            <button onclick="mudarAba('autor')" id="btn-autor" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+            <button onclick="mudarAba('autor')" id="btn-autor" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
                 <i data-lucide="user-pen" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Autor</span>
             </button>
-            <button onclick="mudarAba('ajuda')" id="btn-ajuda" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+            <button onclick="mudarAba('ajuda')" id="btn-ajuda" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
                 <i data-lucide="help-circle" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Ajuda</span>
             </button>
-            <!-- A aba Config agora é acessível por todos para gerenciar o próprio perfil (e gerenciar outros se for SEO) -->
-            <button onclick="mudarAba('config')" id="btn-config" class=" flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-800 bg-cardBg text-gray-400 hover:text-white transition w-24">
+            <button onclick="mudarAba('config')" id="btn-config" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
                 <i data-lucide="settings" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Config</span>
             </button>
@@ -102,37 +95,37 @@
 
         <!-- ABA 1: VÍDEOS -->
         <section id="aba-video" class="space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
-                <h2 class="text-md font-semibold mb-4 text-emerald-400 flex items-center gap-2">
-                    <i data-lucide="film" class="w-4 h-4"></i> Cadastrar / Gerenciar Vídeo do Dia
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
+                    <i data-lucide="film" class="w-4 h-4 text-blue-600"></i> Cadastrar / Gerenciar Vídeo do Dia
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Data do Vídeo</label>
-                        <input type="date" id="video-nova-data" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Data do Vídeo</label>
+                        <input type="date" id="video-nova-data" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">YouTube ID</label>
-                        <input type="text" id="video-novo-id" placeholder="Ex: Nq2HMAeH36U" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">YouTube ID</label>
+                        <input type="text" id="video-novo-id" placeholder="Ex: Nq2HMAeH36U" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-xs text-gray-400 mb-1">Título do Vídeo</label>
-                        <input type="text" id="video-novo-titulo" placeholder="Título chamativo do vídeo..." class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Título do Vídeo</label>
+                        <input type="text" id="video-novo-titulo" placeholder="Título chamativo do vídeo..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-xs text-gray-400 mb-1">Descrição</label>
-                        <textarea id="video-nova-descricao" rows="2" placeholder="Resumo ou descrição do vídeo..." class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm"></textarea>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Descrição</label>
+                        <textarea id="video-nova-descricao" rows="2" placeholder="Resumo ou descrição do vídeo..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800"></textarea>
                     </div>
                 </div>
                 <div class="flex justify-end">
-                    <button onclick="adicionarOuAtualizarVideo()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-4 py-2.5 rounded-lg flex items-center gap-2 transition">
+                    <button onclick="adicionarOuAtualizarVideo()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-4 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
                         <i data-lucide="plus-circle" class="w-4 h-4"></i> Postar Vídeo
                     </button>
                 </div>
             </div>
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-4">
-                <h3 class="text-md font-semibold text-gray-300 flex items-center gap-2">
-                    <i data-lucide="list-video" class="w-4 h-4 text-emerald-400"></i> Vídeos Cadastrados
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="list-video" class="w-4 h-4 text-blue-600"></i> Vídeos Cadastrados
                 </h3>
                 <div id="lista-cards-videos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
@@ -140,20 +133,20 @@
 
         <!-- ABA 2: MENSAGENS -->
         <section id="aba-mensagens" class="hidden space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-3">
-                <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
-                    <i data-lucide="message-square-plus" class="w-4 h-4"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-300"></span>)
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="message-square-plus" class="w-4 h-4 text-blue-600"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-600"></span>)
                 </h2>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="nova-msg-texto" placeholder="Escreva a mensagem do dia..." class="flex-1 bg-black/40 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent" onkeypress="if(event.key === 'Enter') adicionarMensagemDia()">
-                    <button onclick="adicionarMensagemDia()" class="bg-accent hover:bg-emerald-600 text-black font-semibold px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap">
+                    <input type="text" id="nova-msg-texto" placeholder="Escreva a mensagem do dia..." class="flex-1 bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
+                    <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap cursor-pointer shadow-sm">
                         <i data-lucide="send" class="w-4 h-4"></i> Enviar
                     </button>
                 </div>
             </div>
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm space-y-4">
-                <h3 class="text-md font-semibold text-gray-300 flex items-center gap-2">
-                    <i data-lucide="list" class="w-4 h-4 text-emerald-400"></i> Mensagens Atuais do Dia
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4 text-blue-600"></i> Mensagens Atuais do Dia
                 </h3>
                 <div id="lista-mensagens-dia" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
@@ -161,38 +154,38 @@
 
         <!-- ABA 3: AUTOR -->
         <section id="aba-autor" class="hidden space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
-                        <i data-lucide="user" class="w-4 h-4"></i> Mensagem do Autor
+                    <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4 text-blue-600"></i> Mensagem do Autor
                     </h2>
-                    <button onclick="excluirMensagemAutor()" class="text-red-400 hover:text-red-300 text-xs flex items-center gap-1 bg-red-500/10 px-3 py-1.5 rounded-lg border border-red-500/20 transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir</button>
+                    <button onclick="excluirMensagemAutor()" class="text-red-600 hover:text-red-700 text-xs flex items-center gap-1 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Nome do Autor</label>
-                        <input type="text" id="autor-nome" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Nome do Autor</label>
+                        <input type="text" id="autor-nome" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Data</label>
-                        <input type="date" id="autor-data" disabled class="w-full bg-black/20 border border-gray-800 text-gray-400 rounded-lg p-2.5 text-sm cursor-not-allowed">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Data</label>
+                        <input type="date" id="autor-data" disabled class="w-full bg-gray-100 border border-gray-200 text-gray-500 rounded-lg p-2.5 text-sm cursor-not-allowed">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-xs text-gray-400 mb-1">Texto da Mensagem</label>
-                        <textarea id="autor-texto" rows="3" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 focus:outline-none focus:border-accent text-sm"></textarea>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Texto da Mensagem</label>
+                        <textarea id="autor-texto" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800"></textarea>
                     </div>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <button onclick="publicarNovaAutor()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition"><i data-lucide="send" class="w-4 h-4"></i> Postar</button>
+                    <button onclick="publicarNovaAutor()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm"><i data-lucide="send" class="w-4 h-4"></i> Postar</button>
                 </div>
             </div>
         </section>
 
         <!-- ABA 4: AJUDA -->
         <section id="aba-ajuda" class="hidden space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-gray-800 shadow-sm">
-                <h2 class="text-md font-semibold mb-4 text-emerald-400 flex items-center gap-2">
-                    <i data-lucide="heart-handshake" class="w-4 h-4"></i> Pedidos de Ajuda
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
+                    <i data-lucide="heart-handshake" class="w-4 h-4 text-blue-600"></i> Pedidos de Ajuda
                 </h2>
                 <div id="lista-relatos" class="space-y-4"></div>
             </div>
@@ -200,26 +193,26 @@
 
         <!-- ABA 5: CONFIGURAÇÕES E PERFIL -->
         <section id="aba-config" class="hidden space-y-6">
-            <!-- Box para Editar Meu Próprio Perfil (Disponível para TODOS) -->
-            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 shadow-sm max-w-xl mx-auto space-y-4">
-                <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2 border-b border-gray-800 pb-3">
-                    <i data-lucide="user-pen" class="w-5 h-5"></i> Editar Meus Dados de Acesso
+            <!-- Box para Editar Meu Próprio Perfil -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm max-w-xl mx-auto space-y-4">
+                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
+                    <i data-lucide="user-pen" class="w-5 h-5 text-blue-600"></i> Editar Meus Dados de Acesso
                 </h2>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Meu Apelido / Nome</label>
-                        <input type="text" id="meu-config-apelido" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Meu Apelido / Nome</label>
+                        <input type="text" id="meu-config-apelido" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Meu ID de Acesso</label>
-                        <input type="text" id="meu-config-id" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Meu ID de Acesso</label>
+                        <input type="text" id="meu-config-id" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Minha Nova Senha</label>
-                        <input type="password" id="meu-config-senha" placeholder="Deixe em branco para não alterar" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Minha Nova Senha</label>
+                        <input type="password" id="meu-config-senha" placeholder="Deixe em branco para não alterar" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div class="flex justify-end pt-2">
-                        <button onclick="salvarMeuPerfil()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition">
+                        <button onclick="salvarMeuPerfil()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
                             <i data-lucide="save" class="w-4 h-4"></i> Salvar Minhas Alterações
                         </button>
                     </div>
@@ -227,33 +220,33 @@
             </div>
 
             <!-- Box Exclusivo para o SEO Cadastrar e Gerenciar Outros Admins -->
-            <div id="painel-exclusivo-seo" class="bg-cardBg p-6 rounded-xl border border-gray-800 shadow-sm max-w-xl mx-auto space-y-6 hidden">
-                <h2 class="text-md font-semibold text-emerald-400 flex items-center gap-2 border-b border-gray-800 pb-3">
-                    <i data-lucide="user-cog" class="w-5 h-5"></i> Cadastrar Novo Administrador
+            <div id="painel-exclusivo-seo" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm max-w-xl mx-auto space-y-6 hidden">
+                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
+                    <i data-lucide="user-cog" class="w-5 h-5 text-blue-600"></i> Cadastrar Novo Administrador
                 </h2>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Apelido do ADM</label>
-                        <input type="text" id="novo-adm-apelido" placeholder="Ex: João Silva" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Apelido do ADM</label>
+                        <input type="text" id="novo-adm-apelido" placeholder="Ex: João Silva" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">ID de Acesso</label>
-                        <input type="text" id="novo-adm-id" placeholder="Ex: 123456" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">ID de Acesso</label>
+                        <input type="text" id="novo-adm-id" placeholder="Ex: 123456" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-400 mb-1">Senha</label>
-                        <input type="password" id="novo-adm-senha" placeholder="Senha segura" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Senha</label>
+                        <input type="password" id="novo-adm-senha" placeholder="Senha segura" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
                     </div>
                     <div class="flex justify-end pt-2">
-                        <button onclick="cadastrarNovoAdministrador()" class="bg-accent hover:bg-emerald-600 text-black font-semibold text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition">
+                        <button onclick="cadastrarNovoAdministrador()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
                             <i data-lucide="user-plus" class="w-4 h-4"></i> Cadastrar Administrador
                         </button>
                     </div>
                 </div>
 
-                <div class="border-t border-gray-800 pt-5 space-y-3">
-                    <h3 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
-                        <i data-lucide="users" class="w-4 h-4 text-emerald-400"></i> Administradores Cadastrados
+                <div class="border-t border-gray-100 pt-5 space-y-3">
+                    <h3 class="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4 text-blue-600"></i> Administradores Cadastrados
                     </h3>
                     <div id="lista-admins-cadastrados" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
                 </div>
@@ -262,25 +255,25 @@
     </div>
 
     <!-- MODAL DE RESPOSTA -->
-    <div id="modal-resposta" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                <h3 class="text-md font-semibold text-emerald-400 flex items-center gap-2">
-                    <i data-lucide="reply" class="w-4 h-4"></i> Responder Pedido de Ajuda
+    <div id="modal-resposta" class="fixed inset-0 bg-black/40 backdrop-blur-xs hidden items-center justify-center z-50 p-4">
+        <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-xl">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="reply" class="w-4 h-4 text-blue-600"></i> Responder Pedido de Ajuda
                 </h3>
-                <button onclick="fecharModalResposta()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="fecharModalResposta()" class="text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div>
-                <p class="text-xs text-gray-400 mb-1">Mensagem do Viajante:</p>
-                <p id="modal-texto-viajante" class="text-sm bg-black/40 p-3 rounded-lg border border-gray-800 text-gray-200 italic"></p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Mensagem do Viajante:</p>
+                <p id="modal-texto-viajante" class="text-sm bg-gray-50 p-3 rounded-lg border border-gray-200 text-gray-700 italic"></p>
             </div>
             <div>
-                <label class="block text-xs text-gray-400 mb-1">Sua Resposta (Assinada por <span class="text-emerald-400 font-semibold" id="modal-nome-adm"></span>):</label>
-                <textarea id="modal-input-resposta" rows="4" placeholder="Escreva sua resposta..." class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-accent text-gray-100"></textarea>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Sua Resposta (Assinada por <span class="text-blue-600 font-semibold" id="modal-nome-adm"></span>):</label>
+                <textarea id="modal-input-resposta" rows="4" placeholder="Escreva sua resposta..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800"></textarea>
             </div>
             <div class="flex justify-end gap-2 pt-2">
-                <button onclick="fecharModalResposta()" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-medium transition">Cancelar</button>
-                <button onclick="salvarRespostaModal()" class="px-4 py-2 rounded-lg bg-accent hover:bg-emerald-600 text-black font-semibold text-xs transition flex items-center gap-1.5">
+                <button onclick="fecharModalResposta()" class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium transition cursor-pointer">Cancelar</button>
+                <button onclick="salvarRespostaModal()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition flex items-center gap-1.5 cursor-pointer shadow-sm">
                     <i data-lucide="send" class="w-4 h-4"></i> Enviar Resposta
                 </button>
             </div>
