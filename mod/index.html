@@ -3,284 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo - Acesso Restrito</title>
-    <!-- Tailwind CSS -->
+    <title>Painel do Moderador - Equalize-se</title>
+    <meta name="description" content="Painel administrativo exclusivo para moderadores gerenciarem pedidos de ajuda e mensagens diárias do Equalize-se.">
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
+    <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Configurações do PWA -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Equalize-se">
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen font-sans flex flex-col items-center justify-center p-4">
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
 
-    <!-- TELA DE LOGIN -->
-    <div id="tela-login" class="bg-white border border-gray-200 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-6">
-        <div class="text-center space-y-2">
-            <div class="inline-flex p-3 bg-blue-50 rounded-full text-blue-600 mb-2">
-                <i data-lucide="lock" class="w-8 h-8"></i>
-            </div>
-            <h1 class="text-xl font-bold text-gray-900">Acesso Restrito</h1>
-            <p class="text-xs text-gray-500">Entre com seu ID e senha de Administrador</p>
+    <!-- CABEÇALHO FIXO DO PAINEL -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <div class="flex items-center gap-3">
+            <span class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se <span class="text-xs uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-semibold tracking-normal align-middle">Moderação</span>
+            </span>
         </div>
 
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">ID de Acesso</label>
-                <input type="text" id="input-id" placeholder="Digite seu ID" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition text-gray-800">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Senha</label>
-                <input type="password" id="input-senha" placeholder="Digite sua senha" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition text-gray-800" onkeypress="if(event.key === 'Enter') fazerLogin()">
-            </div>
-            <button onclick="fazerLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm">
-                <i data-lucide="log-in" class="w-4 h-4"></i> Entrar no Painel
-            </button>
-            <p id="erro-login" class="text-xs text-red-500 text-center hidden font-medium">ID ou senha incorretos!</p>
-        </div>
-    </div>
-
-    <!-- PAINEL ADMINISTRATIVO -->
-    <div id="painel-admin" class="hidden w-full max-w-5xl min-h-screen pb-12">
-        <header class="bg-white border-b border-gray-200 p-4 shadow-sm sticky top-0 z-40 rounded-b-xl mb-6">
-            <div class="max-w-5xl mx-auto flex justify-between items-center">
-                <h1 class="text-lg font-bold flex items-center gap-2 text-gray-900">
-                    <i data-lucide="shield-check" class="text-blue-600"></i> Painel Admin
-                </h1>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500 hidden sm:inline">Logado: <strong class="text-blue-600" id="nome-adm-logado"></strong></span>
-                    
-                    <!-- Botão Olho: Ir para a página inicial -->
-                    <a href="index.html" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Visualizar Site">
-                        <i data-lucide="eye" class="w-4 h-4"></i>
-                    </a>
-
-                    <!-- Botão Engrenagem: Ir para Configurações -->
-                    <button onclick="mudarAba('config')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Configurações">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                    </button>
-
-                    <!-- Botão Sair -->
-                    <button onclick="fazerLogout()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 p-2 rounded-lg flex items-center gap-1 transition text-sm cursor-pointer" title="Sair">
-                        <i data-lucide="log-out" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <nav class="flex justify-center gap-3 sm:gap-6 mb-6 overflow-x-auto pb-2 px-2">
-            <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm">
-                <i data-lucide="video" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Vídeos</span>
-            </button>
-            <button onclick="mudarAba('mensagens')" id="btn-mensagens" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-                <i data-lucide="message-square" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Mensagens</span>
-            </button>
-            <button onclick="mudarAba('autor')" id="btn-autor" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-                <i data-lucide="user-pen" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Autor</span>
-            </button>
-            <button onclick="mudarAba('ajuda')" id="btn-ajuda" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-                <i data-lucide="help-circle" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Ajuda</span>
-            </button>
-            <button onclick="mudarAba('config')" id="btn-config" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-                <i data-lucide="settings" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Config</span>
-            </button>
+        <nav class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                <i data-lucide="log-out" class="w-4 h-4 text-slate-600"></i> Sair do Painel
+            </a>
         </nav>
+    </header>
 
-        <!-- ABA 1: VÍDEOS -->
-        <section id="aba-video" class="space-y-6">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
-                    <i data-lucide="film" class="w-4 h-4 text-blue-600"></i> Cadastrar / Gerenciar Vídeo do Dia
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Data do Vídeo</label>
-                        <input type="date" id="video-nova-data" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">YouTube ID</label>
-                        <input type="text" id="video-novo-id" placeholder="Ex: Nq2HMAeH36U" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Título do Vídeo</label>
-                        <input type="text" id="video-novo-titulo" placeholder="Título chamativo do vídeo..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Descrição</label>
-                        <textarea id="video-nova-descricao" rows="2" placeholder="Resumo ou descrição do vídeo..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800"></textarea>
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button onclick="adicionarOuAtualizarVideo()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-4 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Postar Vídeo
-                    </button>
-                </div>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
-                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
-                    <i data-lucide="list-video" class="w-4 h-4 text-blue-600"></i> Vídeos Cadastrados
-                </h3>
-                <div id="lista-cards-videos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </div>
-        </section>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
 
-        <!-- ABA 2: MENSAGENS -->
-        <section id="aba-mensagens" class="hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
-                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
-                    <i data-lucide="message-square-plus" class="w-4 h-4 text-blue-600"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-600"></span>)
-                </h2>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="nova-msg-texto" placeholder="Escreva a mensagem do dia..." class="flex-1 bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap cursor-pointer shadow-sm">
-                        <i data-lucide="send" class="w-4 h-4"></i> Enviar
-                    </button>
-                </div>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
-                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
-                    <i data-lucide="list" class="w-4 h-4 text-blue-600"></i> Mensagens Atuais do Dia
-                </h3>
-                <div id="lista-mensagens-dia" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </div>
-        </section>
-
-        <!-- ABA 3: AUTOR -->
-        <section id="aba-autor" class="hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
-                        <i data-lucide="user" class="w-4 h-4 text-blue-600"></i> Mensagem do Autor
-                    </h2>
-                    <button onclick="excluirMensagemAutor()" class="text-red-600 hover:text-red-700 text-xs flex items-center gap-1 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir</button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Nome do Autor</label>
-                        <input type="text" id="autor-nome" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Data</label>
-                        <input type="date" id="autor-data" disabled class="w-full bg-gray-100 border border-gray-200 text-gray-500 rounded-lg p-2.5 text-sm cursor-not-allowed">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Texto da Mensagem</label>
-                        <textarea id="autor-texto" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800"></textarea>
-                    </div>
-                </div>
-                <div class="mt-4 flex justify-end">
-                    <button onclick="publicarNovaAutor()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm"><i data-lucide="send" class="w-4 h-4"></i> Postar</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ABA 4: AJUDA -->
-        <section id="aba-ajuda" class="hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
-                    <i data-lucide="heart-handshake" class="w-4 h-4 text-blue-600"></i> Pedidos de Ajuda
-                </h2>
-                <div id="lista-relatos" class="space-y-4"></div>
-            </div>
-        </section>
-
-        <!-- ABA 5: CONFIGURAÇÕES E PERFIL -->
-        <section id="aba-config" class="hidden space-y-6">
-            <!-- Box para Editar Meu Próprio Perfil -->
-            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm max-w-xl mx-auto space-y-4">
-                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <i data-lucide="user-pen" class="w-5 h-5 text-blue-600"></i> Editar Meus Dados de Acesso
-                </h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Meu Apelido / Nome</label>
-                        <input type="text" id="meu-config-apelido" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Meu ID de Acesso</label>
-                        <input type="text" id="meu-config-id" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Minha Nova Senha</label>
-                        <input type="password" id="meu-config-senha" placeholder="Deixe em branco para não alterar" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div class="flex justify-end pt-2">
-                        <button onclick="salvarMeuPerfil()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
-                            <i data-lucide="save" class="w-4 h-4"></i> Salvar Minhas Alterações
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Box Exclusivo para o SEO Cadastrar e Gerenciar Outros Admins -->
-            <div id="painel-exclusivo-seo" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm max-w-xl mx-auto space-y-6 hidden">
-                <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <i data-lucide="user-cog" class="w-5 h-5 text-blue-600"></i> Cadastrar Novo Administrador
-                </h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Apelido do ADM</label>
-                        <input type="text" id="novo-adm-apelido" placeholder="Ex: João Silva" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">ID de Acesso</label>
-                        <input type="text" id="novo-adm-id" placeholder="Ex: 123456" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Senha</label>
-                        <input type="password" id="novo-adm-senha" placeholder="Senha segura" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    </div>
-                    <div class="flex justify-end pt-2">
-                        <button onclick="cadastrarNovoAdministrador()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
-                            <i data-lucide="user-plus" class="w-4 h-4"></i> Cadastrar Administrador
-                        </button>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-100 pt-5 space-y-3">
-                    <h3 class="text-sm font-semibold text-gray-800 flex items-center gap-2">
-                        <i data-lucide="users" class="w-4 h-4 text-blue-600"></i> Administradores Cadastrados
-                    </h3>
-                    <div id="lista-admins-cadastrados" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- MODAL DE RESPOSTA -->
-    <div id="modal-resposta" class="fixed inset-0 bg-black/40 backdrop-blur-xs hidden items-center justify-center z-50 p-4">
-        <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-xl">
-            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
-                    <i data-lucide="reply" class="w-4 h-4 text-blue-600"></i> Responder Pedido de Ajuda
-                </h3>
-                <button onclick="fecharModalResposta()" class="text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div>
-                <p class="text-xs font-medium text-gray-500 mb-1">Mensagem do Viajante:</p>
-                <p id="modal-texto-viajante" class="text-sm bg-gray-50 p-3 rounded-lg border border-gray-200 text-gray-700 italic"></p>
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Sua Resposta (Assinada por <span class="text-blue-600 font-semibold" id="modal-nome-adm"></span>):</label>
-                <textarea id="modal-input-resposta" rows="4" placeholder="Escreva sua resposta..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800"></textarea>
-            </div>
-            <div class="flex justify-end gap-2 pt-2">
-                <button onclick="fecharModalResposta()" class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium transition cursor-pointer">Cancelar</button>
-                <button onclick="salvarRespostaModal()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-                    <i data-lucide="send" class="w-4 h-4"></i> Enviar Resposta
-                </button>
-            </div>
+        <!-- Barra de Abas / Seleção de Painel -->
+        <div class="flex flex-wrap gap-2 bg-white/80 p-2 rounded-2xl shadow-sm border border-emerald-100/60 backdrop-blur-sm">
+            <button onclick="mudarAba('ajuda')" id="btn-aba-ajuda" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all bg-emerald-700 text-white shadow-sm cursor-pointer">
+                <i data-lucide="message-square-heart" class="w-4 h-4"></i> Pedidos de Ajuda
+            </button>
+            <button onclick="mudarAba('mensagens')" id="btn-aba-mensagens" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:bg-slate-100 cursor-pointer">
+                <i data-lucide="send" class="w-4 h-4"></i> Enviar Mensagem Diária
+            </button>
         </div>
-    </div>
 
+        <!-- SEÇÃO 1: PEDIDOS DE AJUDA DOS USUÁRIOS -->
+        <section id="painel-ajuda" class="space-y-4">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-slate-900">Mensagens e Pedidos de Ajuda Recebidos</h2>
+                        <p class="text-slate-600 text-sm font-light">Acompanhe e responda aos relatos enviados pelas pessoas que buscam apoio.</p>
+                    </div>
+                    <button onclick="carregarPedidosAjudaNaTela()" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200 cursor-pointer">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Atualizar Lista
+                    </button>
+                </div>
+
+                <!-- Lista Dinâmica de Pedidos de Ajuda Carregada via JS -->
+                <div id="lista-pedidos" class="space-y-4">
+                    <p class="text-center text-slate-500 py-6">Carregando pedidos de ajuda do servidor...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: ENVIO DE MENSAGENS DIÁRIAS (ILIMITADO) -->
+        <section id="painel-mensagens" class="hidden space-y-4">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Publicar Nova Mensagem Diária</h2>
+                    <p class="text-slate-600 text-sm font-light">Envie reflexões, palavras de conforto ou frases de incentivo para aparecerem no feed dos usuários.</p>
+                </div>
+
+                <form onsubmit="publicarMensagemDiaria(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Título / Tema do Dia</label>
+                        <input type="text" id="titulo-msg" placeholder="Ex: Acalme o seu coração..." required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-emerald-600">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Conteúdo / Palavra de Conforto</label>
+                        <textarea id="texto-msg" rows="4" placeholder="Escreva a mensagem inspiradora de hoje..." required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-emerald-600"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm rounded-xl transition-colors shadow-sm cursor-pointer">
+                            <i data-lucide="send" class="w-4 h-4"></i> Publicar Mensagem Diária
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Histórico de Mensagens Enviadas -->
+                <div class="border-t border-slate-200/60 pt-6 mt-6 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-base">Mensagens Anteriores Publicadas</h3>
+                    <div id="historico-mensagens" class="space-y-2">
+                        <p class="text-xs text-slate-500">Carregando histórico...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500 space-y-1">
+        <p>Equalize-se &copy; 2026 — Painel Administrativo Seguro.</p>
+        <p class="text-emerald-700 font-medium"><a href="index.html" class="hover:underline">Retornar ao site público</a></p>
+    </footer>
+
+    <!-- Scripts de Configuração e Lógica do Painel -->
     <script src="adm_config.js"></script>
-    <script src="adm.js"></script>
+    <script src="moderador.js"></script>
 </body>
 </html>

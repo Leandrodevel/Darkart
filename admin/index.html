@@ -84,10 +84,10 @@
                 <span class="text-[11px] font-semibold">Autor</span>
             </button>
             <button onclick="mudarAba('ajuda')" id="btn-ajuda" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-                <i data-lucide="help-circle" class="w-6 h-6"></i>
-                <span class="text-[11px] font-semibold">Ajuda</span>
+                <i data-lucide="handshake" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">Amparo</span>
             </button>
-            <button onclick="mudarAba('config')" id="btn-config" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
+            <button onclick="mudarAba('config')" id="btn-config" class="hidden flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
                 <i data-lucide="settings" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Config</span>
             </button>
@@ -137,12 +137,14 @@
                 <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
                     <i data-lucide="message-square-plus" class="w-4 h-4 text-blue-600"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-600"></span>)
                 </h2>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="nova-msg-texto" placeholder="Escreva a mensagem do dia..." class="flex-1 bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800">
-                    <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap cursor-pointer shadow-sm">
-                        <i data-lucide="send" class="w-4 h-4"></i> Enviar
-                    </button>
-                </div>
+<div class="flex flex-col sm:flex-row gap-3 items-start">
+    <textarea id="nova-msg-texto" rows="3" placeholder="Escreva a mensagem do dia..." class="w-full sm:flex-1 h-20 bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800 resize-none"></textarea>
+
+    <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap cursor-pointer shadow-sm">
+        <i data-lucide="send" class="w-4 h-4"></i> Enviar
+    </button>
+</div>
+
             </div>
             <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
                 <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">

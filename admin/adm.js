@@ -166,10 +166,13 @@ function mudarAba(aba) {
         if (!btn) return;
         
         if (a === aba) {
+            if(a !== 'config'){
             btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm";
+            }
             if(sec) sec.classList.remove('hidden');
         } else {
-            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer";
+            if(a !== 'config'){
+            btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer";}
             if(sec) sec.classList.add('hidden');
         }
     });
