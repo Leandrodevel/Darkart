@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Página Inicial -->
+    <url>
+        <loc>https://equalizese.vercel.app/</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Página de Horóscopo -->
+    <url>
+        <loc>https://equalizese.vercel.app/horoscopo.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Numerologia -->
+    <url>
+        <loc>https://equalizese.vercel.app/numerologia.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Arquétipos -->
+    <url>
+        <loc>https://equalizese.vercel.app/arquetipo.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Calendário -->
+    <url>
+        <loc>https://equalizese.vercel.app/calendario.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Ajuda -->
+    <url>
+        <loc>https://equalizese.vercel.app/ajuda.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+</urlset>
