@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Moderador - Equalize-se</title>
+    <meta name="description" content="Painel administrativo exclusivo para moderadores gerenciarem pedidos de ajuda e mensagens diárias do Equalize-se.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Configurações do PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Equalize-se">
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
+
+    <!-- CABEÇALHO FIXO DO PAINEL -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <div class="flex items-center gap-3">
+            <span class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se <span class="text-xs uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-semibold tracking-normal align-middle">Moderação</span>
+            </span>
+        </div>
+
+        <nav class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                <i data-lucide="log-out" class="w-4 h-4 text-slate-600"></i> Sair do Painel
+            </a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
+
+        <!-- Barra de Abas / Seleção de Painel -->
+        <div class="flex flex-wrap gap-2 bg-white/80 p-2 rounded-2xl shadow-sm border border-emerald-100/60 backdrop-blur-sm">
+            <button onclick="mudarAba('ajuda')" id="btn-aba-ajuda" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all bg-emerald-700 text-white shadow-sm cursor-pointer">
+                <i data-lucide="message-square-heart" class="w-4 h-4"></i> Pedidos de Ajuda
+            </button>
+            <button onclick="mudarAba('mensagens')" id="btn-aba-mensagens" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:bg-slate-100 cursor-pointer">
+                <i data-lucide="send" class="w-4 h-4"></i> Enviar Mensagem Diária
+            </button>
+        </div>
+
+        <!-- SEÇÃO 1: PEDIDOS DE AJUDA DOS USUÁRIOS -->
+        <section id="painel-ajuda" class="space-y-4">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-slate-900">Mensagens e Pedidos de Ajuda Recebidos</h2>
+                        <p class="text-slate-600 text-sm font-light">Acompanhe e responda aos relatos enviados pelas pessoas que buscam apoio.</p>
+                    </div>
+                    <button onclick="carregarPedidosAjudaNaTela()" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200 cursor-pointer">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Atualizar Lista
+                    </button>
+                </div>
+
+                <!-- Lista Dinâmica de Pedidos de Ajuda Carregada via JS -->
+                <div id="lista-pedidos" class="space-y-4">
+                    <p class="text-center text-slate-500 py-6">Carregando pedidos de ajuda do servidor...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: ENVIO DE MENSAGENS DIÁRIAS (ILIMITADO) -->
+        <section id="painel-mensagens" class="hidden space-y-4">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Publicar Nova Mensagem Diária</h2>
+                    <p class="text-slate-600 text-sm font-light">Envie reflexões, palavras de conforto ou frases de incentivo para aparecerem no feed dos usuários.</p>
+                </div>
+
+                <form onsubmit="publicarMensagemDiaria(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Título / Tema do Dia</label>
+                        <input type="text" id="titulo-msg" placeholder="Ex: Acalme o seu coração..." required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-emerald-600">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Conteúdo / Palavra de Conforto</label>
+                        <textarea id="texto-msg" rows="4" placeholder="Escreva a mensagem inspiradora de hoje..." required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-emerald-600"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm rounded-xl transition-colors shadow-sm cursor-pointer">
+                            <i data-lucide="send" class="w-4 h-4"></i> Publicar Mensagem Diária
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Histórico de Mensagens Enviadas -->
+                <div class="border-t border-slate-200/60 pt-6 mt-6 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-base">Mensagens Anteriores Publicadas</h3>
+                    <div id="historico-mensagens" class="space-y-2">
+                        <p class="text-xs text-slate-500">Carregando histórico...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500 space-y-1">
+        <p>Equalize-se &copy; 2026 — Painel Administrativo Seguro.</p>
+        <p class="text-emerald-700 font-medium"><a href="index.html" class="hover:underline">Retornar ao site público</a></p>
+    </footer>
+
+    <!-- Scripts de Configuração e Lógica do Painel -->
+    <script src="adm_config.js"></script>
+    <script src="moderador.js"></script>
+</body>
+</html>
