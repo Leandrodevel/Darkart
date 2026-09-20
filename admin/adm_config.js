@@ -22,7 +22,7 @@ window.addEventListener('load', async () => {
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
                 await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
-                await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
+              
 
 }
 
