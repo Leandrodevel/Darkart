@@ -1,5 +1,5 @@
 // URL da API PHP que conecta ao seu banco MySQL (ajuste conforme o seu servidor)
-const API_URL = "https://equalizese.vercel.app/dados.php"; 
+const API_URL = "https://equalizese.vercel.app/api/dados.php"; 
 
 lucide.createIcons();
 
