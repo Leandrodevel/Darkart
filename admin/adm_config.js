@@ -24,7 +24,7 @@ window.addEventListener('load', async () => {
                 await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
               
 
-}
+})
 
 // Função genérica unificada para requisições compatível com a estrutura anterior
 async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
