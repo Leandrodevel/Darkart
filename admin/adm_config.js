@@ -16,6 +16,14 @@ function obterDataHojeIso() {
     const dia = String(hoje.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
 }
+window.addEventListener('load', async () => {
+    const dataHoje = obterDataHojeIso();
+    // Lógica para apagar mensagens do dia anterior
+                
+                // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
+                await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
+
+}
 
 // Função genérica unificada para requisições compatível com a estrutura anterior
 async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
