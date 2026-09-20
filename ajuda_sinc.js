@@ -1,16 +1,15 @@
 // ==========================================
-// MÓDULO: ajuda_sinc.js (Versão Supabase)
+// MÓDULO: ajuda_sinc.js (Versão Supabase Corrigida)
 // Sincronização de Pedidos de Ajuda com o Banco de Dados
 // ==========================================
 
-// Configurações do Supabase (utiliza as mesmas credenciais definidas globalmente ou no adm_config.js)
 const SUPABASE_URL = 'https://pgotayoloyhyufgicvhd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnb3RheW9sb3loeXVmZ2ljdmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDg1ODAsImV4cCI6MjEwNTQ4NDU4MH0.yrW90hK_8QaR3Y4wAz-M6k9Lw2x7zXiQo0n6TQsHB94';
 
-// Inicializa o cliente do Supabase se já não estiver declarado globalmente
+// Inicializa o cliente do Supabase
 const supabaseAjudaClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-// Função para buscar todos os relatos de ajuda do Supabase
+// Função para buscar e agrupar os relatos por data para compatibilidade com o HTML
 async function buscarDadosAjudaServidor() {
     try {
         if (!supabaseAjudaClient) throw new Error("Cliente Supabase não inicializado.");
@@ -18,19 +17,39 @@ async function buscarDadosAjudaServidor() {
         const { data, error } = await supabaseAjudaClient
             .from('relatos_ajuda')
             .select('*')
-            .order('id', { ascending: false });
+            .order('id', { ascending: true });
 
         if (error) throw error;
+
+        // Reconstrói o formato de objeto agrupado por data_iso que o ajuda.html lê
+        const dadosAgrupados = {};
         
-        // Retorna os dados em formato de array ou objeto conforme o seu sistema espera
-        return data || [];
+        if (data) {
+            data.forEach(item => {
+                const dataIso = item.data_iso || new Date().toISOString().split('T')[0];
+                
+                if (!dadosAgrupados[dataIso]) {
+                    dadosAgrupados[dataIso] = { relatosAjuda: [] };
+                }
+
+                dadosAgrupados[dataIso].relatosAjuda.push({
+                    id: item.id,
+                    autor: item.autor,
+                    texto: item.texto,
+                    resposta: item.resposta,
+                    dataHora: item.data_hora
+                });
+            });
+        }
+
+        return dadosAgrupados;
     } catch (error) {
         console.error("Erro ao buscar dados de ajuda:", error);
-        return null;
+        return {};
     }
 }
 
-// Função para enviar um novo pedido de ajuda / relato para o banco
+// Função para enviar um novo pedido de ajuda / relato para o banco Supabase
 async function enviarPedidoAjuda(autor, textoRelato) {
     if (!textoRelato || textoRelato.trim() === "") {
         alert("O texto do relato não pode estar vazio.");
