@@ -27,12 +27,15 @@ function fecharModalFrase() {
 }
 
 // Função Global para Reagir às Mensagens
-async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao) {
-    if (elementoBotao.closest('.flex-wrap').hasAttribute('data-bloqueado')) {
+async function reagirMensagem(dataIso, indexMensagem, idMensagem, tipoReacao, elementoBotao) {
+    const containerBotoes = elementoBotao.closest('.flex-wrap');
+
+    // Se já estiver bloqueado neste ciclo, apenas retorna
+    if (containerBotoes.hasAttribute('data-bloqueado')) {
         return;
     }
 
-    const containerBotoes = elementoBotao.closest('.flex-wrap');
+    // Bloqueia temporariamente os botões deste card
     containerBotoes.setAttribute('data-bloqueado', 'true');
     containerBotoes.querySelectorAll('button').forEach(btn => {
         btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -56,11 +59,7 @@ async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao)
         elementoBotao.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50');
 
         salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'remover');
-        containerBotoes.removeAttribute('data-bloqueado');
-        containerBotoes.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            btn.style.pointerEvents = '';
-        });
+        // O bloqueio sairá sozinho daqui a pouco quando os 5 segundos passarem e a tela atualizar
         return;
     }
 
@@ -90,12 +89,10 @@ async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao)
     // Sincroniza imediatamente com o Supabase
     await sincronizarReacoesPendentes();
     
-    containerBotoes.removeAttribute('data-bloqueado');
-    containerBotoes.querySelectorAll('button').forEach(btn => {
-        btn.classList.remove('opacity-50', 'cursor-not-allowed');
-        btn.style.pointerEvents = '';
-    });
+    // Nota: Não removemos o 'data-bloqueado' aqui manualmente porque 
+    // a atualização automática de 5 segundos vai recriar o card limpo e desbloqueado.
 }
+
 
 // Gerencia reações pendentes no localStorage
 function salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, acao) {
@@ -239,40 +236,42 @@ async function carregarDadosDinamicos() {
                 listaContainer.innerHTML = "";
 
                 // Como os dados já vêm invertidos do banco, iteramos normalmente sem .reverse()
-                mensagensData.forEach((msg, indexReal) => {
-                    const reacoes = {
-                        coracao: msg.reacao_coracao || 0,
-                        amem: msg.reacao_amem || 0,
-                        flor: msg.reacao_flor || 0
-                    };
-                    
-                    const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+mensagensData.slice().reverse().forEach((msg, indexOriginal) => {
+    const indexReal = mensagensData.length - 1 - indexOriginal;
+    const reacoes = {
+        coracao: msg.reacao_coracao || 0,
+        amem: msg.reacao_amem || 0,
+        flor: msg.reacao_flor || 0
+    };
+    
+    const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+    const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+    const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
 
-                    const card = document.createElement("div");
-                    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
-                    card.innerHTML = 
-                        '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
-                        '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
-                            '<div class="flex items-center gap-1.5 flex-wrap">' +
-                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
-                                    '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
-                                '</button>' +
-                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
-                                    '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
-                                '</button>' +
-                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
-                                    '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
-                                '</button>' +
-                            '</div>' +
-                            '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
-                                '<i data-lucide="clock" class="w-3 h-3"></i>' +
-                                '<span>' + (msg.horario || '') + '</span>' +
-                            '</div>' +
-                        '</div>';
-                    listaContainer.appendChild(card);
-                });
+    const card = document.createElement("div");
+    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+    card.innerHTML = 
+        '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
+        '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
+            '<div class="flex items-center gap-1.5 flex-wrap">' +
+                '<button data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
+                    '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
+                '</button>' +
+                '<button data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
+                    '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
+                '</button>' +
+                '<button data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
+                    '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
+                '</button>' +
+            '</div>' +
+            '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
+                '<i data-lucide="clock" class="w-3 h-3"></i>' +
+                '<span>' + (msg.horario || '') + '</span>' +
+            '</div>' +
+        '</div>';
+    listaContainer.appendChild(card);
+});
+
             }
         } else {
             if (listaContainer) {
