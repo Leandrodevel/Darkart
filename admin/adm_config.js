@@ -22,6 +22,7 @@ window.addEventListener('load', async () => {
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
                 await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
+                await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
 
 }
 
@@ -51,6 +52,10 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
             } 
             else if (dados.acao === 'salvar_video_dia') {
+                  const dataHoje = obterDataHojeIso();
+                
+                // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
+                await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
                 res = await supabaseClient.from('videos_dia').upsert([dados]);
             }
             else if (dados.acao === 'enviar_mensagem') {
