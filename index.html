@@ -82,8 +82,6 @@
 <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
     <div class="max-w-lg mx-auto flex justify-around items-center">
         
-    
-
         <!-- 1. ORIENTAÇÕES (Dropdown para baixo) -->
         <div class="relative group">
             <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
@@ -92,8 +90,8 @@
                 </div>
                 <span class="text-[11px] font-medium">Orientações</span>
             </button>
-            <!-- Dropdown posicionado abaixo do botão -->
-            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+            <!-- Adicionado 'before:absolute before:-top-3 before:inset-x-0 before:h-3' para criar a ponte invisível -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 before:absolute before:-top-3 before:inset-x-0 before:h-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
                 <a href="rezas.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Rezas</a>
                 <a href="defumacao.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Defumação</a>
                 <a href="banhos.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-orange-50 hover:text-orange-700 rounded-xl transition-all">Banhos</a>
@@ -109,8 +107,7 @@
                 </div>
                 <span class="text-[11px] font-medium">Interesses</span>
             </button>
-            <!-- Dropdown posicionado abaixo do botão -->
-            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 before:absolute before:-top-3 before:inset-x-0 before:h-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
                 <a href="numerologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Numerologia</a>
                 <a href="astrologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Astrologia</a>
                 <a href="oraculos.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Oráculos</a>
@@ -125,13 +122,12 @@
                 </div>
                 <span class="text-[11px] font-medium">Conhecimentos</span>
             </button>
-            <!-- Dropdown posicionado abaixo do botão -->
-            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[180px] z-50">
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 before:absolute before:-top-3 before:inset-x-0 before:h-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[180px] z-50">
                 <a href="hermetismo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Hermetismo</a>
                 <a href="wicca.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Wicca</a>
                 <a href="umbanda.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Umbanda</a>
                 <a href="espiritismo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Espiritismo</a>
-                <a href="magia-velas.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Magia das Velas e Cores</a>
+                <a href="velas.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-all">Magia das Velas e Cores</a>
             </div>
         </div>
 

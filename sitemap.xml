@@ -3,7 +3,7 @@
     <!-- Página Inicial -->
     <url>
         <loc>https://equalizese.vercel.app/</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
@@ -11,7 +11,7 @@
     <!-- Página de Horóscopo -->
     <url>
         <loc>https://equalizese.vercel.app/horoscopo.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -19,7 +19,7 @@
     <!-- Página de Numerologia -->
     <url>
         <loc>https://equalizese.vercel.app/numerologia.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -27,13 +27,47 @@
     <!-- Página de Arquétipos -->
     <url>
         <loc>https://equalizese.vercel.app/arquetipo.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
-        <url>
+
+    <!-- Página sobre a Doutrina Espírita (Nova) -->
+    <url>
+        <loc>https://equalizese.vercel.app/espiritismo.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Magia das Velas (Nova) -->
+    <url>
+        <loc>https://equalizese.vercel.app/velas.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de Oráculos (Nova) -->
+    <url>
+        <loc>https://equalizese.vercel.app/orculos.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de E-books (Nova) -->
+    <url>
+        <loc>https://equalizese.vercel.app/ebook.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página Sobre -->
+    <url>
         <loc>https://equalizese.vercel.app/sobre.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -41,7 +75,7 @@
     <!-- Página de Calendário -->
     <url>
         <loc>https://equalizese.vercel.app/calendario.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -49,7 +83,7 @@
     <!-- Página de Ajuda -->
     <url>
         <loc>https://equalizese.vercel.app/ajuda.html</loc>
-        <lastmod>2026-09-19</lastmod>
+        <lastmod>2026-09-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>

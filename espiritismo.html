@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espiritismo: Ciência, Filosofia e Religião - Equalize-se</title>
+    <meta name="description" content="Conheça a Doutrina Espírita codificada por Allan Kardec, suas bases filosóficas, científicas e a imortalidade da alma.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Configurações do PWA para o Equalize-se -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Equalize-se">
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-purple-50 text-slate-800 min-h-screen pt-24 pb-12 font-sans flex flex-col justify-between">
+
+    <!-- CABEÇALHO FIXO -->
+    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
+        <!-- Nome/Logo do App -->
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+        </div>
+
+        <!-- Botão de Voltar para o Início -->
+        <nav class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200/60 shadow-2xs">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-700"></i> Voltar ao Início
+            </a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL COM LAYOUT CRIATIVO/ASSÉTRICO -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
+        
+        <!-- Bloco de Destaque Superior (Hero Card) -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-10 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-100/50 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 relative z-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-50 border border-purple-200 text-purple-700 rounded-2xl shadow-sm shrink-0">
+                    <i data-lucide="book-open-check" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-purple-700 font-bold uppercase tracking-widest">Codificação de Allan Kardec</span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">O Espiritismo</h1>
+                    <p class="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
+                        Muito mais do que uma crença, o Espiritismo é uma doutrina que se apoia na aliança entre a <strong>Ciência, a Filosofia e a Moral</strong>. Revelada pelos Espíritos Superiores, ela explica a origem, o destino dos seres e o porquê da existência terrena.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout em Grade Dividida (Criativo) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Coluna Esquerda: Os Três Aspectos (Span 2) -->
+            <div class="md:col-span-2 bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="compass" class="w-5 h-5 text-emerald-700"></i> Os Três Aspectos da Doutrina
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3 p-3.5 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="flask-conical" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide">O Aspecto Científico</h3>
+                                <p class="text-xs text-slate-600 mt-0.5">Estuda as manifestações mediúnicas de forma observacional, sem dogmas ou milagres, baseada na lei natural.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3.5 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                            <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="brain" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide">O Aspecto Filosófico</h3>
+                                <p class="text-xs text-slate-600 mt-0.5">Examina as consequências morais e existenciais da imortalidade da alma e da lei de causa e efeito.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3.5 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide">O Aspecto Moral / Religioso</h3>
+                                <p class="text-xs text-slate-600 mt-0.5">Resume-se na máxima de Jesus: <em>"Fora da caridade não há salvação"</em>, unindo os homens no bem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Direita: As 5 Obras Básicas (Span 1) -->
+            <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white rounded-3xl shadow-sm p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 text-emerald-400 mb-3">
+                        <i data-lucide="library" class="w-5 h-5"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">A Codificação</span>
+                    </div>
+                    <h2 class="text-lg font-bold text-white mb-4">O Pentateuco Espírita</h2>
+                    <p class="text-xs text-slate-300 mb-4">As obras fundamentais publicadas por Allan Kardec entre 1857 e 1868:</p>
+                    
+                    <ul class="space-y-2.5 text-xs text-slate-200">
+                        <li class="flex items-center gap-2 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>O Livro dos Espíritos <span class="text-emerald-400 text-[10px]">(1857)</span></span>
+                        </li>
+                        <li class="flex items-center gap-2 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>O Livro dos Médiuns <span class="text-emerald-400 text-[10px]">(1861)</span></span>
+                        </li>
+                        <li class="flex items-center gap-2 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>O Evangelho segundo o Espiritismo <span class="text-emerald-400 text-[10px]">(1864)</span></span>
+                        </li>
+                        <li class="flex items-center gap-2 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>O Céu e o Inferno <span class="text-emerald-400 text-[10px]">(1865)</span></span>
+                        </li>
+                        <li class="flex items-center gap-2 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>A Gênese <span class="text-emerald-400 text-[10px]">(1868)</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bloco Inferior: Os Princípios Fundamentais -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-purple-700"></i> Pontos Fundamentais da Doutrina
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-4 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                    <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Existência</span>
+                    <h3 class="text-xs font-bold text-slate-900 mt-1">Deus Supremo</h3>
+                    <p class="text-[11px] text-slate-600 mt-1">Causa primária de todas as coisas, inteligência suprema e imutável do universo.</p>
+                </div>
+
+                <div class="p-4 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                    <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Eternidade</span>
+                    <h3 class="text-xs font-bold text-slate-900 mt-1">Imortalidade da Alma</h3>
+                    <p class="text-[11px] text-slate-600 mt-1">O espírito sobrevive à morte física do corpo, retornando ao plano espiritual.</p>
+                </div>
+
+                <div class="p-4 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                    <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wider">Evolução</span>
+                    <h3 class="text-xs font-bold text-slate-900 mt-1">A Reencarnação</h3>
+                    <p class="text-[11px] text-slate-600 mt-1">Múltiplas existências corpóreas como ferramenta de aprendizado e aprimoramento moral.</p>
+                </div>
+
+                <div class="p-4 bg-slate-50/80 border border-emerald-100/60 rounded-2xl">
+                    <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wider">Justiça</span>
+                    <h3 class="text-xs font-bold text-slate-900 mt-1">Causa e Efeito</h3>
+                    <p class="text-[11px] text-slate-600 mt-1">Cada indivíduo colhe exatamente aquilo que semeia através de suas próprias escolhas.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-500">
+        Equalize-se &copy; 2026
+    </footer>
+
+    <!-- Inicialização dos Ícones -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
