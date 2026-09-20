@@ -1,29 +1,18 @@
 // ==========================================
-// MÓDULO: ajuda_sinc.js
-// Sincronização de Pedidos de Ajuda com o JSONBin.io
+// MÓDULO: ajuda_sinc.js (Versão MySQL / PHP)
+// Sincronização de Pedidos de Ajuda com o Banco de Dados
 // ==========================================
 
-const AJUDA_BIN_ID = "6aad99c2ac6210605adda82f";
-const AJUDA_API_KEY = "$2a$10$dQGLRurlOEnFFy4JdgxjxOLObuCSsZflIg.lBeAR.nzdcGdOHgIjq";
-const AJUDA_API_URL = `https://api.jsonbin.io/v3/b/${AJUDA_BIN_ID}`;
+// Altere para o caminho correto do seu endpoint PHP que gerencia a ajuda
+const URL_API_AJUDA = "api/ajuda.php"; 
 
-// Função auxiliar para obter a chave de data no formato YYYY-MM-DD
-function obterChaveDataHojeAjuda() {
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoje.getDate()).padStart(2, '0');
-    return `${ano}-${mes}-${dia}`;
-}
-
-// Função para buscar todos os dados ou relatos de ajuda do servidor
+// Função para buscar todos os relatos de ajuda do servidor MySQL
 async function buscarDadosAjudaServidor() {
     try {
-        const resposta = await fetch(AJUDA_API_URL, {
+        const resposta = await fetch(URL_API_AJUDA, {
             method: 'GET',
             headers: {
-                'X-Master-Key': AJUDA_API_KEY,
-                'X-Access-Key': AJUDA_API_KEY
+                'Content-Type': 'application/json'
             }
         });
 
@@ -32,38 +21,14 @@ async function buscarDadosAjudaServidor() {
         }
 
         const resultado = await resposta.json();
-        return resultado.record || {};
+        return resultado || {};
     } catch (error) {
         console.error("Erro ao buscar dados de ajuda:", error);
         return null;
     }
 }
 
-// NOVO: Função genérica para salvar/atualizar todos os dados no servidor via PUT
-async function salvarDadosAjudaServidor(dadosGlobais) {
-    try {
-        const respostaPut = await fetch(AJUDA_API_URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': AJUDA_API_KEY,
-                'X-Access-Key': AJUDA_API_KEY
-            },
-            body: JSON.stringify(dadosGlobais)
-        });
-
-        if (!respostaPut.ok) {
-            throw new Error(`Erro ao salvar no servidor: ${respostaPut.status}`);
-        }
-
-        return true;
-    } catch (error) {
-        console.error("Erro ao salvar dados no servidor:", error);
-        return false;
-    }
-}
-
-// Função para enviar um novo pedido de ajuda / relato
+// Função para enviar um novo pedido de ajuda / relato para o banco
 async function enviarPedidoAjuda(autor, textoRelato) {
     if (!textoRelato || textoRelato.trim() === "") {
         alert("O texto do relato não pode estar vazio.");
@@ -71,42 +36,29 @@ async function enviarPedidoAjuda(autor, textoRelato) {
     }
 
     try {
-        const dadosGlobais = await buscarDadosAjudaServidor();
-        if (dadosGlobais === null) {
-            throw new Error("Não foi possível carregar o banco de dados.");
-        }
-
-        const chaveHoje = obterChaveDataHojeAjuda();
-        const agora = new Date();
-        const dataHoraFormatada = agora.toLocaleDateString('pt-BR') + ' às ' + agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-        if (!dadosGlobais[chaveHoje]) {
-            dadosGlobais[chaveHoje] = {
-                videoDoDia: { titulo: "", descricao: "", youtubeId: "dQw4w9WgXcQ" },
-                resumoDiario: {},
-                mensagensDoDia: [],
-                relatosAjuda: []
-            };
-        }
-
-        if (!Array.isArray(dadosGlobais[chaveHoje].relatosAjuda)) {
-            dadosGlobais[chaveHoje].relatosAjuda = [];
-        }
-
-        const novoRelato = {
+        const dadosEnvio = {
+            acao: "enviar_relato",
             autor: autor && autor.trim() !== "" ? autor.trim() : "Anônimo",
-            texto: textoRelato.trim(),
-            resposta: "",
-            dataHora: dataHoraFormatada,
-            timestamp: agora.getTime()
+            texto: textoRelato.trim()
         };
 
-        dadosGlobais[chaveHoje].relatosAjuda.push(novoRelato);
+        const resposta = await fetch(URL_API_AJUDA, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosEnvio)
+        });
 
-        // Reaproveita a nova função genérica de salvamento
-        const sucesso = await salvarDadosAjudaServidor(dadosGlobais);
-        if (!sucesso) {
-            throw new Error("Erro ao salvar no servidor.");
+        if (!resposta.ok) {
+            throw new Error(`Erro ao salvar no servidor: ${resposta.status}`);
+        }
+
+        const resultado = await resposta.json();
+        
+        if (resultado.erro) {
+            alert(resultado.erro);
+            return false;
         }
 
         return true;
