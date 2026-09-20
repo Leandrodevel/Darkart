@@ -196,6 +196,7 @@ async function enviarMensagemServidor() {
 }
 
 // Carrega os dados dinâmicos (Vídeos e Mensagens do Dia) do Supabase
+// Carrega os dados dinâmicos (Vídeos e Mensagens do Dia) do Supabase
 async function carregarDadosDinamicos() {
     await sincronizarReacoesPendentes();
     if (!supabaseMainClient) return;
@@ -222,11 +223,12 @@ async function carregarDadosDinamicos() {
             }
         }
 
-        // 2. Carrega Mensagens do Dia / Mural para a data de hoje
+        // 2. Carrega Mensagens do Dia / Mural para a data de hoje ordenadas da mais recente para a mais antiga
         const { data: mensagensData, error: msgError } = await supabaseMainClient
             .from('mensagens_dia')
             .select('*')
-            .eq('data_iso', hojeChave);
+            .eq('data_iso', hojeChave)
+            .order('id', { ascending: false }); // <-- ORDENAÇÃO CORRETA PELO BANCO (Mais recentes primeiro)
 
         const containerSecao = document.getElementById("secao-frases-container");
         const listaContainer = document.getElementById("lista-frases-do-dia");
@@ -236,8 +238,8 @@ async function carregarDadosDinamicos() {
             if (listaContainer) {
                 listaContainer.innerHTML = "";
 
-                mensagensData.slice().reverse().forEach((msg, indexOriginal) => {
-                    const indexReal = mensagensData.length - 1 - indexOriginal;
+                // Como os dados já vêm invertidos do banco, iteramos normalmente sem .reverse()
+                mensagensData.forEach((msg, indexReal) => {
                     const reacoes = {
                         coracao: msg.reacao_coracao || 0,
                         amem: msg.reacao_amem || 0,
