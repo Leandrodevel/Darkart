@@ -254,43 +254,62 @@
                     const containerSecao = document.getElementById("secao-frases-container");
                     const listaContainer = document.getElementById("lista-frases-do-dia");
                     if (containerSecao) containerSecao.classList.remove("hidden");
+                 
                     if (listaContainer) {
-                        listaContainer.innerHTML = "";
+    listaContainer.innerHTML = "";
 
-                        registroHoje.mensagensDoDia.slice().reverse().forEach((msg, indexOriginal) => {
-                            const indexReal = registroHoje.mensagensDoDia.length - 1 - indexOriginal;
-                            const reacoes = msg.reacoes || { coracao: 0, amem: 0, flor: 0 };
-                            
-                            const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                            const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                            const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+    // Verifica se o registro existe e se há mensagens válidas
+    if (registroHoje && Array.isArray(registroHoje.mensagensDoDia) && registroHoje.mensagensDoDia.length > 0) {
+        
+        registroHoje.mensagensDoDia.slice().reverse().forEach((msg, indexOriginal) => {
+            const indexReal = registroHoje.mensagensDoDia.length - 1 - indexOriginal;
+            const reacoes = msg.reacoes || { coracao: 0, amem: 0, flor: 0 };
+            
+            const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+            const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+            const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
 
-                            const card = document.createElement("div");
-                            card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
-                            card.innerHTML = 
-                                '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
-                                '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
-                                    '<div class="flex items-center gap-1.5 flex-wrap">' +
-                                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
-                                            '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
-                                        '</button>' +
-                                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
-                                            '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
-                                        '</button>' +
-                                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
-                                            '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
-                                        '</button>' +
-                                    '</div>' +
-                                    '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
-                                        '<i data-lucide="clock" class="w-3 h-3"></i>' +
-                                        '<span>' + msg.horario + '</span>' +
-                                    '</div>' +
-                                '</div>';
-                            listaContainer.appendChild(card);
-                        });
+            const card = document.createElement("div");
+            card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+            card.innerHTML = 
+                '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
+                '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
+                    '<div class="flex items-center gap-1.5 flex-wrap">' +
+                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
+                            '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
+                        '</button>' +
+                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
+                            '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
+                        '</button>' +
+                        '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
+                            '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
+                        '<i data-lucide="clock" class="w-3 h-3"></i>' +
+                        '<span>' + msg.horario + '</span>' +
+                    '</div>' +
+                '</div>';
+            listaContainer.appendChild(card);
+        });
 
-                        lucide.createIcons();
-                    }
+    } else {
+        // Card de aviso amigável quando não houver mensagens ou ocorrer erro/falta de dados
+        const cardVazio = document.createElement("div");
+        cardVazio.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-6 text-center shadow-xs flex flex-col items-center justify-center space-y-3";
+        cardVazio.innerHTML = 
+            '<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center">' +
+                '<i data-lucide="message-square-off" class="w-6 h-6"></i>' +
+            '</div>' +
+            '<div>' +
+                '<h3 class="text-sm font-bold text-slate-900">Nenhuma mensagem por enquanto</h3>' +
+                '<p class="text-xs text-slate-500 mt-1">Ainda não há registros ou mensagens disponíveis para exibir neste momento.</p>' +
+            '</div>';
+        listaContainer.appendChild(cardVazio);
+    }
+
+    lucide.createIcons();
+}
                 }
             }
         } catch (e) {
