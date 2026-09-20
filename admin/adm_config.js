@@ -1,33 +1,94 @@
 // ==========================================
-// CONFIGURAÇÃO DE CONEXÃO MYSQL (EQZ_DB) - ADM_CONFIG.JS
+// CONFIGURAÇÃO DE CONEXÃO SUPABASE - ADM_CONFIG.JS
 // ==========================================
 
-const API_BASE_URL = "api/admin.php";
+const SUPABASE_URL = 'https://pgotayoloyhyufgicvhd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnb3RheW9sb3loeXVmZ2ljdmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDg1ODAsImV4cCI6MjEwNTQ4NDU4MH0.yrW90hK_8QaR3Y4wAz-M6k9Lw2x7zXiQo0n6TQsHB94';
 
+// Inicializa o cliente do Supabase
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Função genérica unificada para requisições compatível com a estrutura anterior
 async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
-    let url = `${API_BASE_URL}?recurso=${recurso}`;
-    if (id !== null) url += `&id=${id}`;
-
-    const opcoes = {
-        method: metodo,
-        headers: { 'Content-Type': 'application/json' }
-    };
-
-    if (dados && (metodo === 'POST' || metodo === 'PUT')) {
-        opcoes.body = JSON.stringify(dados);
-    }
-
     try {
-        const resposta = await fetch(url, opcoes);
-        if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
-        return await resposta.json();
+        let res;
+        
+        if (metodo === 'GET') {
+            let query = supabaseClient.from(recurso).select('*');
+            
+            // Se houver um ID específico, aplica o filtro (considerando colunas padrão 'id' ou 'data')
+            if (id !== null) {
+                const colunaId = (recurso === 'videos_dia') ? 'data' : 'id';
+                query = query.eq(colunaId, id);
+            }
+            
+            res = await query;
+            if (res.error) throw res.error;
+            return res.data;
+        } 
+        
+        else if (metodo === 'POST' || metodo === 'PUT') {
+            // Verifica a ação enviada pelo payload antigo para mapear corretamente no Supabase
+            if (dados.acao === 'excluir_registro') {
+                const colunaId = (dados.tabela === 'videos_dia') ? 'data' : 'id';
+                res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
+            } 
+            else if (dados.acao === 'salvar_video_dia') {
+                res = await supabaseClient.from('videos_dia').upsert([dados]);
+            }
+            else if (dados.acao === 'enviar_mensagem') {
+                res = await supabaseClient.from('mensagens_dia').insert([{
+                    data_iso: dados.dataIso,
+                    horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                    texto: dados.texto,
+                    reacao_coracao: 0,
+                    reacao_amem: 0,
+                    reacao_flor: 0
+                }]);
+            }
+            else if (dados.acao === 'salvar_mensagem_autor') {
+                res = await supabaseClient.from('mensagens_autor').insert([{
+                    autor: dados.autor,
+                    data: dados.data,
+                    texto: dados.texto
+                }]);
+            }
+            else if (dados.acao === 'responder_relato') {
+                res = await supabaseClient.from('relatos_ajuda').update({
+                    resposta: dados.resposta
+                }).eq('id', dados.id);
+            }
+            else if (dados.acao === 'cadastrar_admin') {
+                res = await supabaseClient.from('admins').insert([{
+                    id: dados.id,
+                    apelido: dados.apelido,
+                    senha: dados.senha,
+                    nivel: dados.nivel || 'Admin'
+                }]);
+            } 
+            else {
+                // Inserção/Atualização genérica padrão
+                res = await supabaseClient.from(recurso).upsert([dados]);
+            }
+
+            if (res.error) throw res.error;
+            return { sucesso: true, data: res.data };
+        } 
+        
+        else if (metodo === 'DELETE') {
+            const colunaId = (recurso === 'videos_dia') ? 'data' : 'id';
+            res = await supabaseClient.from(recurso).delete().eq(colunaId, id);
+            if (res.error) throw res.error;
+            return { sucesso: true };
+        }
+
     } catch (erro) {
-        console.error(`Erro na operação [${metodo}] para [${recurso}]:`, erro);
-        return null;
+        console.error(`Erro na operação Supabase [${metodo}] para [${recurso}]:`, erro);
+        return { sucesso: false, erro: erro.message };
     }
 }
 
-// Funções globais de acesso às tabelas do eqz_db
+// Funções globais de acesso às tabelas mantidas para total compatibilidade com o adm.js
 async function buscarTabela(nomeTabela) {
     return await apiRequisicao(nomeTabela, 'GET');
 }

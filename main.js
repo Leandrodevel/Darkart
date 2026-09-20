@@ -1,5 +1,12 @@
-// URL da API PHP rodando no XAMPP
-const API_URL = "http://localhost/Darkart/api/dados.php"; 
+// ==========================================
+// CONFIGURAÇÃO DO SUPABASE - MAIN.JS
+// ==========================================
+const SUPABASE_URL = 'https://pgotayoloyhyufgicvhd.supabase.co';
+    
+const SUPABASE_ANON_KEY =  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnb3RheW9sb3loeXVmZ2ljdmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDg1ODAsImV4cCI6MjEwNTQ4NDU4MH0.yrW90hK_8QaR3Y4wAz-M6k9Lw2x7zXiQo0n6TQsHB94';
+
+// Inicializa o cliente do Supabase
+const supabaseMainClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 lucide.createIcons();
 
@@ -49,6 +56,11 @@ async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao)
         elementoBotao.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50');
 
         salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'remover');
+        containerBotoes.removeAttribute('data-bloqueado');
+        containerBotoes.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.style.pointerEvents = '';
+        });
         return;
     }
 
@@ -74,6 +86,15 @@ async function reagirMensagem(dataIso, indexMensagem, tipoReacao, elementoBotao)
     elementoBotao.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-50');
 
     salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'adicionar');
+    
+    // Sincroniza imediatamente com o Supabase
+    await sincronizarReacoesPendentes();
+    
+    containerBotoes.removeAttribute('data-bloqueado');
+    containerBotoes.querySelectorAll('button').forEach(btn => {
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        btn.style.pointerEvents = '';
+    });
 }
 
 // Gerencia reações pendentes no localStorage
@@ -84,27 +105,46 @@ function salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, acao) {
     localStorage.setItem('equalize_pendencias_reacoes', JSON.stringify(pendencias));
 }
 
-// Sincroniza reações pendentes com o servidor via PHP/MySQL
+// Sincroniza reações pendentes diretamente com o Supabase
 async function sincronizarReacoesPendentes() {
     const pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
-    if (pendencias.length === 0) return;
+    if (pendencias.length === 0 || !supabaseMainClient) return;
 
     try {
-        const resposta = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ acao: 'sincronizar_reacoes', pendencias })
-        });
+        for (const p of pendencias) {
+            // Busca o registo correspondente à data no Supabase
+            const { data: registros, error: errBusca } = await supabaseMainClient
+                .from('mensagens_dia')
+                .select('*')
+                .eq('data_iso', p.dataIso);
 
-        if (resposta.ok) {
-            localStorage.removeItem('equalize_pendencias_reacoes');
+            if (errBusca) continue;
+            
+            // Localiza a mensagem exata pelo índice do array armazenado
+            if (registros && registros[p.indexMensagem]) {
+                const msg = registros[p.indexMensagem];
+                let campoReacao = 'reacao_coracao';
+                if (p.tipoReacao === 'amem') campoReacao = 'reacao_amem';
+                if (p.tipoReacao === 'flor') campoReacao = 'reacao_flor';
+
+                let valorAtual = msg[campoReacao] || 0;
+                if (p.acao === 'adicionar') valorAtual += 1;
+                else valorAtual = Math.max(0, valorAtual - 1);
+
+                await supabaseMainClient
+                    .from('mensagens_dia')
+                    .update({ [campoReacao]: valorAtual })
+                    .eq('id', msg.id);
+            }
         }
+
+        localStorage.removeItem('equalize_pendencias_reacoes');
     } catch (erro) {
-        console.error("Erro ao sincronizar reações pendentes:", erro);
+        console.error("Erro ao sincronizar reações pendentes com o Supabase:", erro);
     }
 }
 
-// Envia uma nova mensagem gerada pelo usuário para o servidor
+// Envia uma nova mensagem gerada pelo usuário diretamente para o Supabase
 async function enviarMensagemServidor() {
     const texto = document.getElementById("input-mensagem-usuario").value.trim();
     if (!texto) {
@@ -119,24 +159,25 @@ async function enviarMensagemServidor() {
     }
 
     const dataHojeIso = obterChaveDataHoje();
+    const horarioAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
     try {
         await sincronizarReacoesPendentes();
 
-        const resposta = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                acao: 'enviar_mensagem',
-                texto: texto,
-                dataIso: dataHojeIso
-            })
-        });
+        if (!supabaseMainClient) throw new Error("Cliente Supabase não inicializado.");
 
-        const resultado = await resposta.json();
-        if (!resposta.ok || resultado.erro) {
-            throw new Error(resultado.erro || "Erro ao salvar mensagem no servidor.");
-        }
+        const { error } = await supabaseMainClient
+            .from('mensagens_dia')
+            .insert([{
+                data_iso: dataHojeIso,
+                horario: horarioAtual,
+                texto: texto,
+                reacao_coracao: 0,
+                reacao_amem: 0,
+                reacao_flor: 0
+            }]);
+
+        if (error) throw error;
 
         localStorage.setItem('equalize_ultimo_envio', dataHojeIso);
 
@@ -154,47 +195,58 @@ async function enviarMensagemServidor() {
     }
 }
 
-// Carrega os dados dinâmicos (Vídeos e Mensagens do Dia) do banco MySQL
+// Carrega os dados dinâmicos (Vídeos e Mensagens do Dia) do Supabase
 async function carregarDadosDinamicos() {
     await sincronizarReacoesPendentes();
+    if (!supabaseMainClient) return;
 
     try {
-        const resposta = await fetch(API_URL);
-        if (!resposta.ok) return;
-
-        const dadosGlobais = await resposta.json();
         const hojeChave = obterChaveDataHoje();
-        const registroHoje = dadosGlobais[hojeChave];
 
-        // 1. Carrega Vídeo do Dia
-        if (registroHoje && registroHoje.videoDoDia) {
-            setTextoSeExistir("video-titulo", registroHoje.videoDoDia.titulo);
-            setTextoSeExistir("video-descricao", registroHoje.videoDoDia.descricao);
+        // 1. Carrega Vídeo do Dia para a data de hoje
+        const { data: videoData, error: videoError } = await supabaseMainClient
+            .from('videos_dia')
+            .select('*')
+            .eq('data', hojeChave)
+            .maybeSingle();
+
+        if (!videoError && videoData) {
+            setTextoSeExistir("video-titulo", videoData.titulo);
+            setTextoSeExistir("video-descricao", videoData.descricao);
             const iframeVideo = document.getElementById("video-iframe");
-            if (iframeVideo && registroHoje.videoDoDia.youtubeId) {
-                const novoSrc = 'https://www.youtube.com/embed/' + registroHoje.videoDoDia.youtubeId;
-                if (!iframeVideo.src.includes(registroHoje.videoDoDia.youtubeId)) {
+            if (iframeVideo && videoData.youtube_id) {
+                const novoSrc = 'https://www.youtube.com/embed/' + videoData.youtube_id;
+                if (!iframeVideo.src.includes(videoData.youtube_id)) {
                     iframeVideo.src = novoSrc;
                 }
             }
         }
 
-        // 2. Carrega Mensagens do Dia / Mural
+        // 2. Carrega Mensagens do Dia / Mural para a data de hoje
+        const { data: mensagensData, error: msgError } = await supabaseMainClient
+            .from('mensagens_dia')
+            .select('*')
+            .eq('data_iso', hojeChave);
+
         const containerSecao = document.getElementById("secao-frases-container");
         const listaContainer = document.getElementById("lista-frases-do-dia");
         
-        if (registroHoje && registroHoje.mensagensDoDia && registroHoje.mensagensDoDia.length > 0) {
+        if (!msgError && mensagensData && mensagensData.length > 0) {
             if (containerSecao) containerSecao.classList.remove("hidden");
             if (listaContainer) {
                 listaContainer.innerHTML = "";
 
-                registroHoje.mensagensDoDia.slice().reverse().forEach((msg, indexOriginal) => {
-                    const indexReal = registroHoje.mensagensDoDia.length - 1 - indexOriginal;
-                    const reacoes = msg.reacoes || { coracao: 0, amem: 0, flor: 0 };
+                mensagensData.slice().reverse().forEach((msg, indexOriginal) => {
+                    const indexReal = mensagensData.length - 1 - indexOriginal;
+                    const reacoes = {
+                        coracao: msg.reacao_coracao || 0,
+                        amem: msg.reacao_amem || 0,
+                        flor: msg.reacao_flor || 0
+                    };
                     
-                    const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.dataIso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+                    const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+                    const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+                    const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
 
                     const card = document.createElement("div");
                     card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
@@ -202,19 +254,19 @@ async function carregarDadosDinamicos() {
                         '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
                         '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
                             '<div class="flex items-center gap-1.5 flex-wrap">' +
-                                '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
+                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
                                     '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
                                 '</button>' +
-                                '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
+                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
                                     '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
                                 '</button>' +
-                                '<button data-msg-key="' + msg.dataIso + '-' + indexReal + '" data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.dataIso + '\', ' + indexReal + ', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
+                                '<button data-msg-key="' + msg.data_iso + '-' + indexReal + '" data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
                                     '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
                                 '</button>' +
                             '</div>' +
                             '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
                                 '<i data-lucide="clock" class="w-3 h-3"></i>' +
-                                '<span>' + msg.horario + '</span>' +
+                                '<span>' + (msg.horario || '') + '</span>' +
                             '</div>' +
                         '</div>';
                     listaContainer.appendChild(card);
@@ -236,34 +288,37 @@ async function carregarDadosDinamicos() {
         }
         lucide.createIcons();
     } catch (e) {
-        console.error("Erro ao carregar dados dinâmicos:", e);
+        console.error("Erro ao carregar dados dinâmicos do Supabase:", e);
     }
 }
 
-// Carrega a mensagem do autor do banco MySQL
+// Carrega a mensagem do autor do Supabase
 async function carregarMensagemAutor() {
-    try {
-        const resposta = await fetch(API_URL);
-        if (!resposta.ok) return;
+    if (!supabaseMainClient) return;
 
-        const dados = await resposta.json();
-        const mensagemDoAutor = dados.mensagensDoAutor;
+    try {
+        const hojeChave = obterChaveDataHoje();
+        const { data: autorData, error } = await supabaseMainClient
+            .from('mensagens_autor')
+            .select('*')
+            .eq('data', hojeChave)
+            .maybeSingle();
 
         const elemento = document.getElementById("mensagem-do-autor");
         const melementoAutor = document.getElementById("mensagem-dia-autor");
         const elementoData = document.getElementById("mensagem-dia-data");
         
         if (elemento) {
-            if (mensagemDoAutor && mensagemDoAutor.texto) {
-                elemento.innerText = mensagemDoAutor.texto;
-                if (elementoData) elementoData.innerText = mensagemDoAutor.data || "Data não disponível.";
-                if (melementoAutor) melementoAutor.innerText = mensagemDoAutor.autor || "Autor não disponível.";
+            if (!error && autorData && autorData.texto) {
+                elemento.innerText = autorData.texto;
+                if (elementoData) elementoData.innerText = autorData.data || "Data não disponível.";
+                if (melementoAutor) melementoAutor.innerText = autorData.autor || "Autor não disponível.";
             } else {
                 elemento.innerText = "Mensagem do autor não disponível.";
             }
         }
     } catch (error) {
-        console.error("Erro ao carregar mensagem do autor:", error);
+        console.error("Erro ao carregar mensagem do autor do Supabase:", error);
     }
 }
 
@@ -281,16 +336,11 @@ function setTextoSeExistir(id, texto) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Inicializa as funções de Astrologia, Lua e Numerologia que estão no novo arquivo
-    // 1. Suas outras funções de carregamento (mensagens, dados, etc.)
-  
-    
-    // 2. Adicione esta linha para disparar os cálculos de Astrologia, Lua e Numerologia
     if (typeof inicializarAstrologiaLua === 'function') {
         inicializarAstrologiaLua();
     }
 
-    // Carrega os dados assíncronos do backend MySQL
+    // Carrega os dados assíncronos do Supabase
     await carregarMensagemAutor();
     await carregarDadosDinamicos();
 
