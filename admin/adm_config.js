@@ -8,6 +8,15 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // Inicializa o cliente do Supabase
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Função auxiliar para obter a data atual no formato ISO (YYYY-MM-DD)
+function obterDataHojeIso() {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+}
+
 // Função genérica unificada para requisições compatível com a estrutura anterior
 async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
     try {
@@ -37,8 +46,14 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 res = await supabaseClient.from('videos_dia').upsert([dados]);
             }
             else if (dados.acao === 'enviar_mensagem') {
+                const dataHoje = obterDataHojeIso();
+                
+                // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
+                await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
+
+                // Insere a nova mensagem do dia
                 res = await supabaseClient.from('mensagens_dia').insert([{
-                    data_iso: dados.dataIso,
+                    data_iso: dados.dataIso || dataHoje,
                     horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
                     texto: dados.texto,
                     reacao_coracao: 0,
@@ -47,6 +62,10 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 }]);
             }
             else if (dados.acao === 'salvar_mensagem_autor') {
+                // Remove todas as mensagens de autor anteriores para garantir que fique apenas a atual (substituição)
+                await supabaseClient.from('mensagens_autor').delete().neq('id', 0); // ou delete de todas
+
+                // Insere a nova mensagem do autor
                 res = await supabaseClient.from('mensagens_autor').insert([{
                     autor: dados.autor,
                     data: dados.data,
