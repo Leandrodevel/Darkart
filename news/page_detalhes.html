@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Carregando Matéria - Equalize-se</title>
+    <meta name="description" content="Portal de Artigos, Conexão e Autoconhecimento.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-white text-slate-800 min-h-screen py-4 font-sans flex flex-col justify-between">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="w-full max-w-[1440px] mx-auto px-2 sm:px-4 space-y-4">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm text-center">
+            <a href="../index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Portal de Artigos, Conexão e Autoconhecimento</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-3 relative z-50">
+            <div class="max-w-md mx-auto flex justify-around items-center">
+                <a href="../index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="../chakras.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-purple-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-purple-50 rounded-xl transition-all">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Chakras</span>
+                </a>
+                <a href="../arquetipos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-blue-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-blue-50 rounded-xl transition-all">
+                        <i data-lucide="hash" class="w-5 h-5 text-blue-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Arquétipos</span>
+                </a>
+                <a href="../acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-orange-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-orange-50 rounded-xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- MATÉRIA PRINCIPAL (Preenchida dinamicamente via Supabase) -->
+        <article id="materiaContainer" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-sm space-y-6">
+            <div class="text-center py-16 text-slate-400 text-sm font-medium">Carregando conteúdo da matéria...</div>
+        </article>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script de Busca no Supabase e Renderização -->
+    <script>
+        // CONFIGURAÇÃO DO SUPABASE (Insira suas chaves reais aqui)
+const SUPABASE_URL = 'https://pgotayoloyhyufgicvhd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnb3RheW9sb3loeXVmZ2ljdmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDg1ODAsImV4cCI6MjEwNTQ4NDU4MH0.yrW90hK_8QaR3Y4wAz-M6k9Lw2x7zXiQo0n6TQsHB94';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function carregarMateriaDinamica() {
+            // Pega o ID da URL (ex: detalhe.html?id=1)
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            const container = document.getElementById('materiaContainer');
+
+            if (!id) {
+                container.innerHTML = `<div class="text-center py-10"><p class="text-rose-600 font-medium">Matéria não especificada.</p><a href="../index.html" class="inline-block mt-4 text-xs font-bold text-emerald-700 underline">Voltar ao início</a></div>`;
+                return;
+            }
+
+            try {
+                // Busca a matéria no Supabase pelo ID
+                const { data, error } = await _supabase
+                    .from('materias')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (error || !data) throw new Error("Matéria não localizada no banco de dados.");
+
+                // Formata a data (created_at) para o padrão legível
+                const dataFormatada = new Date(data.created_at).toLocaleDateString('pt-BR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                // Altera o título da aba do navegador
+                document.getElementById('pageTitle').innerText = `${data.titulo} - Equalize-se`;
+
+                // Renderiza o conteúdo aplicando exatamente a estrutura da sua página modelo
+                container.innerHTML = `
+                    <!-- Botão de Voltar -->
+
+
+                    <!-- Metadados da Matéria -->
+                    <div class="space-y-3">
+                     
+
+                            <span class="flex items-center gap-1 font-medium">
+                                <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-700"></i> ${dataFormatada}
+                            </span>
+                        </div>
+
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight">
+                            ${data.titulo}
+                        </h1>
+                    </div>
+
+                    <!-- Foto da Matéria -->
+                    <div class="space-y-2">
+                        <div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+                            <img src="${data.imagem_url}" alt="${data.titulo}" class="w-full h-72 sm:h-[450px] object-cover">
+                        </div>
+                        <p class="text-[11px] text-slate-400 text-center italic">Leitura recomendada do portal Equalize-se.</p>
+                    </div>
+
+                    <!-- Corpo do Texto Completo (quebra linhas automaticamente) -->
+                    <div class="text-slate-700 text-sm sm:text-base leading-relaxed space-y-4 pt-2 whitespace-pre-line">
+                        ${data.conteudo}
+                    </div>
+                                        <div>
+                        <a href="../index.html" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition-all border border-emerald-200/60">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span>Voltar ao início</span>
+                        </a>
+                    </div>
+                     <span class="flex items-center gap-1 font-medium text-slate-600">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-emerald-700"></i> ${data.autor}
+                            </span>
+                `;
+
+                // Recria os ícones do Lucide no conteúdo injetado
+                lucide.createIcons();
+
+            } catch (err) {
+                container.innerHTML = `<div class="text-center py-10"><p class="text-rose-600 font-medium">Erro ao carregar a matéria: ${err.message}</p><a href="../index.html" class="inline-block mt-4 text-xs font-bold text-emerald-700 underline">Voltar ao início</a></div>
+                                          `;
+            }
+        }
+
+        carregarMateriaDinamica();
+    </script>
+</body>
+</html>

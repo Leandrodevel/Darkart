@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Notícias - Painel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-50 min-h-screen py-10 px-4 sm:px-6">
+
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl border border-emerald-100/80 shadow-sm p-6 sm:p-10">
+        
+        <!-- Cabeçalho do Painel -->
+        <div class="flex items-center justify-between border-b border-slate-100 pb-5 mb-6">
+            <div>
+                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-semibold rounded-lg border border-emerald-200 text-xs uppercase tracking-wider">Painel Administrativo</span>
+                <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Cadastrar Nova Matéria</h1>
+            </div>
+            <div class="p-3 bg-emerald-700 text-white rounded-2xl shadow-sm">
+                <i data-lucide="file-text" class="w-6 h-6"></i>
+            </div>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form id="formNoticia" class="space-y-5">
+            
+            <!-- Título -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Título da Matéria</label>
+                <input type="text" id="titulo" required placeholder="Ex: O Poder da Conexão Diária..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+            </div>
+
+            <!-- Prévia (Resumo para o Card) -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Prévia / Resumo (para o Card da Home)</label>
+                <textarea id="previa" rows="2" required placeholder="Digite um breve resumo que aparecerá no card principal..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"></textarea>
+            </div>
+
+            <!-- Linha Dupla: URL da Imagem e Autor -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">URL da Imagem de Capa</label>
+                    <input type="url" id="imagem_url" required placeholder="https://exemplo.com/foto.jpg" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Nome do Autor</label>
+                    <input type="text" id="autor" required placeholder="Ex: Leandro Pessanha" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                </div>
+            </div>
+
+            <!-- Conteúdo Completo -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Conteúdo Completo da Matéria</label>
+                <textarea id="conteudo" rows="6" required placeholder="Escreva o texto completo da matéria aqui..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"></textarea>
+            </div>
+
+            <!-- Botão de Envio -->
+            <div class="pt-4 flex items-center justify-end gap-3">
+                <button type="submit" id="btnSalvar" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl transition-all shadow-sm cursor-pointer">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <span>Cadastrar Matéria</span>
+                </button>
+            </div>
+
+            <!-- Mensagem de Feedback -->
+            <div id="feedback" class="hidden p-4 rounded-xl text-sm font-medium text-center"></div>
+
+        </form>
+    </div>
+
+    <!-- Script de Integração com Supabase -->
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+
+        // CONFIGURAÇÃO DO SUPABASE (Substitua pelas suas credenciais reais)
+        
+        const SUPABASE_URL = 'https://pgotayoloyhyufgicvhd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnb3RheW9sb3loeXVmZ2ljdmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDg1ODAsImV4cCI6MjEwNTQ4NDU4MH0.yrW90hK_8QaR3Y4wAz-M6k9Lw2x7zXiQo0n6TQsHB94';
+    
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.getElementById('formNoticia').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btnSalvar = document.getElementById('btnSalvar');
+            const feedback = document.getElementById('feedback');
+
+            // Coleta os valores dos inputs
+            const titulo = document.getElementById('titulo').value;
+            const previa = document.getElementById('previa').value;
+            const imagem_url = document.getElementById('imagem_url').value;
+            const autor = document.getElementById('autor').value;
+            const conteudo = document.getElementById('conteudo').value;
+
+            btnSalvar.disabled = true;
+            btnSalvar.innerText = 'Salvando...';
+
+            try {
+                // Insere no Supabase (a data/hora 'created_at' é gerada automaticamente pelo banco)
+                const { data, error } = await _supabase
+                    .from('materias')
+                    .insert([
+                        { titulo, previa, imagem_url, autor, conteudo }
+                    ]);
+
+                if (error) throw error;
+
+                // Sucesso
+                feedback.className = "p-4 rounded-xl text-sm font-medium text-center bg-emerald-50 text-emerald-800 border border-emerald-200";
+                feedback.innerText = "Matéria cadastrada com sucesso no Supabase!";
+                feedback.classList.remove('hidden');
+
+                // Limpa o formulário
+                document.getElementById('formNoticia').reset();
+
+            } catch (error) {
+                // Erro
+                feedback.className = "p-4 rounded-xl text-sm font-medium text-center bg-rose-50 text-rose-800 border border-rose-200";
+                feedback.innerText = "Erro ao cadastrar: " + error.message;
+                feedback.classList.remove('hidden');
+            } finally {
+                btnSalvar.disabled = false;
+                btnSalvar.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Cadastrar Matéria</span>`;
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
