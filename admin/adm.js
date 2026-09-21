@@ -11,6 +11,75 @@ document.addEventListener("DOMContentLoaded", () => {
         lucide.createIcons();
     }
 });
+// ==========================================
+// 9. GESTÃO DE NEWS / MATÉRIAS
+// ==========================================
+async function carregarMateriasAdmin() {
+    const materias = await buscarTabela('materias');
+    const container = document.getElementById('lista-materias-cadastradas');
+    if (!container) return;
+
+    container.innerHTML = '';
+    if (!materias || materias.length === 0) {
+        container.innerHTML = '<p class="text-xs text-gray-500 italic">Nenhuma matéria cadastrada.</p>';
+        return;
+    }
+
+    materias.forEach(m => {
+        const div = document.createElement('div');
+        div.className = "flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200 text-xs";
+        div.innerHTML = `
+            <div>
+                <strong>${m.titulo}</strong>
+                <p class="text-gray-400">Por ${m.autor} em ${new Date(m.created_at || Date.now()).toLocaleDateString('pt-BR')}</p>
+            </div>
+            <button onclick="excluirMateria(${m.id})" class="text-red-600 hover:text-red-700 bg-white p-2 rounded border border-red-200 transition cursor-pointer">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+        `;
+        container.appendChild(div);
+    });
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+async function cadastrarNoticiaAdmin(e) {
+    e.preventDefault();
+    const titulo = document.getElementById('news-titulo').value.trim();
+    const previa = document.getElementById('news-previa').value.trim();
+    const imagem_url = document.getElementById('news-imagem').value.trim();
+    const autor = document.getElementById('news-autor').value.trim();
+    const conteudo = document.getElementById('news-conteudo').value.trim();
+
+    const dados = {
+        acao: 'salvar_materia', // Tratado de forma genérica ou direta no adm_config se necessário
+        titulo,
+        previa,
+        imagem_url,
+        autor,
+        conteudo
+    };
+
+    // Inserção direta usando a tabela 'materias'
+    const res = await apiRequisicao('materias', 'POST', dados);
+    if (res && res.sucesso) {
+        alert("Matéria cadastrada com sucesso!");
+        document.getElementById('formNoticiaAdmin').reset();
+        carregarMateriasAdmin();
+    } else {
+        alert("Erro ao cadastrar matéria.");
+    }
+}
+
+async function excluirMateria(id) {
+    if (confirm("Deseja realmente excluir esta matéria?")) {
+        const res = await apiRequisicao('materias', 'DELETE', null, id);
+        if (res && res.sucesso) {
+            carregarMateriasAdmin();
+        } else {
+            alert("Erro ao excluir matéria.");
+        }
+    }
+}
 
 // ==========================================
 // 1. SISTEMA DE LOGIN E SESSÃO
@@ -77,7 +146,8 @@ function abrirConfiguracoes() {
     mudarAba('config');
 }
 function mudarAba(nomeAba) {
-    const abas = ['video', 'mensagens', 'autor', 'ajuda', 'config'];
+    
+  const abas = ['video', 'mensagens','autor','ajuda','news','config'];
     
     abas.forEach(aba => {
         const secao = document.getElementById(`aba-${aba}`);
@@ -115,11 +185,11 @@ async function inicializarPainel() {
         carregarMensagensDia(),
         carregarMensagemAutor(),
         carregarRelatos(),
-        carregarAdminsCadastrados()
+        carregarAdminsCadastrados(),
+        carregarMateriasAdmin()
     ]);
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
-
 // ==========================================
 // 4. VÍDEOS DO DIA
 // ==========================================

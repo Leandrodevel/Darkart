@@ -51,35 +51,25 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 const colunaId = (dados.tabela === 'videos_dia') ? 'data' : 'id';
                 res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
             } 
-    else if (dados.acao === 'salvar_video_dia') {
-    const dataHoje = obterDataHojeIso();
-    
-    // 1. Limpa registros anteriores (ajustado para garantir que a exclusão funcione)
-    // Se a tabela guarda apenas 1 vídeo do dia, o ideal é limpar todos:
-    const { error: errorDelete } = await supabaseClient
-        .from('videos_dia')
-        .delete()
-        .neq('id', -1); // ou .gte('id', 0) dependendo do seu tipo de ID
+                else if (dados.acao === 'salvar_video_dia') {
+                // Remove o vídeo anterior se houver apenas um por dia, ou faz upsert baseado na data
+                const { error: errorUpsert } = await supabaseClient
+                    .from('videos_dia')
+                    .upsert([{
+                        data: dados.data,
+                        titulo: dados.titulo,
+                        descricao: dados.descricao,
+                        youtube_id: dados.youtube_id
+                    }], { onConflict: 'data' });
 
-    if (errorDelete) {
-        console.error("Erro ao limpar vídeos antigos:", errorDelete);
-        return;
-    }
-
-    // 2. Insere/Atualiza o novo vídeo do dia
-    const { data, error: errorUpsert } = await supabaseClient
-        .from('videos_dia')
-        .upsert([dados])
-        .select(); // O .select() ajuda a retornar o registro salvo para confirmação
-
-    if (errorUpsert) {
-        console.error("Erro ao salvar vídeo do dia:", errorUpsert);
-        res = { success: false, error: errorUpsert };
-    } else {
-        console.log("Vídeo salvo com sucesso!", data);
-        res = { success: true, data };
-    }
-}else if (dados.acao === 'enviar_mensagem') {
+                if (errorUpsert) {
+                    console.error("Erro ao salvar vídeo do dia:", errorUpsert);
+                    res = { success: false, error: errorUpsert };
+                } else {
+                    res = { success: true };
+                }
+            }
+else if (dados.acao === 'enviar_mensagem') {
                 const dataHoje = obterDataHojeIso();
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
@@ -123,12 +113,13 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 // Inserção/Atualização genérica padrão
                 res = await supabaseClient.from(recurso).upsert([dados]);
             }
-
-            if (res.error) throw res.error;
-            return { sucesso: true, data: res.data };
-        } 
         
-        else if (metodo === 'DELETE') {
+         if (res.error) throw res.error;
+            return { sucesso: true, data: res.data };
+        
+    
+        
+        }else if (metodo === 'DELETE') {
             const colunaId = (recurso === 'videos_dia') ? 'data' : 'id';
             res = await supabaseClient.from(recurso).delete().eq(colunaId, id);
             if (res.error) throw res.error;

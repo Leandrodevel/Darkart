@@ -72,6 +72,11 @@
         </header>
 
         <nav class="flex justify-center gap-3 sm:gap-6 mb-6 overflow-x-auto pb-2 px-2">
+            <button onclick="mudarAba('news')" id="btn-news" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
+    <i data-lucide="newspaper" class="w-6 h-6"></i>
+    <span class="text-[11px] font-semibold">News</span>
+</button>
+
             <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm">
                 <i data-lucide="video" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Vídeos</span>
@@ -95,6 +100,51 @@
         </nav>
 
         <!-- ABA 1: VÍDEOS -->
+                <!-- ABA: NEWS / MATÉRIAS -->
+        <section id="aba-news" class="hidden space-y-6">
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
+                    <i data-lucide="newspaper" class="w-4 h-4 text-blue-600"></i> Cadastrar Nova Matéria (News)
+                </h2>
+                <form id="formNoticiaAdmin" class="space-y-4" onsubmit="cadastrarNoticiaAdmin(event)">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Título da Matéria</label>
+                        <input type="text" id="news-titulo" required placeholder="Ex: O Poder da Conexão Diária..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Prévia / Resumo (para o Card)</label>
+                        <textarea id="news-previa" rows="2" required placeholder="Breve resumo..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">URL da Imagem de Capa</label>
+                            <input type="url" id="news-imagem" required placeholder="https://..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Nome do Autor</label>
+                            <input type="text" id="news-autor" required placeholder="Seu nome" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Conteúdo Completo</label>
+                        <textarea id="news-conteudo" rows="5" required placeholder="Texto completo da matéria..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" id="btn-salvar-news" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Publicar Matéria
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4 text-blue-600"></i> Matérias Publicadas
+                </h3>
+                <div id="lista-materias-cadastradas" class="space-y-3"></div>
+            </div>
+        </section>
+
         <section id="aba-video" class="space-y-6">
             <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
