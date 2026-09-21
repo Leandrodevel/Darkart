@@ -299,11 +299,10 @@ async function carregarMensagemAutor() {
 
     try {
         const hojeChave = obterChaveDataHoje();
+        
         const { data: autorData, error } = await supabaseMainClient
             .from('mensagens_autor')
-            .select('*')
-            .eq('data', hojeChave)
-            .maybeSingle();
+            .select('*').maybeSingle();
 
         const elemento = document.getElementById("mensagem-do-autor");
         const melementoAutor = document.getElementById("mensagem-dia-autor");
