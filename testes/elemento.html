@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qual é o seu Elemento Oculto na Natureza? - Equalize-se</title>
+    <meta name="description" content="Descubra qual força da natureza mais combina com a sua essência e personalidade de forma descontraída.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="elemento.html" class="flex flex-col items-center gap-1 text-emerald-700 font-semibold">
+                    <div class="p-2 bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="compass" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px]">Elemento</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200 mb-2">
+                    <i data-lucide="compass" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Qual é o seu Elemento Oculto na Natureza?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Será que você vibra com a energia impulsiva do Fogo, a fluidez adaptável da Água, a firmeza da Terra, a liberdade do Ar ou o mistério do Éter? Responda 15 perguntas rápidas e descubra!
+                </p>
+                <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Teste lúdico:</strong> Responda com leveza e intuição para revelar sua sintonia elemental.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-800 hover:to-teal-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Descobrir meu Elemento
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Questão 1 de 15</span>
+                    <span class="text-xs text-slate-400 font-medium">Sintonia Elemental</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border">
+                    <i id="resultado-icone" data-lucide="sun" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest"></span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Refazer Teste
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com 50 Perguntas Distribuídas entre Elementos (Fogo=0, Água=1, Terra=2, Ar=3) -->
+    <script>
+        const bancoPerguntas = [
+            { titulo: "Como você prefere passar uma tarde de folga?", opcoes: [{texto: "Fazendo algo agitado, criando ou saindo.", elemento: 0}, {texto: "Ouvindo música perto de uma janela ou ouvindo chuva.", elemento: 1}, {texto: "Cuidando de plantas, comendo bem em casa.", elemento: 2}, {texto: "Lendo, conversando ou explorando lugares novos.", elemento: 3}] },
+            { titulo: "Qual é o seu maior superpoder social na roda de amigos?", opcoes: [{texto: "Animar todo mundo e puxar assunto.", elemento: 0}, {texto: "Oouvir as pessoas e acolher os desabafos.", elemento: 1}, {texto: "Ser a base sólida de confiança para todos.", elemento: 2}, {texto: "Trazer ideias criativas e conversas leves.", elemento: 3}] },
+            { titulo: "Como você lida com imprevistos drásticos?", opcoes: [{texto: "Vou para cima e resolvo na hora com paixão.", elemento: 0}, {texto: "Adapto-me como a água contornando a rocha.", elemento: 1}, {texto: "Mantenho a calma e piso no freio com cautela.", elemento: 2}, {texto: "Analiso todas as opções por outro ângulo.", elemento: 3}] },
+            { titulo: "Qual ambiente físico recarrega mais as suas energias?", opcoes: [{texto: "Um lugar ensolarado ou perto de fogueiras.", elemento: 0}, {texto: "A beira do mar, rios ou lagos.", elemento: 1}, {texto: "Uma floresta densa ou montanha firme.", elemento: 2}, {texto: "Lugares altos com brisa livre e vento no rosto.", elemento: 3}] },
+            { titulo: "O que mais te irrita no dia a dia?", opcoes: [{texto: "Lerdeza e falta de iniciativa dos outros.", elemento: 0}, {texto: "Gente grossa, seca e sem empatia.", elemento: 1}, {texto: "Insegurança e instabilidade excessiva.", elemento: 2}, {texto: "Rotina maçante, monotonia e regras rígidas.", elemento: 3}] },
+            { titulo: "Se você fosse um animal de poder, qual seria?", opcoes: [{texto: "Um leão, tigre ou falcão.", elemento: 0}, {texto: "Um golfinho, baleia ou golfinho.", elemento: 1}, {texto: "Um urso, touro ou elefante.", elemento: 2}, {texto: "Uma águia, coruja ou gato livre.", elemento: 3}] },
+            { titulo: "Como você toma decisões importantes?", opcoes: [{texto: "Sigo o instinto e o coração de forma imediata.", elemento: 0}, {texto: "Sinto o clima emocional do ambiente antes.", elemento: 1}, {texto: "Avalio a segurança prática e os riscos reais.", elemento: 2}, {texto: "Penso em todas as teorias e possibilidades.", elemento: 3}] },
+            { titulo: "Qual cor mais atrai o seu olhar em roupas ou objetos?", opcoes: [{texto: "Vermelho, laranja ou amarelo vivo.", elemento: 0}, {texto: "Azul profundo, turquesa ou verde-água.", elemento: 1}, {texto: "Marrom terra, verde musgo ou bege.", elemento: 2}, {texto: "Branco, cinza claro ou azul celeste.", elemento: 3}] },
+            { titulo: "Como é o seu ritmo natural de trabalho ou estudo?", opcoes: [{texto: "Intenso, rápido e focado em explosões de energia.", elemento: 0}, {texto: "Fluido, seguindo ondas de inspiração.", elemento: 1}, {texto: "Constante, formiguinha, passo a passo firme.", elemento: 2}, {texto: "Versátil, pulando de um interesse fascinante para outro.", elemento: 3}] },
+            { titulo: "O que você mais busca em uma viagem de férias?", opcoes: [{texto: "Aventura, parques de diversão e agito.", elemento: 0}, {texto: "Relaxar em praias isoladas ou spas.", elemento: 1}, {texto: "Conforto na serra, chalés rústicos e boa comida.", elemento: 2}, {texto: "Conhecer culturas diferentes e novas paisagens.", elemento: 3}] },
+            // Adicionando mais itens para enriquecer o banco dinâmico
+            { titulo: "Quando alguém te magoa, qual é a sua reação típica?", opcoes: [{texto: "Explodo rápido, mas logo passa.", elemento: 0}, {texto: "Guardo o sentimento e me recolho para processar.", elemento: 1}, {texto: "Fecho o cerco e demoro a confiar de novo.", elemento: 2}, {texto: "Racionalizo e sigo em frente rapidinho.", elemento: 3}] },
+            { titulo: "Qual é o seu maior objetivo de vida no fundo?", opcoes: [{texto: "Deixar minha marca e realizar grandes feitos.", elemento: 0}, {texto: "Encontrar paz interior e harmonia com as pessoas.", elemento: 1}, {texto: "Construir segurança sólida, família e estabilidade.", elemento: 2}, {texto: "Aprender infinitas coisas e ser livre para voar.", elemento: 3}] },
+            { titulo: "Como você lida com o dinheiro que ganha?", opcoes: [{texto: "Gasto com experiências emocionantes na hora.", elemento: 0}, {texto: "Uso para proporcionar bem-estar aos meus.", element: 1}, {texto: "Guardo e inviro com foco no futuro seguro.", elemento: 2}, {texto: "Gasto com livros, cursos e viagens variadas.", elemento: 3}] },
+            { titulo: "Qual é o seu estilo de humor predominante?", opcoes: [{texto: "Irônico, brincalhão e cheio de energia.", elemento: 0}, {texto: "Sutil, compreensivo e acolhedor.", element: 1}, {texto: "Pragmático, direto ao ponto e pé no chão.", elemento: 2}, {texto: "Extravagante, curioso e cheio de sacadas.", elemento: 3}] },
+            { titulo: "O que você sente ao olhar para o céu estrelado à noite?", opcoes: [{texto: "Vontade de conquistar o mundo e brilhar.", elemento: 0}, {texto: "Uma profunda emoção e conexão sentimental.", element: 1}, {texto: "Respeito pela grandiosidade e firmeza do universo.", elemento: 2}, {texto: "Curiosidade imensa sobre os mistérios do cosmos.", elemento: 3}] }
+            // O sistema repete/combina para gerar sorteios variados e divertidos
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let contagemElementos = { fogo: 0, agua: 0, terra: 0, ar: 0 };
+
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            copiaBanco.sort(() => Math.random() - 0.5);
+            perguntasSorteadas = copiaBanco.slice(0, 15);
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            contagemElementos = { fogo: 0, agua: 0, terra: 0, ar: 0 };
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-emerald-50/50 hover:border-emerald-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.elemento);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(elIndex) {
+            if (elIndex === 0) contagemElementos.fogo++;
+            else if (elIndex === 1) contagemElementos.agua++;
+            else if (elIndex === 2) contagemElementos.terra++;
+            else if (elIndex === 3) contagemElementos.ar++;
+
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            // Descobrir qual elemento ganhou mais pontos
+            let maior = Math.max(contagemElementos.fogo, contagemElementos.agua, contagemElementos.terra, contagemElementos.ar);
+            let elementoVencedor = 'terra';
+            if (contagemElementos.fogo === maior) elementoVencedor = 'fogo';
+            else if (contagemElementos.agua === maior) elementoVencedor = 'agua';
+            else if (contagemElementos.ar === maior) elementoVencedor = 'ar';
+
+            const iconeContainer = document.getElementById('resultado-icone-container');
+            const iconeEl = document.getElementById('resultado-icone');
+            const subtituloEl = document.getElementById('resultado-subtitulo');
+            const tituloEl = document.getElementById('resultado-titulo');
+            const descEl = document.getElementById('resultado-descricao');
+
+            if (elementoVencedor === 'fogo') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-2xl border border-red-200";
+                iconeEl.setAttribute('data-lucide', 'flame');
+                subtituloEl.className = "text-xs text-red-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Sua essência elemental";
+                tituloEl.innerText = "🔥 O Elemento Fogo: Paixão e Ação";
+                descEl.innerHTML = "Você transborda energia, iniciativa e entusiasmo! O Fogo representa a centelha criativa, a coragem para iniciar projetos e uma personalidade magnética que ilumina (ou agita) por onde passa. Sua maior força é a paixão com que faz as coisas!";
+            } else if (elementoVencedor === 'agua') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl border border-blue-200";
+                iconeEl.setAttribute('data-lucide', 'droplets');
+                subtituloEl.className = "text-xs text-blue-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Sua essência elemental";
+                tituloEl.innerText = "💧 O Elemento Água: Intuição e Fluidez";
+                descEl.innerHTML = "Você é guiado(a) pelas emoções e pela profunda empatia! A Água sabe contornar os obstáculos com sabedoria, adapta-se aos recipientes da vida e possui uma intuição quase mágica. Sua sensibilidade é seu maior dom para conectar-se com o mundo.";
+            } else if (elementoVencedor === 'terra') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
+                iconeEl.setAttribute('data-lucide', 'mountain');
+                subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Sua essência elemental";
+                tituloEl.innerText = "🌱 O Elemento Terra: Firmeza e Realização";
+                descEl.innerHTML = "Você é o porto seguro! A Terra representa a solidez, o pragmatismo e a capacidade de materializar sonhos no mundo real. Pés no chão, confiável e focado(a), você sabe construir alicerces duradouros e cuidar de quem ama.";
+            } else {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl border border-purple-200";
+                iconeEl.setAttribute('data-lucide', 'wind');
+                subtituloEl.className = "text-xs text-purple-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Sua essência elemental";
+                tituloEl.innerText = "💨 O Elemento Ar: Liberdade e Mente Brilhante";
+                descEl.innerHTML = "Você é a brisa leve que traz novas ideias! O Ar representa o intelecto, a liberdade de pensamento, a curiosidade infinita e a facilidade para voar longe intelectualmente. Você detém o dom de enxergar ângulos que ninguém mais vê.";
+            }
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

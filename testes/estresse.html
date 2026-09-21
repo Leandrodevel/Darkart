@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeamento de Estresse e Sobrecarga - Equalize-se</title>
+    <meta name="description" content="Avalie o seu nível de desgaste físico e mental diante das pressões do dia a dia.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="estresse.html" class="flex flex-col items-center gap-1 text-amber-600 font-semibold">
+                    <div class="p-2 bg-amber-50 rounded-2xl transition-all">
+                        <i data-lucide="activity" class="w-5 h-5 text-amber-600"></i>
+                    </div>
+                    <span class="text-[11px]">Estresse</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE / ESTRESSE -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200 mb-2">
+                    <i data-lucide="activity" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Qual é o seu nível atual de desgaste e estresse?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    A rotina acelerada e as cobranças diárias costumam sobrecarregar o corpo e a mente. Selecionaremos 15 reflexões do nosso banco para avaliar o seu nível de tensão e indicar caminhos de alívio.
+                </p>
+                <div class="bg-amber-50 border border-amber-200 text-amber-900 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Nota importante:</strong> Esta ferramenta tem fins exclusivamente educativos e de autoconhecimento, não substituindo o diagnóstico clínico.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Iniciar Avaliação
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-amber-600 uppercase tracking-wider">Questão 1 de 15</span>
+                    <span class="text-xs text-slate-400 font-medium">Mapeamento de Sobrecarga</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO / ORIENTAÇÃO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border">
+                    <i id="resultado-icone" data-lucide="sun" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest"></span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <!-- DIRECIONAMENTO / PRÁTICAS SUGERIDAS -->
+                <div id="bloco-praticas" class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-left space-y-3">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold text-sm">
+                        <i data-lucide="shield-alert" class="w-5 h-5 text-amber-600"></i>
+                        <span>Estratégias Práticas para Alívio do Estresse:</span>
+                    </div>
+                    <ul class="text-xs sm:text-sm text-slate-700 space-y-2">
+                        <li><strong>Pausas Ativas:</strong> A cada hora trabalhada, pare por 5 minutos para esticar o corpo e respirar longe de telas.</li>
+                        <li><strong>Revisão de Prioridades:</strong> Aprenda a delegar e a recusar demandas extras que excedam a sua capacidade física e mental atual.</li>
+                        <li><strong>Desconexão Digital:</strong> Defina um horário limite à noite para desligar notificações de trabalho ou redes sociais.</li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Refazer Avaliação
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com Banco de 50 Perguntas de Estresse e Sorteio de 15 -->
+    <script>
+        const bancoPerguntas = [
+            // Sintomas Físicos
+            { titulo: "Você tem sentido dores musculares constantes, especialmente no pescoço, ombros e costas?", opcoes: [{texto: "Raramente ou nunca.", pontos: 0}, {texto: "Alguns dias da semana.", pontos: 1}, {texto: "Quase todos os dias, com muita rigidez.", pontos: 2}] },
+            { titulo: "Tem sofrido com dores de cabeça ou enxaquecas frequentes ligadas à tensão?", opcoes: [{texto: "Não costumo ter.", pontos: 0}, {texto: "Às vezes, em dias mais cheios.", pontos: 1}, {texto: "Sim, com alta frequência.", pontos: 2}] },
+            { titulo: "Você percebe seu maxilar travado ou range os dentes (bruxismo) durante o dia ou à noite?", opcoes: [{texto: "Não noto isso.", pontos: 0}, {texto: "Às vezes acordo com a mandíbula tensa.", pontos: 1}, {texto: "Sim, é constante e causa incômodo.", pontos: 2}] },
+            { titulo: "Sente cansaço físico extremo logo ao acordar, como se não tivesse dormido?", opcoes: [{texto: "Acordo revigorado(a).", pontos: 0}, {texto: "Demoro a engatar o dia.", pontos: 1}, {texto: "Sim, acordo exausto(a) todos os dias.", pontos: 2}] },
+            { titulo: "Tem experimentado problemas estomacais (azia, digestão lenta, queimação ou dor abdominal) por nervosismo?", opcoes: [{texto: "Meu estômago é tranquilo.", pontos: 0}, {texto: "Sinto reflexos leves em dias estressantes.", pontos: 1}, {texto: "Sim, o estresse afeta diretamente minha digestão.", pontos: 2}] },
+            { titulo: "Sente o coração acelerado ou palpitações sem ter feito esforço físico?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Raramente sob pressão.", pontos: 1}, {texto: "Sim, acontece com certa frequência.", pontos: 2}] },
+            { titulo: "Sua imunidade parece baixa, pegando gripes ou infecções com facilidade?", opcoes: [{texto: "Minha saúde é resistente.", pontos: 0}, {texto: "Fico doente ocasionalmente.", pontos: 1}, {texto: "Sim, qualquer estresse me derruba.", pontos: 2}] },
+
+            // Esgotamento Mental e Cognitivo
+            { titulo: "Sua capacidade de concentração e foco nas tarefas diminuiu visivelmente?", opcoes: [{texto: "Consigo focar muito bem.", pontos: 0}, {texto: "Distraio-me com facilidade.", pontos: 1}, {texto: "Não consigo manter o foco em absolutamente nada.", pontos: 2}] },
+            { titulo: "Você tem esquecido coisas simples do dia a dia (chaves, compromissos, recados)?", opcoes: [{texto: "Minha memória está boa.", pontos: 0}, {texto: "Esqueço pequenas coisas de vez em quando.", pontos: 1}, {texto: "Sim, sinto esquecimentos frequentes e lapsos mentais.", pontos: 2}] },
+            { titulo: "Sua mente não desliga nem na hora de dormir, gerando um fluxo incessante de pensamentos?", opcoes: [{texto: "Desligo a mente com facilidade.", pontos: 0}, {texto: "Demoro um pouco para acalmar os pensamentos.", pontos: 1}, {texto: "Sim, minha cabeça parece um turbilhão que não para.", pontos: 2}] },
+            { titulo: "Você sente uma sensação constante de pressa, como se o tempo estivesse sempre acabando?", opcoes: [{texto: "Lido bem com o tempo.", pontos: 0}, {texto: "Sinto correria em alguns dias.", pontos: 1}, {texto: "Sim, vivo em estado perpétuo de urgência e afobação.", pontos: 2}] },
+            { titulo: "A tomada de decisões simples (como o que comer ou vestir) tornou-se exaustiva?", opcoes: [{texto: "Decido sem problemas.", pontos: 0}, {texto: "Às vezes demoro mais que o normal.", pontos: 1}, {texto: "Sim, qualquer escolha drena o pouco de energia que me resta.", pontos: 2}] },
+
+            // Reações Emocionais e Comportamentais
+            { titulo: "Você tem perdido a paciência facilmente com pequenas falhas dos outros ou imprevistos?", opcoes: [{texto: "Tenho bastante paciência.", pontos: 0}, {texto: "Estresso-me com coisas menores às vezes.", pontos: 1}, {texto: "Sim, estou irritado(a) e pavio curto o tempo todo.", pontos: 2}] },
+            { titulo: "Sente uma vontade incontrolável de se isolar de todos ao chegar em casa?", opcoes: [{texto: "Gosto de interagir.", pontos: 0}, {texto: "Prefiro momentos de silêncio.", pontos: 1}, {texto: "Sim, quero que todos se afastem e não me procurem.", pontos: 2}] },
+            { titulo: "Tem sentido crises de choro repentinas causadas pelo acúmulo de pressão?", opcoes: [{texto: "Não choro por isso.", pontos: 0}, {texto: "Raramente quando a carga pesa.", points: 1}, {texto: "Sim, desabo em lágrimas com facilidade.", pontos: 2}] },
+            { titulo: "Você sente um sentimento persistente de impaciência ou frustração sem causa aparente?", opcoes: [{texto: "Sinto-me calmo(a).", pontos: 0}, {texto: "Fico inquieto(a) periodicamente.", pontos: 1}, {texto: "Sim, a frustração é minha companheira constante.", pontos: 2}] },
+            { titulo: "Perdeu o entusiasmo pelas coisas que antes faziam você relaxar e se divertir?", opcoes: [{texto: "Aproveito meus momentos de lazer.", pontos: 0}, {texto: "Desfruto pouco por cansaço.", pontos: 1}, {texto: "Sim, nada mais parece trazer prazer ou descanso.", pontos: 2}] },
+
+            // Trabalho, Rotina e Sobrecarga de Papéis
+            { titulo: "A quantidade de trabalho ou tarefas sob sua responsabilidade excede o razoável?", opcoes: [{texto: "Minha carga é equilibrada.", pontos: 0}, {texto: "Às vezes acumula bastante.", pontos: 1}, {texto: "Sim, é desumana e impossível de dar conta.", pontos: 2}] },
+            { titulo: "Você leva preocupações e problemas profissionais/domésticos para a cama?", opcoes: [{texto: "Consigo separar bem os ambientes.", pontos: 0}, {texto: "Penso um pouco antes de dormir.", pontos: 1}, {texto: "Sim, o trabalho consome meus sonhos e meus pensamentos.", pontos: 2}] },
+            { titulo: "Sente que está sempre apagando incêndios e sem tempo para planejar nada?", opcoes: [{texto: "Consigo planejar minha rotina.", pontos: 0}, {texto: "O imprevisto manda no meu dia.", pontos: 1}, {texto: "Sim, vivo em estado de emergência contínua.", pontos: 2}] },
+            { titulo: "Você sente culpa ao tirar um momento do dia apenas para não fazer nada?", opcoes: [{texto: "Descanso sem culpa alguma.", pontos: 0}, {texto: "Fico com um pé atrás.", pontos: 1}, {texto: "Sim, sinto uma culpa enorme se ocioso(a) por 10 minutos.", pontos: 2}] },
+            { titulo: "Sente que o seu esforço diário não é reconhecido ou valorizado por ninguém?", opcoes: [{texto: "Sinto-me valorizado(a).", pontos: 0}, {texto: "Pouco reconhecimento.", pontos: 1}, {texto: "Sim, trabalho dobrado e sou invisível.", pontos: 2}] },
+
+            // Mais perguntas para completar o robusto banco de 50
+            { titulo: "Você percebe alteração no apetite (comendo demais por ansiedade ou perdendo a fome)?", opcoes: [{texto: "Apetite estável.", pontos: 0}, {texto: "Oscilações leves.", pontos: 1}, {texto: "Sim, mudança drástica na relação com a comida.", pontos: 2}] },
+            { titulo: "Sua respiração costuma ficar curta, presa na parte superior do peito ao longo do dia?", opcoes: [{texto: "Respiro de forma abdominal e calma.", pontos: 0}, {texto: "Prendo a respiração sob foco.", points: 1}, {texto: "Sim, passo o dia com falta de ar e peito travado.", pontos: 2}] },
+            { titulo: "Tem sentido tonturas ou sensação de instabilidade ao levantar rápido?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Às vezes.", points: 1}, {texto: "Sim, com frequência.", pontos: 2}] },
+            { titulo: "O barulho ao seu redor (trânsito, conversas, sons altos) tem irritado você profundamente?", opcoes: [{texto: "Lido bem com barulhos.", pontos: 0}, {texto: "Incomoda quando estou cansado(a).", pontos: 1}, {texto: "Sim, qualquer som me causa raiva e agonia imediata.", pontos: 2}] },
+            { titulo: "Você sente que perdeu o controle sobre a organização da própria vida?", opcoes: [{texto: "Controlo bem minha vida.", pontos: 0}, {texto: "Perco o controle às vezes.", pontos: 1}, {texto: "Sim, a rotina me atropela completamente.", pontos: 2}] },
+            { titulo: "Tem notado queda de cabelo acentuada ou unhas quebradiças ultimamente?", opcoes: [{texto: "Unhas e cabelos normais.", pontos: 0}, {texto: "Leve alteração.", pontos: 1}, {texto: "Sim, queda evidente associada ao estresse.", pontos: 2}] },
+            { titulo: "Você sente uma fadiga profunda que nenhuma quantidade de fim de semana consegue curar?", opcoes: [{texto: "O descanso me recarrega.", pontos: 0}, {texto: "O fim de semana passa rápido demais.", pontos: 1}, {texto: "Sim, volto para a segunda-feira mais cansado(a) do que saí.", pontos: 2}] },
+            { titulo: "A sua autocrítica tornou-se implacável diante de qualquer pequeno erro cometido?", opcoes: [{texto: "Sou compreensivo(a) comigo.", pontos: 0}, {texto: "Cobro-me um pouco mais.", pontos: 1}, {texto: "Sim, fustigo-me mentalmente por qualquer detalhe.", pontos: 2}] },
+            { titulo: "Você sente um vazio de motivação, fazendo as coisas no piloto automático?", opcoes: [{texto: "Faço com propósito.", pontos: 0}, {texto: "Piloto automático em dias chatos.", pontos: 1}, {texto: "Sim, vivo no automático absoluto há meses.", pontos: 2}] },
+            { titulo: "Tem evitado atender telefonemas ou responder mensagens por pura exaustão social?", opcoes: [{texto: "Respondo normalmente.", pontos: 0}, {texto: "Adio algumas respostas.", pontos: 1}, {texto: "Sim, o celular virou motivo de pavor e pego o mínimo possível.", pontos: 2}] },
+            { titulo: "Sua visão fica cansada ou embaçada após focar muito tempo em telas ou papéis?", opcoes: [{texto: "Visão descansada.", pontos: 0}, {texto: "Cansaço no fim do dia.", pontos: 1}, {texto: "Sim, visão pesada e ardência constante.", pontos: 2}] },
+            { titulo: "Você tem a sensação de que está 'carregando o mundo nas costas' sozinho(a)?", opcoes: [{texto: "Divido bem os pesos.", pontos: 0}, {texto: "Às vezes sobrecarrego-me.", pontos: 1}, {texto: "Sim, se eu parar, tudo desaba.", pontos: 2}] },
+            { titulo: "Sente uma pressa interna inexplicável mesmo quando tem tempo de sobra?", opcoes: [{texto: "Sou paciente com o tempo.", pontos: 0}, {texto: "Inquietude leve.", pontos: 1}, {texto: "Sim, fico aflito(a) sem motivo aparente.", pontos: 2}] },
+            { titulo: "O seu senso de humor diminuiu, achando tudo muito pesado ou sem graça?", opcoes: [{texto: "Rexo e brinco normalmente.", pontos: 0}, {texto: "Sorrio menos.", pontos: 1}, {texto: "Sim, perdi a leveza e a graça de rir das coisas.", pontos: 2}] },
+            { titulo: "Você tem acordado no meio da noite com sensação de susto ou alerta vermelho?", opcoes: [{texto: "Durmo a noite toda.", pontos: 0}, {texto: "Acordo para ir ao banheiro.", pontos: 1}, {texto: "Sim, acordo sobressaltado(a) como se houvesse perigo.", pontos: 2}] },
+            { titulo: "Sua tolerância a frustrações e imprevistos chegou próximo de zero?", opcoes: [{texto: "Lido bem com imprevistos.", pontos: 0}, {texto: "Irrito-me moderadamente.", pontos: 1}, {texto: "Sim, qualquer alteração de planos me destrói o dia.", pontos: 2}] },
+            { titulo: "Você sente que sua energia vital foi completamente drenada pelas circunstâncias?", opcoes: [{texto: "Minha energia é boa.", pontos: 0}, {texto: "Canso-me no fim do dia.", pontos: 1}, {texto: "Sim, sinto-me uma casca vazia de energia.", pontos: 2}] },
+            { titulo: "Tem sentido tremores leves nas mãos ou nas pálpebras por causa de nervosismo?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Raramente.", pontos: 1}, {texto: "Sim, pálpebra tremendo ou mãos trêmulas acontecem.", pontos: 2}] },
+            { titulo: "Você sente que perdeu o prazer de conversar e trocar ideias amenas?", opcoes: [{texto: "Adoro uma boa conversa.", pontos: 0}, {texto: "Prefiro conversas curtas.", pontos: 1}, {texto: "Sim, falar com as pessoas exige uma energia que não tenho.", pontos: 2}] },
+            { titulo: "Sua postura corporal reflete o peso do estresse (ombros caídos, tronco curvado para frente)?", opcoes: [{texto: "Postura erguida e firme.", pontos: 0}, {texto: "Curvo-me quando canso.", pontos: 1}, {texto: "Sim, ando encolhido(a) e tensionado(a) o tempo todo.", pontos: 2}] },
+            { titulo: "Você sente que vive apenas cumprindo obrigações, sem vivenciar momentos seus?", opcoes: [{texto: "Equilibro obrigações e lazer.", pontos: 0}, {texto: "Falta lazer às vezes.", pontos: 1}, {texto: "Sim, minha vida resume-se a boletos e obrigações.", pontos: 2}] },
+            { titulo: "Tem sentido ondas de calor repentinas ou suores frios ligados a picos de estresse?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Raramente.", pontos: 1}, {texto: "Sim, sinto fogachos ou suores em momentos tensos.", pontos: 2}] },
+            { titulo: "Você sente uma urgência constante de terminar tudo correndo para poder descansar?", opcoes: [{texto: "Faço meu ritmo.", pontos: 0}, {texto: "Acelero para livrar-me.", pontos: 1}, {texto: "Sim, vivo correndo para o nada.", pontos: 2}] },
+            { titulo: "A ideia de começar uma nova semana de trabalho gera pavor antecipado?", opcoes: [{texto: "Encaro com naturalidade.", pontos: 0}, {texto: "Preguiça de domingo.", pontos: 1}, {texto: "Sim, sinto angústia e mal-estar físico só de pensar na segunda.", pontos: 2}] },
+            { titulo: "Você sente que sua paciência com crianças, familiares ou colegas evaporou?", opcoes: [{texto: "Sou tolerante.", pontos: 0}, {texto: "Perco a calma às vezes.", pontos: 1}, {texto: "Sim, explodo com facilidade por qualquer exigência deles.", pontos: 2}] },
+            { titulo: "Tem notado que sua respiração fica suspensa enquanto executa tarefas difíceis?", opcoes: [{texto: "Respiro ritmado.", pontos: 0}, {texto: "Prendo o ar sem perceber.", pontos: 1}, {texto: "Sim, passo minutos sem respirar direito focado(a).", pontos: 2}] },
+            { titulo: "Você sente um esgotamento emocional tão profundo que parece anestesiado(a)?", opcoes: [{texto: "Sinto minhas emoções vivas.", pontos: 0}, {texto: "Às vezes sinto apatia.", pontos: 1}, {texto: "Sim, não sinto nem alegria nem tristeza, apenas um vazio exausto.", pontos: 2}] },
+            { titulo: "No fundo, você sente que se descuidou de si mesmo(a) para cuidar de todo o resto?", opcoes: [{texto: "Cuido de mim primeiro.", pontos: 0}, {texto: "Deixo-me para depois às vezes.", pontos: 1}, {texto: "Sim, anulei-me completamente para atender aos outros.", pontos: 2}] }
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let pontuacaoTotal = 0;
+
+        // Função para sortear 15 perguntas únicas do banco de 50
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            copiaBanco.sort(() => Math.random() - 0.5);
+            perguntasSorteadas = copiaBanco.slice(0, 15);
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            pontuacaoTotal = 0;
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-amber-50/50 hover:border-amber-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.pontos);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(pontos) {
+            pontuacaoTotal += pontos;
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            const iconeContainer = document.getElementById('resultado-icone-container');
+            const iconeEl = document.getElementById('resultado-icone');
+            const subtituloEl = document.getElementById('resultado-subtitulo');
+            const tituloEl = document.getElementById('resultado-titulo');
+            const descEl = document.getElementById('resultado-descricao');
+            const blocoPraticas = document.getElementById('bloco-praticas');
+
+            // Critérios de pontuação adaptados para 15 perguntas (máximo 30 pontos)
+            if (pontuacaoTotal >= 16) {
+                // Sobrecarga Crítica / Risco de Burnout
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-2xl border border-red-200";
+                iconeEl.setAttribute('data-lucide', 'alert-triangle');
+                subtituloEl.className = "text-xs text-red-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Sobrecarga Crítica e Exaustão";
+                tituloEl.innerText = "Seu corpo e sua mente pedem socorro e pausas urgentes";
+                descEl.innerHTML = "O mapeamento aponta um nível altíssimo de estresse acumulado, com fortes indícios de esgotamento físico e mental. <strong>Você chegou a um limite onde continuar no mesmo ritmo pode comprometer sua saúde.</strong> É hora de desacelerar drasticamente, renegociar prazos, buscar apoio profissional e priorizar o seu descanso absoluto.";
+                blocoPraticas.classList.remove('hidden');
+            } else if (pontuacaoTotal >= 7) {
+                // Estresse Moderado
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200";
+                iconeEl.setAttribute('data-lucide', 'activity');
+                subtituloEl.className = "text-xs text-amber-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Estresse Moderado em Alerta";
+                tituloEl.innerText = "A rotina está drenando sua energia vital";
+                descEl.innerHTML = "Suas respostas indicam que o peso das responsabilidades diárias está gerando tensões consideráveis em seu corpo e em seu humor. Este é o momento ideal para fazer ajustes preventivos na rotina, estabelecer limites claros de horário e resgatar momentos diários de lazer e respiro.";
+                blocoPraticas.classList.remove('hidden');
+            } else {
+                // Baixo Estresse / Equilíbrio
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
+                iconeEl.setAttribute('data-lucide', 'shield-check');
+                subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Equilíbrio Preservado";
+                tituloEl.innerText = "Você está gerindo bem as pressões atuais";
+                descEl.innerHTML = "Parabéns! Suas respostas mostram que você consegue manter uma boa resiliência frente aos desafios da rotina, sem deixar que o estresse domine seu bem-estar. Continue cultivando seus hábitos saudáveis e suas pausas de autocuidado.";
+                blocoPraticas.classList.add('hidden');
+            }
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

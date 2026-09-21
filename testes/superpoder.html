@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qual seria o seu Superpoder Secreto? - Equalize-se</title>
+    <meta name="description" content="Descubra qual superpoder cômico e peculiar combina com as suas manias do dia a dia.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="superpoder.html" class="flex flex-col items-center gap-1 text-purple-700 font-semibold">
+                    <div class="p-2 bg-purple-50 rounded-2xl transition-all">
+                        <i data-lucide="zap" class="w-5 h-5 text-purple-700"></i>
+                    </div>
+                    <span class="text-[11px]">Superpoder</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-50 text-purple-700 rounded-2xl border border-purple-200 mb-2">
+                    <i data-lucide="zap" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Qual seria o seu Superpoder Secreto na Rotina?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Esqueça capas e voos espaciais. Baseado nas suas manias, preguiças e reações do dia a dia, qual seria o seu superpoder cômico peculiar? Responda 15 perguntas e descubra!
+                </p>
+                <div class="bg-purple-50 border border-purple-200 text-purple-900 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Diversão garantida:</strong> Um teste bem-humorado para arrancar sorrisos e descontrair.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Revelar meu Superpoder
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-purple-700 uppercase tracking-wider">Questão 1 de 15</span>
+                    <span class="text-xs text-slate-400 font-medium">Análise de Habilidade Secreta</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border">
+                    <i id="resultado-icone" data-lucide="sun" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest"></span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Jogar de Novo
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com 50 Perguntas Divertidas Distribuídas em 4 Tipos de Poderes (Invisibilidade Social=0, Telepatia com Geladeira=1, Super-Resiliência a Filas=2, Mestre da Procrastinação=3) -->
+    <script>
+        const bancoPerguntas = [
+            { titulo: "Quando você chega em uma festa e não quer falar com ninguém, o que você faz?", opcoes: [{texto: "Finjo que estou super ocupado(a) mexendo no celular no canto.", poder: 0}, {texto: "Vou direto pra mesa de salgadinhos ver o que tem de bom.", poder: 1}, {texto: "Fico plantado(a) esperando alguém vir puxar assunto.", poder: 2}, {texto: "Fico pensando em como seria bom já estar em casa deitado(a).", poder: 3}] },
+            { titulo: "Qual é o seu nível de paciência em filas de banco ou supermercado?", opcoes: [{texto: "Se puder sumir da fila, eu somem.", poder: 0}, {texto: "Fico pensando em qual lanche vou fazer quando chegar em casa.", poder: 1}, {texto: "Sou a própria estátua da paciência, respiro fundo e espero.", poder: 2}, {texto: "Rezo mentalmente para o caixa ser abduzido por aliens.", poder: 3}] },
+            { titulo: "Como funciona a sua geladeira na madrugada?", opcoes: [{texto: "Passo correndo por ela para ninguém me ver comendo doces.", poder: 0}, {texto: "Abro a porta de luz acesa como se estivesse abrindo um portal mágico.", poder: 1}, {texto: "Olho tudo de forma organizada e calculista.", poder: 2}, {texto: "Fecho os olhos torcendo para aparecer comida pronta sozinha.", poder: 3}] },
+            { titulo: "Qual é a sua relação com os alarmes de manhã?", opcoes: [{texto: "Coloco 10 alarmes e acordo em silêncio absoluto para não acordar ninguém.", poder: 0}, {texto: "Acordo sonhando com o café da manhã.", poder: 1}, {texto: "Levanto no primeiro toque igual a um robô programado.", poder: 2}, {texto: "Adio o despertador até o limite máximo da perdição.", poder: 3}] },
+            { titulo: "O que você faz quando recebe uma ligação de número desconhecido?", opcoes: [{texto: "Silencio o celular na hora e finjo que não vi.", poder: 0}, {texto: "Atendo achando que é entrega de comida.", poder: 1}, {texto: "Atendo calmamente com tom profissional.", poder: 2}, {texto: "Deixo tocar até cair na caixa postal por pura preguiça.", poder: 3}] },
+            { titulo: "Como você lida com as louças na pia?", opcoes: [{texto: "Deixo invisíveis aos meus olhos até não ter mais copo limpo.", poder: 0}, {texto: "Lavo enquanto imagino receitas mirabolantes.", poder: 1}, {texto: "Lavo na mesma hora para manter a ordem cósmica.", poder: 2}, {texto: "Prometo lavar amanhã sem falta... há três dias.", poder: 3}] },
+            { titulo: "Qual é o seu superpoder culinário secreto?", opcoes: [{texto: "Comer qualquer coisa escondido(a) sem deixar migalhas.", poder: 0}, {texto: "Misturar três ingredientes aleatórios e virar um banquete.", poder: 1}, {texto: "Seguir a receita à risca com precisão cirúrgica.", poder: 2}, {texto: "Pedir delivery com tanta maestria que o entregador já me conhece.", poder: 3}] },
+            { titulo: "O que passa na sua cabeça durante uma reunião longa ou aula chata?", opcoes: [{texto: "Desejando ficar invisível para ninguém me fazer perguntas.", poder: 0}, {texto: "Pensando qual será o cardápio do almoço.", poder: 1}, {texto: "Anotando tudo perfeitamente para fingir atenção.", poder: 2}, {texto: "Viajando em universos paralelos criados pela minha mente.", poder: 3}] },
+            { titulo: "Como você escolhe o que assistir na TV ou streaming?", opcoes: [{texto: "Fico 45 minutos escolhendo e acabo dormindo sem ver nada.", poder: 0}, {texto: "Procuro algo que envolva comida ou comédia.", poder: 1}, {texto: "Vou direto naquilo que está em alta ou recomendação firme.", poder: 2}, {texto: "Deixo no aleatório e aceito o destino.", poder: 3}] },
+            { titulo: "Qual é a sua maior habilidade secreta na faxina?", opcoes: [{texto: "Esconder a bagunça debaixo do tapete ou armário rapidinho.", poder: 0}, {texto: "Fazer faxina escutando música alta fingindo show ao vivo.", poder: 1}, {texto: "Deixar tudo brilhando com técnica impecável.", poder: 2}, {texto: "Adiar a faxina até que o pó vire parte da decoração.", poder: 3}] },
+            // Itens extras para garantir robustez e variedade no sorteio
+            { titulo: "Quando o wi-fi cai por 2 minutos, qual é o seu drama?", opcoes: [{texto: "Aproveito para olhar pro horizonte e sumir do mapa.", poder: 0}, {texto: "Vou na geladeira ver se lá o sinal melhora.", poder: 1}, {texto: "Reinicio o modem com calma e resiliência monge.", poder: 2}, {texto: "Entro em colapso cósmico imediato.", poder: 3}] },
+            { titulo: "Como você se comporta em um shopping lotado?", opcoes: [{texto: "Ando pelos cantos camuflado(a) para ninguém me ver.", poder: 0}, {texto: "Vou direto para a praça de alimentação com radar ativado.", poder: 1}, {texto: "Ando com foco cirúrgico sabendo exatamente o que comprar.", poder: 2}, {texto: "Arrependo-me de ter saído de casa em 5 segundos.", poder: 3}] },
+            { titulo: "O que você faz com as roupas que prova e não compra na loja?", opcoes: [{texto: "Deixo no provador e saio andando de fininho.", poder: 0}, {texto: "Imagino se ficaria legal usando para ir à padaria.", poder: 1}, {texto: "Dobro com carinho e devolvo no cabide certinho.", poder: 2}, {texto: "Jogo em cima da cadeira do provador e peço desculpas mentalmente.", poder: 3}] },
+            { titulo: "Qual é a sua relação com os boletos e contas a pagar?", opcoes: [{texto: "Escondo eles na gaveta fingindo que não existem.", poder: 0}, {texto: "Pago pensando no lanche que mereço depois.", poder: 1}, {texto: "Pago antes do vencimento com orgulho no peito.", poder: 2}, {texto: "Deixo para pagar no último segundo sob puro suor frio.", poder: 3}] },
+            { titulo: "Qual frase define melhor os seus finais de semana?", opcoes: [{texto: "Modo ermitão ativado: não existo para o mundo.", poder: 0}, {texto: "Fim de semana foi feito para comer bem e dormir.", poder: 1}, {texto: "Planejado e organizado tim-tim por tim-tim.", poder: 2}, {texto: "Passei o fim de semana inteiro decidindo o que ia fazer e acabou.", poder: 3}] }
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let contagemPoderes = { invisibilidade: 0, geladeira: 0, resiliencia: 0, procrastinacao: 0 };
+
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            copiaBanco.sort(() => Math.random() - 0.5);
+            perguntasSorteadas = copiaBanco.slice(0, 15);
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            contagemPoderes = { invisibilidade: 0, geladeira: 0, resiliencia: 0, procrastinacao: 0 };
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-purple-50/50 hover:border-purple-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.poder);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(poderIndex) {
+            if (poderIndex === 0) contagemPoderes.invisibilidade++;
+            else if (poderIndex === 1) contagemPoderes.geladeira++;
+            else if (poderIndex === 2) contagemPoderes.resiliencia++;
+            else if (poderIndex === 3) contagemPoderes.procrastinacao++;
+
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            let maior = Math.max(contagemPoderes.invisibilidade, contagemPoderes.geladeira, contagemPoderes.resiliencia, contagemPoderes.procrastinacao);
+            let poderVencedor = 'resiliencia';
+            if (contagemPoderes.invisibilidade === maior) poderVencedor = 'invisibilidade';
+            else if (contagemPoderes.geladeira === maior) poderVencedor = 'geladeira';
+            else if (contagemPoderes.procrastinacao === maior) poderVencedor = 'procrastinacao';
+
+            const iconeContainer = document.getElementById('resultado-icone-container');
+            const iconeEl = document.getElementById('resultado-icone');
+            const subtituloEl = document.getElementById('resultado-subtitulo');
+            const tituloEl = document.getElementById('resultado-titulo');
+            const descEl = document.getElementById('resultado-descricao');
+
+            if (poderVencedor === 'invisibilidade') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-slate-100 text-slate-700 rounded-2xl border border-slate-300";
+                iconeEl.setAttribute('data-lucide', 'eye-off');
+                subtituloEl.className = "text-xs text-slate-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Seu superpoder secreto";
+                tituloEl.innerText = "👻 Invisibilidade Social Ocasional";
+                descEl.innerHTML = "Seu superpoder é a habilidade suprema de sumir camuflado(a) quando a energia social acaba. Você tem o dom ninja de escapar de conversas chatas, festas lotadas e ligações indesejadas sem deixar absolutamente nenhum rastro!";
+            } else if (poderVencedor === 'geladeira') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200";
+                iconeEl.setAttribute('data-lucide', 'utensils');
+                subtituloEl.className = "text-xs text-amber-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Seu superpoder secreto";
+                tituloEl.innerText = "🍕 Telepatia com a Geladeira";
+                descEl.innerHTML = "Seu superpoder está diretamente ligado ao mundo culinário! Você consegue prever exatamente o que tem de gostoso na geladeira antes mesmo de abrir a porta e possui a incrível capacidade de transformar lanches improvisados em obras de arte gastronômicas.";
+            } else if (poderVencedor === 'resiliencia') {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
+                iconeEl.setAttribute('data-lucide', 'shield-check');
+                subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Seu superpoder secreto";
+                tituloEl.innerText = "🛡️ Super-Resiliência a Filas e Caos";
+                descEl.innerHTML = "Você é um verdadeiro monge urbano! Seu superpoder é manter a serenidade imperturbável diante de filas gigantescas, trânsito lento e imprevistos cotidianos que fariam qualquer outra pessoa arrancar os cabelos.";
+            } else {
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl border border-purple-200";
+                iconeEl.setAttribute('data-lucide', 'clock');
+                subtituloEl.className = "text-xs text-purple-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Seu superpoder secreto";
+                tituloEl.innerText = "⏳ Mestre Absoluto da Procrastinação Criativa";
+                descEl.innerHTML = "Você possui o poder místico de deixar tudo para a última hora e, ainda assim, conseguir resolver no prazo limite sob pura adrenalina. Sua criatividade e foco só funcionam quando o relógio aperta de verdade!";
+            }
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

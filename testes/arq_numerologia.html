@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquétipos Numerológicos - Equalize-se</title>
+    <meta name="description" content="Descubra com qual número (de 1 a 9, 11 e 22) a sua essência e personalidade mais se alinham.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="chakras.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-purple-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-purple-50 rounded-2xl transition-all">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Chakras</span>
+                </a>
+                <!-- Item Arquétipos Numéricos Ativo -->
+                <a href="arquetipos.html" class="flex flex-col items-center gap-1 text-blue-700 font-semibold">
+                    <div class="p-2 bg-blue-50 rounded-2xl transition-all">
+                        <i data-lucide="hash" class="w-5 h-5 text-blue-700"></i>
+                    </div>
+                    <span class="text-[11px]">Arquétipos</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE / ARQUÉTIPOS NUMÉRICOS -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 text-blue-700 rounded-2xl border border-blue-200 mb-2">
+                    <i data-lucide="hash" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Qual é o seu Arquétipo Numérico?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Cada número de 1 a 9, além dos mestres 11 e 22, carrega uma frequência e uma personalidade arquetípica única. Responda às reflexões para descobrir qual padrão mais se aproxima da sua essência atual.
+                </p>
+                <div class="bg-blue-50 border border-blue-200 text-blue-900 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Nota importante:</strong> Este teste mede a sintonia da sua personalidade atual com as vibrações numéricas tradicionais.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Iniciar Mapeamento
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-blue-700 uppercase tracking-wider">Questão 1 de 12</span>
+                    <span class="text-xs text-slate-400 font-medium">Sintonia Arquetípica</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO / ORIENTAÇÃO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-20 h-20 rounded-2xl border text-2xl font-black">
+                    <span id="resultado-numero-badge">1</span>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest text-blue-700">Seu Arquétipo Dominante</span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <!-- PERSONALIDADE E DESAFIOS -->
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 text-left space-y-3">
+                    <div class="flex items-center gap-2 text-blue-900 font-bold text-sm">
+                        <i data-lucide="compass" class="w-5 h-5 text-blue-700"></i>
+                        <span>Traços de Personalidade e Caminho de Luz:</span>
+                    </div>
+                    <p id="resultado-personalidade" class="text-xs sm:text-sm text-slate-700 leading-relaxed"></p>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Refazer Teste
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com Banco de Perguntas e 11 Arquétipos Numéricos -->
+    <script>
+        const dadosArquetipos = {
+            1: {
+                nome: "O Pioneiro / O Líder",
+                descricao: "O número 1 carrega a energia da criação, da independência absoluta e da força de vontade. É o arquétipo do pioneiro que abre caminhos onde ninguém esteve.",
+                personalidade: "Independente, corajoso, original e altamente focado. Você possui forte tendência à liderança, iniciativa própria e não gosta de seguir padrões impostos. Seu desafio é evitar a autocracia excessiva e a impaciência com o ritmo dos outros."
+            },
+            2: {
+                nome: "O Diplomata / O Pacificador",
+                descricao: "O número 2 rege a cooperação, a sensibilidade, a empatia e a arte da diplomacia. É o arquétipo que une as pontas e compreende profundamente os sentimentos alheios.",
+                personalidade: "Compreensivo, leal, detalhista e pacificador. Você tem um dom natural para harmonizar ambientes e trabalhar em parceria. Seu maior desafio é superar a indecisão e a dependência excessiva da aprovação alheia."
+            },
+            3: {
+                nome: "O Comunicador / O Criativo",
+                descricao: "O número 3 vibra na frequência da expressão artística, da alegria, do carisma e da comunicação magnética. É o arquétipo que traz leveza e cor para o mundo.",
+                personalidade: "Expressivo, otimista, sociável e talentoso. Você contagia as pessoas com sua energia comunicativa e criatividade. Seu desafio consiste em manter o foco, evitando a dispersão de energia e a superficialidade."
+            },
+            4: {
+                nome: "O Construtor / O Realizador",
+                descricao: "O número 4 representa a estabilidade, a ordem, a disciplina e a materialização segura. É o arquétipo do alicerce sólido sobre o qual grandes obras são construídas.",
+                personalidade: "Prático, trabalhador, organizado e extremamente confiável. Você valoriza a segurança, o planejamento e o esforço honesto. Seu desafio é flexibilizar a mente para aceitar imprevistos sem rigidez excessiva."
+            },
+            5: {
+                nome: "O Libertário / O Explorador",
+                descricao: "O número 5 é a essência da liberdade, da versatilidade, da aventura e da transformação dinâmica. É o arquétipo que quebra amarras para experimentar o novo.",
+                personalidade: "Versátil, curioso, corajoso e adaptável. Você ama mudanças, viagens e novas experiências intelectuais ou físicas. Seu desafio é encontrar equilíbrio para não cair na instabilidade crônica e na impulsividade."
+            },
+            6: {
+                nome: "O Protetor / O Conselheiro",
+                descricao: "O número 6 sintoniza com o amor incondicional, a responsabilidade familiar, a harmonia comunitária e o cuidado humanitário. É o arquétipo do porto seguro.",
+                personalidade: "Amoroso, acolhedor, justo e dedicado ao lar e à comunidade. Você assume responsabilidades pelos outros com facilidade e busca a beleza em tudo. Seu desafio é impor limites para não sufocar quem ama e evitar o excesso de autossacrifício."
+            },
+            7: {
+                nome: "O Investigador / O Buscador",
+                descricao: "O número 7 rege a sabedoria oculta, a análise profunda, a espiritualidade e a busca incansável pela verdade intelectual e mística.",
+                personalidade: "Analítico, intuitivo, perfeccionista e reservado. Você prefere a profundidade das coisas e valoriza momentos de introspecção e estudo. Seu desafio é vencer o isolamento excessivo e o ceticismo paralisante."
+            },
+            8: {
+                nome: "O Executivo / O Manifestador",
+                descricao: "O número 8 carrega a energia do poder material, da justiça cármica, da autoridade e da capacidade de grande realização financeira e estrutural.",
+                personalidade: "Ambicioso, competente, realista e focado em resultados de alto impacto. Você tem talento nato para gerir recursos e liderar grandes projetos. Seu desafio é equilibrar a busca pelo sucesso material com a ética e a sensibilidade humana."
+            },
+            9: {
+                nome: "O Humanitário / O Visionário",
+                descricao: "O número 9 representa a compaixão universal, o altruísmo, a conclusão de ciclos e a sabedoria compassiva voltada para o coletivo.",
+                personalidade: "Generoso, idealista, compassivo e desapegado. Você enxerga o panorama geral da humanidade e deseja deixar o mundo melhor do que encontrou. Seu desafio é lidar com frustrações quando a realidade não reflete seus ideais utópicos."
+            },
+            11: {
+                nome: "O Iluminador / O Inspirador (Mestre)",
+                descricao: "O número 11 é um Número Mestre associado à intuição elevada, à clarividência, à inspiração espiritual e ao despertar de consciências em massa.",
+                personalidade: "Inspirador, altamente intuitivo, visionário e magnético. Você capta correntes sutis de energia e ideias inovadoras antes de todo mundo. Seu desafio é lidar com a alta carga de ansiedade e nervosismo decorrentes dessa sensibilidade acentuada."
+            },
+            22: {
+                nome: "O Arquiteto Mestre / O Realizador Cósmico (Mestre)",
+                descricao: "O número 22 é o mais poderoso construtor da numerologia. Une a visão espiritual visionária do 11 com a capacidade prática de materialização em larga escala do 4.",
+                personalidade: "Visionário pragmático, realizador em grande escala, estrategista global e líder de grandes estruturas. Você pensa em projetos que beneficiam gerações. Seu desafio é não se sentir esmagado pelo peso da própria ambição e grande responsabilidade."
+            }
+        };
+
+        const bancoPerguntas = [
+            {
+                titulo: "Diante de um grande desafio inesperado no seu caminho, qual é o seu primeiro impulso?",
+                opcoes: [
+                    {texto: "Assumo a liderança imediatamente e traço uma rota própria para vencer.", num: 1},
+                    {texto: "Busco apoio em alguém de confiança para decidirmos juntos em harmonia.", num: 2},
+                    {texto: "Uso a criatividade e o otimismo para encontrar uma saída divertida ou inusitada.", num: 3},
+                    {texto: "Analiso detalhadamente os riscos e crio um plano passo a passo hiper seguro.", num: 4}
+                ]
+            },
+            {
+                titulo: "O que mais te incomoda em um ambiente de trabalho ou convivência?",
+                opcoes: [
+                    {texto: "Ter que seguir ordens rígidas sem poder dar a minha opinião ou liderar.", num: 1},
+                    {texto: "Conflitos constantes, grosseria e falta de empatia entre as pessoas.", num: 2},
+                    {texto: "Monotonia, rotinas engessadas e falta de liberdade para expressar ideias.", num: 5},
+                    {texto: "Desorganização, falta de compromisso e pessoas que fazem as coisas 'de qualquer jeito'.", num: 4}
+                ]
+            },
+            {
+                titulo: "Qual destas qualidades você mais valoriza em si mesmo(a)?",
+                opcoes: [
+                    {texto: "Minha coragem e originalidade para desbravar o desconhecido.", num: 1},
+                    {texto: "Minha capacidade de acolher, ouvir e aconselhar quem sofre.", num: 6},
+                    {texto: "Minha intuição afiada e percepção profunda sobre as entrelinhas da vida.", num: 7},
+                    {texto: "Minha ambição e talento nato para concretizar grandes metas e negócios.", num: 8}
+                ]
+            },
+            {
+                titulo: "Como você lida com a sua necessidade de liberdade e mudanças?",
+                opcoes: [
+                    {texto: "Preciso de total autonomia para ir e vir sem amarras ou rotinas fixas.", num: 5},
+                    {texto: "Gosto de planejar meu futuro para construir um império seguro e duradouro.", num: 8},
+                    {texto: "Sinto um chamado profundo para ajudar o coletivo e transformar o mundo ao meu redor.", num: 9},
+                    {texto: "Sinto uma pressão interna constante para realizar grandes projetos de impacto global.", num: 22}
+                ]
+            },
+            {
+                titulo: "Em momentos de folga ou reflexão profunda, qual é o seu foco principal?",
+                opcoes: [
+                    {texto: "Estudar mistérios, filosofias, ler livros densos ou buscar autoconhecimento isolado.", num: 7},
+                    {texto: "Criar conteúdos, arte, escrever, desenhar ou conversar animadamente com amigos.", num: 3},
+                    {texto: "Cuidar da minha casa, da minha família e garantir que todos estejam felizes e protegidos.", num: 6},
+                    {texto: "Meditar sobre o sentido da existência e buscar sinais sutis do universo ou espiritualidade.", num: 11}
+                ]
+            },
+            {
+                titulo: "Qual é o seu maior objetivo ou sonho de realização pessoal?",
+                opcoes: [
+                    {texto: "Ser referência de sucesso, autonomia e pioneirismo naquilo que faço.", num: 1},
+                    {texto: "Construir um legado humanitário que ajude a elevar a consciência de muitas pessoas.", num: 9},
+                    {texto: "Materializar um grande projeto estruturado que mude a realidade da minha comunidade ou do mundo.", num: 22},
+                    {texto: "Ser um canal de inspiração espiritual e sabedoria intuitiva para quem cruzar o meu caminho.", num: 11}
+                ]
+            },
+            {
+                titulo: "Qual frase melhor descreve a sua visão sobre as regras estabelecidas?",
+                opcoes: [
+                    {texto: "As regras servem para serem questionadas se limitarem minha individualidade.", num: 1},
+                    {texto: "Prefiro seguir padrões estruturados que garantam ordem e segurança para todos.", num: 4},
+                    {texto: "As regras devem ser flexíveis para permitir novas experiências e aventuras.", num: 5},
+                    {texto: "Respeito as leis universais e busco a justiça perfeita e o equilíbrio em tudo.", num: 8}
+                ]
+            },
+            {
+                titulo: "Como as pessoas costumam descrever a sua personalidade à primeira vista?",
+                opcoes: [
+                    {texto: "Gentil, diplomática, pacífica e extremamente atenciosa aos detalhes.", num: 2},
+                    {texto: "Comunicativa, alto astral, carismática e cheia de ideias criativas.", num: 3},
+                    {texto: "Misteriosa, analítica, observadora e muito inteligente.", num: 7},
+                    {texto: "Protetora, amorosa, dedicada e sempre pronta a sacrificar algo pelo bem dos outros.", num: 6}
+                ]
+            },
+            {
+                titulo: "O que mais te causa frustração ou sensação de fracasso?",
+                opcoes: [
+                    {texto: "Perceber que fui injusto(a) ou que não consegui proteger alguém que amo.", num: 6},
+                    {texto: "Estar preso(a) em um local sem estímulo intelectual ou cercado(a) de superficialidade.", num: 7},
+                    {texto: "Ver o sofrimento humano no mundo e sentir que meus esforços coletivos são pequenos demais.", num: 9},
+                    {texto: "Não conseguir colocar em prática uma grande visão inspiradora que recebi intuitivamente.", num: 11}
+                ]
+            },
+            {
+                titulo: "Qual é a sua relação com o dinheiro e com o sucesso material?",
+                opcoes: [
+                    {texto: "Vejo o dinheiro como ferramenta de poder, conquista, independência e construção sólida.", num: 8},
+                    {texto: "Quero recursos suficientes para garantir estabilidade, base firme e conforto para os meus.", num: 4},
+                    {texto: "O dinheiro é um meio para buscar novas experiências, viagens e liberdade de escolha.", num: 5},
+                    {texto: "Dinheiro e poder só têm valor real se forem usados para construir algo grandioso para a sociedade.", num: 22}
+                ]
+            },
+            {
+                titulo: "Quando você precisa convencer alguém de um ponto de vista, qual estratégia usa?",
+                opcoes: [
+                    {texto: "Uso minha força de expressão magnética, otimismo e simpatia contagiante.", num: 3},
+                    {texto: "Uso argumentos lógicos implacáveis baseados em pesquisas, fatos e dados profundos.", num: 7},
+                    {texto: "Apelo para a compaixão, união, harmonia e o bem comum entre as partes.", num: 2},
+                    {texto: "Transmito uma visão tão ampla, inspirada e magnética que as pessoas simplesmente querem seguir.", num: 11}
+                ]
+            },
+            {
+                titulo: "Qual palavra melhor resume o seu propósito de alma nesta jornada?",
+                opcoes: [
+                    {texto: "Inovação e Liderança.", num: 1},
+                    {texto: "Equilibrio e Parceria.", num: 2},
+                    {texto: "Alegria e Expressão.", num: 3},
+                    {texto: "Ordem e Estrutura.", num: 4},
+                    {texto: "Liberdade e Expansão.", num: 5},
+                    {texto: "Amor e Cuidado.", num: 6},
+                    {texto: "Sabedoria e Verdade.", num: 7},
+                    {texto: "Realização e Poder.", num: 8},
+                    {texto: "Compaixão Universal.", num: 9},
+                    {texto: "Iluminação Intuitiva.", num: 11},
+                    {texto: "Grande Mestria Prática.", num: 22}
+                ]
+            }
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let pontuacaoNumeros = {};
+
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            copiaBanco.sort(() => Math.random() - 0.5);
+            perguntasSorteadas = copiaBanco.slice(0, 12); // Pega 12 perguntas dinâmicas
+            
+            perguntasSorteadas.forEach(p => {
+                p.opcoes.sort(() => Math.random() - 0.5);
+            });
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            pontuacaoNumeros = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 11:0, 22:0 };
+            
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-blue-50/50 hover:border-blue-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.num);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(numero) {
+            if (pontuacaoNumeros[numero] !== undefined) {
+                pontuacaoNumeros[numero]++;
+            } else {
+                pontuacaoNumeros[numero] = 1;
+            }
+            
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            // Encontrar o número com maior pontuação
+            let numeroVencedor = Object.keys(pontuacaoNumeros).reduce((a, b) => 
+                pontuacaoNumeros[a] > pontuacaoNumeros[b] ? a : b
+            );
+
+            let info = dadosArquetipos[numeroVencedor] || dadosArquetipos[1];
+
+            document.getElementById('resultado-numero-badge').innerText = numeroVencedor;
+            document.getElementById('resultado-titulo').innerText = info.nome;
+            document.getElementById('resultado-descricao').innerText = info.descricao;
+            document.getElementById('resultado-personalidade').innerText = info.personalidade;
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espaço de Acolhimento e Apoio Emocional - Equalize-se</title>
+    <meta name="description" content="Um espaço seguro de escuta, reflexão e direcionamento para o seu bem-estar emocional.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-orange-600 font-semibold">
+                    <div class="p-2 bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px]">Acolhimento</span>
+                </a>
+                <a href="ajuda.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="message-square-heart" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Apoio</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE / ACOLHIMENTO -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-50 text-orange-600 rounded-2xl border border-orange-200 mb-2">
+                    <i data-lucide="heart-handshake" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Como você tem se sentido por dentro?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Este é um espaço seguro e sem julgamentos. Selecionaremos 15 reflexões do nosso banco para avaliar seu momento atual e oferecer o direcionamento ideal para o seu bem-estar.
+                </p>
+                <div class="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Nota importante:</strong> Esta ferramenta não substitui o diagnóstico médico ou psicológico, servindo exclusivamente como canal de autocuidado e apoio emocional.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Iniciar Reflexão
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-orange-600 uppercase tracking-wider">Questão 1 de 15</span>
+                    <span class="text-xs text-slate-400 font-medium">Espaço de Cuidado Emocional</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO / ACOLHIMENTO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border">
+                    <i id="resultado-icone" data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest"></span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <!-- CAIXA DE APOIO E CONTATOS ÚTEIS (CVV / AJUDA) -->
+                <div id="bloco-ajuda" class="hidden bg-red-50 border border-red-200 rounded-2xl p-5 text-left space-y-3">
+                    <div class="flex items-center gap-2 text-red-700 font-bold text-sm">
+                        <i data-lucide="phone-call" class="w-5 h-5"></i>
+                        <span>Você não está sozinho(a). Ajuda gratuita e sigilosa disponível agora:</span>
+                    </div>
+                    <ul class="text-xs sm:text-sm text-slate-700 space-y-2">
+                        <li><strong>CVV (Centro de Valorização da Vida):</strong> Ligue <strong>188</strong> (24 horas, gratuito por ligação ou chat em cvv.org.br).</li>
+                        <li><strong>Emergências médicas:</strong> Ligue <strong>192</strong> (SAMU) ou vá ao pronto-socorro mais próximo.</li>
+                        <li><strong>Rede de Apoio Local:</strong> Busque conversar com um familiar de confiança, um líder espiritual ou procure uma Unidade Básica de Saúde (UBS) para atendimento psicológico.</li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Refazer Reflexão
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com Banco de 50 Perguntas e Sorteio de 15 -->
+    <script>
+        const bancoPerguntas = [
+            // Tristeza / Depressão
+            { titulo: "Nas últimas semanas, você tem se sentido desanimado(a) ou com uma tristeza constante?", opcoes: [{texto: "Raramente.", pontos: 0}, {texto: "Alguns dias.", pontos: 1}, {texto: "Quase todos os dias.", pontos: 2}] },
+            { titulo: "Você sente falta de interesse ou prazer em coisas que antes gostava de fazer?", opcoes: [{texto: "Não, continuo gostando.", pontos: 0}, {texto: "Um pouco.", pontos: 1}, {texto: "Sim, nada parece ter graça.", pontos: 2}] },
+            { titulo: "Sua energia física para realizar tarefas diárias tem faltado com frequência?", opcoes: [{texto: "Minha energia está normal.", pontos: 0}, {texto: "Sinto cansaço moderado.", pontos: 1}, {texto: "Estou esgotado(a) a maior parte do tempo.", pontos: 2}] },
+            { titulo: "Você tem chorado com facilidade ou sentido vontade de chorar sem motivo aparente?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "De vez em quando.", pontos: 1}, {texto: "Sim, com muita frequência.", pontos: 2}] },
+            { titulo: "Você sente que sua autoestima ou autoconfiança diminuíram muito ultimamente?", opcoes: [{texto: "Sinto-me bem comigo.", pontos: 0}, {texto: "Às vezes sinto insegurança.", pontos: 1}, {texto: "Sim, sinto-me totalmente desvalorizado(a).", pontos: 2}] },
+            { titulo: "Você tem tido a sensação de que o futuro é incerto e sem perspectivas boas?", opcoes: [{texto: "Tenho esperança no futuro.", pontos: 0}, {texto: "Tenho certas dúvidas.", pontos: 1}, {texto: "Vejo o futuro com muita desesperança.", pontos: 2}] },
+            { titulo: "Sente dificuldade de concentração na leitura, no trabalho ou em conversas?", opcoes: [{texto: "Minha concentração está boa.", pontos: 0}, {texto: "Distraio-me fácil.", pontos: 1}, {texto: "Não consigo focar em nada.", pontos: 2}] },
+            { titulo: "Você tem se isolado de amigos e familiares por preferir ficar sozinho(a)?", opcoes: [{texto: "Mantenho contato normal.", pontos: 0}, {texto: "Afastei-me um pouco.", pontos: 1}, {texto: "Isolei-me completamente.", pontos: 2}] },
+            { titulo: "Sente um sentimento persistente de culpa ou inutilidade?", opcoes: [{texto: "Não sinto isso.", pontos: 0}, {texto: "Às vezes me cobro demais.", points: 1}, {texto: "Sim, sinto culpa constante.", pontos: 2}] },
+            { titulo: "Parece que os dias passam empurrados e sem nenhuma cor ou alegria?", opcoes: [{texto: "Os dias fluem bem.", pontos: 0}, {texto: "Alguns dias são monótonos.", pontos: 1}, {texto: "Sim, todos os dias parecem cinzentos.", pontos: 2}] },
+
+            // Pânico / Ansiedade Extrema
+            { titulo: "Você tem sentido episódios repentinos de falta de ar ou coração disparado?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Raramente sob estresse.", pontos: 1}, {texto: "Sim, tenho crises frequentes.", pontos: 2}] },
+            { titulo: "Sente um medo súbito e intenso de que algo trágico vá acontecer a qualquer momento?", opcoes: [{texto: "Não sinto isso.", pontos: 0}, {texto: "Às vezes me preocupo muito.", pontos: 1}, {texto: "Sim, vivo em alerta constante.", pontos: 2}] },
+            { titulo: "Você tem tido tonturas, tremores ou suores frios sem esforço físico prévio?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Em momentos de pico de nervosismo.", pontos: 1}, {texto: "Sim, com certa regularidade.", tokens: 2}] },
+            { titulo: "Sente um aperto sufocante no peito ou sensação de nó na garganta?", opcoes: [{texto: "Raramente.", pontos: 0}, {texto: "Quando passo por aborrecimentos.", pontos: 1}, {texto: "Sim, quase todos os dias.", pontos: 2}] },
+            { titulo: "O medo de ter uma nova crise de pânico consome seus pensamentos?", opcoes: [{texto: "Não penso nisso.", pontos: 0}, {texto: "Às vezes receio.", pontos: 1}, {texto: "Sim, tenho muito medo de ter outra crise.", pontos: 2}] },
+            { titulo: "Você evita lugares cheios ou sair de casa por medo de passar mal?", opcoes: [{texto: "Circulo normalmente.", pontos: 0}, {texto: "Evito alguns locais aglomerados.", pontos: 1}, {texto: "Evito sair de casa o máximo possível.", pontos: 2}] },
+            { titulo: "Sente formigamentos ou dormência nas mãos e no rosto durante momentos de tensão?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Raramente.", pontos: 1}, {texto: "Sim, acontece.", pontos: 2}] },
+            { titulo: "Sua respiração costuma ficar curta e rápida ao pensar nos problemas?", opcoes: [{texto: "Respiro calmamente.", pontos: 0}, {texto: "Às vezes acelera.", pontos: 1}, {texto: "Sim, fico com falta de ar frequente.", pontos: 2}] },
+            { titulo: "Você sente medo de perder o controle ou enlouquecer devido à ansiedade?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Já passou pela cabeça.", pontos: 1}, {texto: "Sim, tenho muito esse medo.", pontos: 2}] },
+            { titulo: "Seus músculos vivem tensos, rígidos ou doloridos por causa do estresse?", opcoes: [{texto: "Estou relaxado(a).", pontos: 0}, {texto: "Sinto tensão nos ombros e pescoço.", pontos: 1}, {texto: "Sim, meu corpo todo dói de tanta tensão.", pontos: 2}] },
+
+            // Sono / Alimentação / Bem-estar geral
+            { titulo: "Como tem sido a qualidade do seu sono ultimamente?", opcoes: [{texto: "Durmo muito bem.", pontos: 0}, {texto: "Acordo cansado(a) ou tenho insônia leve.", pontos: 1}, {texto: "Péssima, não consigo descansar.", pontos: 2}] },
+            { titulo: "Seu apetite mudou drasticamente (perda total ou vontade exagerada de comer)?", opcoes: [{texto: "Apetite normal.", pontos: 0}, {texto: "Leve alteração.", pontos: 1}, {texto: "Mudança drástica e preocupante.", pontos: 2}] },
+            { titulo: "Você acorda de madrugada com a mente acelerada pensando em problemas?", opcoes: [{texto: "Durmo direto.", pontos: 0}, {texto: "Às vezes acordo.", pontos: 1}, {texto: "Quase sempre acordo e não durmo mais.", pontos: 2}] },
+            { titulo: "Sente uma exaustão mental profunda mesmo após passar o dia todo em repouso?", opcoes: [{texto: "O descanso me renova.", pontos: 0}, {texto: "Cansaço leve.", pontos: 1}, {texto: "Sim, o cansaço não passa nunca.", pontos: 2}] },
+            { titulo: "Você tem negligenciado sua higiene pessoal ou cuidados básicos por falta de ânimo?", opcoes: [{texto: "Cuido-me normalmente.", pontos: 0}, {texto: "Às vezes sinto preguiça.", pontos: 1}, {texto: "Sim, falta forças para o básico.", pontos: 2}] },
+
+            // Ideação / Pensamentos de Desesperança Profunda (Peso 3 ou 4 para gatilho de apoio urgente)
+            { titulo: "Você tem sentido que seria melhor para todos se você simplesmente desaparecesse?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Já passou pela mente em dias ruins.", pontos: 2}, {texto: "Sim, sinto isso com frequência.", pontos: 4}] },
+            { titulo: "Pensamentos sobre a morte ou sobre o fim da própria vida cruzaram sua mente?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Pensamentos passageiros de sumir.", points: 2}, {texto: "Sim, tenho pensado nisso.", pontos: 4}] },
+            { titulo: "Você sente que a dor emocional que carrega tornou-se insuportável de aguentar?", opcoes: [{texto: "Consigo lidar.", pontos: 0}, {texto: "Está difícil.", points: 1}, {texto: "Sim, a dor é insuportável.", pontos: 3}] },
+            { titulo: "Você já chegou a pensar em como faria para acabar com essa dor de vez?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Não tenho planos.", pontos: 2}, {texto: "Sim, já pensei nisso.", pontos: 4}] },
+            { titulo: "Sente que perdeu completamente os motivos para continuar lutando?", opcoes: [{texto: "Tenho muitos motivos.", pontos: 0}, {texto: "Às vezes me questiono.", points: 1}, {texto: "Sim, sinto que não há mais motivos.", pontos: 4}] },
+
+            // Solidão / Apoio / Relações
+            { titulo: "Você sente que ninguém ao seu redor é capaz de entender o que você passa?", opcoes: [{texto: "Meus amigos me entendem.", pontos: 0}, {texto: "Poucas pessoas entendem.", points: 1}, {texto: "Sim, sinto-me totalmente incompreendido(a) e sozinho(a).", points: 2}] },
+            { titulo: "Evita falar sobre o que sente com medo de ser visto(a) como fraco(a) ou chato(a)?", opcoes: [{texto: "Desabafo com facilidade.", pontos: 0}, {texto: "Guarde algumas coisas.", points: 1}, {texto: "Sim, escondo tudo de todos.", points: 2}] },
+            { titulo: "Sente que é um peso ou um fardo financeiro/emocional para sua família?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Às vezes acho que sim.", points: 1}, {texto: "Sim, sinto que atrapalho a vida deles.", points: 2}] },
+            { titulo: "Recebe apoio afetuoso de alguém no seu dia a dia atual?", opcoes: [{texto: "Sim, tenho ótimo apoio.", pontos: 0}, {texto: "Pouco apoio.", points: 1}, {texto: "Nenhum apoio, estou sozinho(a).", points: 2}] },
+            { titulo: "Tem vergonha de procurar ajuda psicológica ou psiquiátrica?", opcoes: [{texto: "Não tenho vergonha.", pontos: 0}, {texto: "Um pouco de receio.", points: 1}, {texto: "Sim, sinto muita vergonha.", points: 2}] },
+
+            // Autocobrança / Estresse Cotidiano
+            { titulo: "Você se cobra para ser perfeito(a) em tudo o que faz?", opcoes: [{texto: "Não, aceito meus limites.", pontos: 0}, {texto: "Um pouco.", points: 1}, {texto: "Sim, sou extremamente exigente comigo.", points: 2}] },
+            { titulo: "Sente culpa quando decide tirar um tempo para descansar?", opcoes: [{texto: "Descanso sem culpa.", pontos: 0}, {texto: "Fico um pouco inquieto(a).", pontos: 1}, {texto: "Sim, sinto culpa enorme se paro.", points: 2}] },
+            { titulo: "As pequenas tarefas do dia a dia parecem montanhas impossíveis de escalar?", opcoes: [{texto: "Lido bem com a rotina.", pontos: 0}, {texto: "Alguns dias pesam.", points: 1}, {texto: "Sim, até tomar banho parece pesado.", points: 2}] },
+            { titulo: "Você sente raiva ou irritação excessiva com facilidade por qualquer bobagem?", opcoes: [{texto: "Sou calmo(a).", pontos: 0}, {texto: "Estresso-me às vezes.", pontos: 1}, {texto: "Sim, estou irritado(a) o tempo todo.", points: 2}] },
+            { titulo: "Sente um vazio interno profundo que nada consegue preencher?", opcoes: [{texto: "Sinto-me preenchido(a).", pontos: 0}, {texto: "Às vezes sinto um vazio leve.", points: 1}, {texto: "Sim, sinto um vazio constante e doloroso.", points: 2}] },
+
+            // Reflexões Finais de Perspectiva
+            { titulo: "Consegue lembrar de alguma época em que foi feliz ou sentiu paz de espírito?", opcoes: [{texto: "Sim, lembro bem.", pontos: 0}, {texto: "Faz muito tempo.", points: 1}, {texto: "Parece que isso nunca aconteceu comigo.", points: 2}] },
+            { titulo: "Você tem vontade de sumir, pegar a estrada e abandonar tudo?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Já pensei nisso.", points: 1}, {texto: "Sim, tenho essa vontade todos os dias.", points: 2}] },
+            { titulo: "A sua paciência com as pessoas e com os imprevistos esgotou-se?", opcoes: [{texto: "Ainda tenho paciência.", pontos: 0}, {texto: "Está curta.", points: 1}, {texto: "Zero paciência, qualquer coisa me explode.", points: 2}] },
+            { titulo: "Você sente que perdeu o controle sobre a direção da sua própria vida?", opcoes: [{texto: "Controlo minha vida.", pontos: 0}, {texto: "Às vezes sinto descontrole.", points: 1}, {texto: "Sim, a vida está totalmente fora do meu controle.", points: 2}] },
+            { titulo: "Você tem chorado escondido para que ninguém perceba sua dor?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Raramente.", points: 1}, {texto: "Sim, faço isso sempre.", points: 2}] },
+            { titulo: "Sente que sua mente é sua pior inimiga neste momento?", opcoes: [{texto: "Minha mente é tranquila.", pontos: 0}, {texto: "Às vezes atrapalha.", pontos: 1}, {texto: "Sim, minha mente me atormenta o dia todo.", points: 2}] },
+            { titulo: "Você consegue sentir prazer nas pequenas coisas, como um café ou sol?", opcoes: [{texto: "Sim, aprecio.", points: 0}, {texto: "Raramente.", points: 1}, {texto: "Não sinto prazer em absolutamente nada.", points: 2}] },
+            { titulo: "Você sente uma sensação de aperto no peito ao pensar no dia seguinte?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Um pouco de ansiedade.", points: 1}, {texto: "Sim, pavor de amanhecer o dia.", points: 2}] },
+            { titulo: "Acha que o seu sofrimento atual é uma frescura ou fraqueza sua?", opcoes: [{texto: "Sei que é uma questão real.", pontos: 0}, {texto: "Às vezes me julgo assim.", points: 1}, {texto: "Sim, acho que sou fraco(a) e culpado(a).", points: 2}] },
+            { titulo: "No fundo, você ainda deseja encontrar uma saída e ser feliz de novo?", opcoes: [{texto: "Sim, com certeza.", pontos: 0}, {texto: "Tenho dúvidas, mas queria.", points: 1}, {texto: "Não sei mais se acredito nisso.", points: 2}] }
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let pontuacaoTotal = 0;
+
+        // Função para embaralhar e selecionar 15 perguntas aleatórias sem repetir na mesma sessão
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            // Embaralha o array completo
+            copiaBanco.sort(() => Math.random() - 0.5);
+            // Pega exatamente 15
+            perguntasSorteadas = copiaBanco.slice(0, 15);
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            pontuacaoTotal = 0;
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('bloco-ajuda').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-orange-50/50 hover:border-orange-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.pontos);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(pontos) {
+            pontuacaoTotal += pontos;
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            const iconeContainer = document.getElementById('resultado-icone-container');
+            const iconeEl = document.getElementById('resultado-icone');
+            const subtituloEl = document.getElementById('resultado-subtitulo');
+            const tituloEl = document.getElementById('resultado-titulo');
+            const descEl = document.getElementById('resultado-descricao');
+            const blocoAjuda = document.getElementById('bloco-ajuda');
+
+            // Critérios de pontuação adaptados para 15 perguntas sorteadas
+            if (pontuacaoTotal >= 10) {
+                // Alerta alto / Sofrimento profundo ou ideação
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-2xl border border-red-200";
+                iconeEl.setAttribute('data-lucide', 'heart');
+                subtituloEl.className = "text-xs text-red-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Acolhimento Urgente";
+                tituloEl.innerText = "Você merece cuidado e escuta imediata";
+                descEl.innerHTML = "Notamos através de suas respostas que você está carregando um fardo emocional muito pesado, com sinais importantes de sofrimento, exaustão ou dor intensa. <strong>Lembre-se: o que você sente é real, mas você não precisa carregar isso sozinho(a).</strong> A dor que você sente hoje tem tratamento e suporte, e existem pessoas preparadas para te ouvir sem julgamentos neste exato momento.";
+                blocoAjuda.classList.remove('hidden');
+            } else if (pontuacaoTotal >= 5) {
+                // Sinais moderados
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200";
+                iconeEl.setAttribute('data-lucide', 'sun');
+                subtituloEl.className = "text-xs text-amber-600 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Orientação e Autocuidado";
+                tituloEl.innerText = "Sua saúde mental está pedindo pausas";
+                descEl.innerHTML = "Suas respostas indicam que o estresse do dia a dia, a rotina ou momentos de oscilação emocional têm drenado sua energia. É um momento precioso para desacelerar, olhar para dentro com carinho, buscar conversas com pessoas de confiança e considerar um acompanhamento psicológico preventivo.";
+                blocoAjuda.classList.add('hidden');
+            } else {
+                // Equilíbrio
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
+                iconeEl.setAttribute('data-lucide', 'shield-check');
+                subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Equilíbrio Estável";
+                tituloEl.innerText = "Momento de estabilidade e preservação";
+                descEl.innerHTML = "Que bom que você está conseguindo navegar pelos desafios atuais com resiliência! Continue cultivando hábitos que nutrem sua paz interior, momentos de lazer e conexões saudáveis. Lembre-se de que o autocuidado é um exercício contínuo.";
+                blocoAjuda.classList.add('hidden');
+            }
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

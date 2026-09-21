@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeamento e Equilíbrio dos Chakras - Equalize-se</title>
+    <meta name="description" content="Avalie o fluxo e o alinhamento da sua energia vital através dos 7 chakras principais.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 space-y-6">
+        
+        <!-- CABEÇALHO / LOGO SIMPLES -->
+        <header class="bg-white/80 backdrop-blur-md border border-emerald-100/60 rounded-3xl p-5 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Conexão e Autoconhecimento Diário</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+            <div class="max-w-lg mx-auto flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="chakras.html" class="flex flex-col items-center gap-1 text-purple-700 font-semibold">
+                    <div class="p-2 bg-purple-50 rounded-2xl transition-all">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-700"></i>
+                    </div>
+                    <span class="text-[11px]">Chakras</span>
+                </a>
+                <a href="acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-orange-50 rounded-2xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO DO TESTE / CHAKRAS -->
+        <section class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+            
+            <!-- TELA DE INTRODUÇÃO -->
+            <div id="quiz-intro" class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-50 text-purple-700 rounded-2xl border border-purple-200 mb-2">
+                    <i data-lucide="sparkles" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Como está o fluxo da sua energia vital?</h1>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Os chakras são centros energéticos que influenciam seu corpo, mente e emoções. Selecionaremos 15 reflexões do nosso banco para analisar o seu equilíbrio atual e trazer caminhos de harmonia.
+                </p>
+                <div class="bg-purple-50 border border-purple-200 text-purple-900 text-xs rounded-xl p-3 max-w-lg mx-auto">
+                    <strong>Nota importante:</strong> Este teste é uma ferramenta de autoconhecimento e reflexão energética, sem caráter clínico ou diagnóstico.
+                </div>
+                <button onclick="iniciarQuiz()" class="mt-4 px-8 py-3.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:scale-105">
+                    Iniciar Avaliação
+                </button>
+            </div>
+
+            <!-- TELA DE PERGUNTAS -->
+            <div id="quiz-perguntas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progresso-txt" class="text-xs font-bold text-purple-700 uppercase tracking-wider">Questão 1 de 15</span>
+                    <span class="text-xs text-slate-400 font-medium">Mapeamento Energético</span>
+                </div>
+                
+                <h2 id="pergunta-titulo" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                
+                <div id="opcoes-container" class="space-y-3"></div>
+            </div>
+
+            <!-- TELA DE RESULTADO / ORIENTAÇÃO -->
+            <div id="quiz-resultado" class="hidden text-center space-y-6">
+                <div id="resultado-icone-container" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border">
+                    <i id="resultado-icone" data-lucide="sun" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span id="resultado-subtitulo" class="text-xs font-bold uppercase tracking-widest"></span>
+                    <h2 id="resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"></h2>
+                </div>
+                <p id="resultado-descricao" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-left"></p>
+                
+                <!-- DIRECIONAMENTO / PRÁTICAS SUGERIDAS -->
+                <div id="bloco-praticas" class="bg-purple-50 border border-purple-200 rounded-2xl p-5 text-left space-y-3">
+                    <div class="flex items-center gap-2 text-purple-900 font-bold text-sm">
+                        <i data-lucide="Compass" class="w-5 h-5 text-purple-700"></i>
+                        <span>Caminhos para Harmonização Energética:</span>
+                    </div>
+                    <ul class="text-xs sm:text-sm text-slate-700 space-y-2">
+                        <li><strong>Prática de Respiração (Pranayama):</strong> Dedique 5 minutos diários para respirar conscientemente e centrar sua mente.</li>
+                        <li><strong>Conexão com a Natureza:</strong> Caminhar ao ar livre ou tomar banhos de sol ajuda a estabilizar as raízes da energia física.</li>
+                        <li><strong>Autocuidado Consciente:</strong> Permita-se pausas reais ao longo do dia para realinhar pensamentos e soltar tensões acumuladas.</li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="reiniciarQuiz()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+                        Refazer Avaliação
+                    </button>
+                    <a href="index.html" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        Voltar ao Início
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script com Banco de 50 Perguntas de Chakras e Sorteio de 15 -->
+    <script>
+        const bancoPerguntas = [
+            // Chakra Básico (Muladhara) - Sobrevivência, Segurança, Base
+            { titulo: "Você tem sentido segurança financeira e estabilidade na sua rotina diária?", opcoes: [{texto: "Sim, sinto-me seguro(a) e firme.", pontos: 0}, {texto: "Às vezes sinto instabilidade.", pontos: 1}, {texto: "Não, vivo em constante medo e insegurança.", pontos: 2}] },
+            { titulo: "Sua relação com seu corpo físico é de cuidado e acolhimento?", opcoes: [{texto: "Cuido bem do meu corpo.", pontos: 0}, {texto: "Poderia cuidar melhor.", pontos: 1}, {texto: "Sinto desconexão ou descuido total com a saúde.", pontos: 2}] },
+            { titulo: "Você sente que 'tem chão' sob os pés, sentindo-se ancorado(a) na realidade?", opcoes: [{texto: "Sim, sou muito realista e firme.", pontos: 0}, {texto: "Às vezes me sinto disperso(a).", points: 1}, {texto: "Não, sinto-me totalmente perdido(a) e sem rumo.", points: 2}] },
+            { titulo: "A sua energia vital para enfrentar o dia a dia costuma ser abundante?", opcoes: [{texto: "Tenho boa vitalidade.", pontos: 0}, {texto: "Canso-me com facilidade.", points: 1}, {texto: "Sinto exaustão crônica e falta de ânimo.", points: 2}] },
+            { titulo: "Você sente medo excessivo de perder suas posses ou seu sustento?", opcoes: [{texto: "Não tenho esse apego ansioso.", pontos: 0}, {texto: "Às vezes me preocupo.", points: 1}, {texto: "Sim, isso me consome de forma paralisante.", points: 2}] },
+            { titulo: "Consegue manter sua casa ou ambiente de trabalho organizado e estável?", opcoes: [{texto: "Sim, gosto de ordem e base.", pontos: 0}, {texto: "Mais ou menos.", points: 1}, {texto: "Meu ambiente reflete um caos interno total.", points: 2}] },
+            { titulo: "Você sente que suas necessidades básicas de descanso e alimentação são atendidas?", opcoes: [{texto: "Sim, plenamente.", pontos: 0}, {texto: "Fico devendo em algumas áreas.", points: 1}, {texto: "Não, negligencio totalmente o básico.", points: 2}] },
+
+            // Chakra Sacro (Svadhisthana) - Emoções, Prazer, Criatividade
+            { titulo: "Você consegue sentir prazer e alegria genuína nas pequenas coisas da vida?", opcoes: [{texto: "Sim, encontro prazer fácil.", pontos: 0}, {texto: "Raramente consigo.", points: 1}, {texto: "Não, sinto a vida completamente sem sabor.", points: 2}] },
+            { titulo: "Como você lida com a sua criatividade e a expressão dos seus talentos?", opcoes: [{texto: "Expresso-me muito bem.", pontos: 0}, {texto: "Sinto bloqueios criativos às vezes.", points: 1}, {texto: "Sinto-me totalmente travado(a) e sem inspiração.", points: 2}] },
+            { titulo: "Suas emoções costumam fluir de maneira saudável, sem transbordamentos?", opcoes: [{texto: "Sim, tenho bom equilíbrio emocional.", pontos: 0}, {texto: "Oscilo bastante de humor.", points: 1}, {texto: "Sinto que minhas emoções me dominam ou são reprimidas.", points: 2}] },
+            { titulo: "Você sente culpa ao buscar momentos de lazer ou descanso para si mesmo(a)?", opcoes: [{texto: "Não sinto culpa.", pontos: 0}, {texto: "Um pouco de vez em quando.", points: 1}, {texto: "Sim, sinto culpa enorme se paro de produzir.", points: 2}] },
+            { titulo: "Sua libido e sua energia de conexão íntima estão harmoniosas?", opcoes: [{texto: "Sim, estão equilibradas.", pontos: 0}, {texto: "Estão em baixa ou desreguladas.", points: 1}, {texto: "Totalmente bloqueadas ou distantes.", points: 2}] },
+            { titulo: "Você se permite sentir e chorar quando necessário sem julgamentos?", opcoes: [{texto: "Sim, expresso o que sinto.", pontos: 0}, {texto: "Seguro o máximo que posso.", points: 1}, {texto: "Guardo tudo e sinto um nó sufocante.", points: 2}] },
+
+            // Chakra do Plexo Solar (Manipura) - Autoestima, Poder Pessoal, Ação
+            { titulo: "Você confui na sua capacidade de tomar decisões importantes na vida?", opcoes: [{texto: "Sim, confio no meu discernimento.", pontos: 0}, {texto: "Tenho muitas dúvidas e hesito.", points: 1}, {texto: "Sinto incapacidade e dependência dos outros.", points: 2}] },
+            { titulo: "Consegue impor limites saudáveis e dizer 'não' quando necessário?", opcoes: [{texto: "Sim, defendo meus limites bem.", pontos: 0}, {texto: "Tenho dificuldade e acabo aceitando tudo.", points: 1}, {texto: "Não consigo dizer não e me sinto explorado(a).", points: 2}] },
+            { titulo: "Sua autoestima e autoconfiança estão firmes no dia a dia?", opcoes: [{texto: "Gosto de quem sou e do meu valor.", pontos: 0}, {texto: "Minha confiança oscila muito.", points: 1}, {texto: "Sinto-me inferior e sem valor algum.", points: 2}] },
+            { titulo: "Você sente um poder pessoal ativo para transformar o rumo da sua vida?", opcoes: [{texto: "Sim, sou protagonista.", pontos: 0}, {texto: "Sinto-me impotente às vezes.", points: 1}, {texto: "Sinto que a vida dita tudo e sou apenas vítima.", points: 2}] },
+            { titulo: "Tem facilidade para digerir situações difíceis (física ou emocionalmente)?", opcoes: [{texto: "Lido bem com os reveses.", pontos: 0}, {texto: "Fico com 'azia' ou 'nó no estômago'.", points: 1}, {texto: "Tudo me causa forte mal-estar estomacal.", points: 2}] },
+            { titulo: "Você cultiva uma disciplina saudável para alcançar seus objetivos?", opcoes: [{texto: "Sim, sou focado(a).", pontos: 0}, {texto: "Começo e desisto fácil.", points: 1}, {texto: "Falta total de disciplina e garra.", points: 2}] },
+
+            // Chakra Cardíaco (Anahata) - Amor, Perdão, Compaixão
+            { titulo: "Você sente facilidade em perdoar os outros e a si mesmo(a) por erros passados?", opcoes: [{texto: "Sim, liberto o passado com facilidade.", pontos: 0}, {texto: "Guardo certas mágoas.", points: 1}, {texto: "Carrego resgates de ódio e rancor profundo.", points: 2}] },
+            { titulo: "Como está sua capacidade de dar e receber afeto genuíno?", opcoes: [{texto: "Amo e sou amado(a) com leveza.", pontos: 0}, {texto: "Tenho receio de me entregar.", points: 1}, {texto: "Sinto o coração fechado e blindado para o amor.", points: 2}] },
+            { titulo: "Você sente uma paz interior constante em seu peito?", opcoes: [{texto: "Sim, sinto serenidade.", pontos: 0}, {texto: "Meu peito vive apertado.", points: 1}, {texto: "Sinto uma dor ou aperto constante na região cardíaca.", points: 2}] },
+            { titulo: "Pratica a compaixão e a empatia pelas dores alheias e pelas suas?", opcoes: [{texto: "Sim, sou muito compassivo(a).", points: 0}, {texto: "Às vezes me fecho para os outros.", points: 1}, {texto: "Sinto frieza ou dureza no trato humano.", points: 2}] },
+            { titulo: "Você sente solidão profunda mesmo estando acompanhado(a)?", opcoes: [{texto: "Sinto-me conectado(a) e acompanhado(a).", pontos: 0}, {texto: "Às vezes sinto um vazio de conexões.", points: 1}, {texto: "Sim, sinto-me profundamente isolado(a) no mundo.", points: 2}] },
+            { titulo: "Consegue aceitar os defeitos alheios sem tentar consertar todo mundo?", opcoes: [{texto: "Aceito as diferenças.", pontos: 0}, {texto: "Incomodo-me bastante.", points: 1}, {texto: "Critico e exijo perfeição implacável.", points: 2}] },
+
+            // Chakra Laríngeo (Vishuddha) - Comunicação, Expressão, Verdade
+            { titulo: "Você consegue expressar seus sentimentos e opiniões com clareza e verdade?", opcoes: [{texto: "Sim, comunico-me com franqueza.", pontos: 0}, {texto: "Engulo muita coisa para evitar brigas.", points: 1}, {texto: "Não consigo falar o que penso, sinto-me sufocado(a).", points: 2}] },
+            { titulo: "Sente frequentemente problemas na garganta, rouquidão ou tosse sem gripe?", opcoes: [{texto: "Minha garganta é saudável.", pontos: 0}, {texto: "De vez em quando sinto arranhar.", points: 1}, {texto: "Sim, sinto dores ou 'nós' constantes na garganta.", points: 2}] },
+            { titulo: "Você escuta os outros com atenção real ou apenas espera sua vez de falar?", opcoes: [{texto: "Sei escutar com profundidade.", pontos: 0}, {texto: "Às vezes perco a paciência ouvindo.", points: 1}, {texto: "Interrompo e não tenho paciência para ouvir.", points: 2}] },
+            { titulo: "Sente que sua voz e suas opiniões são respeitadas pelos outros?", opcoes: [{texto: "Sim, sou ouvido(a).", pontos: 0}, {texto: "Sinto que me ignoram às vezes.", points: 1}, {texto: "Sinto que minha voz não tem valor nenhum.", points: 2}] },
+            { titulo: "Você usa palavras gentis consigo mesmo(a) em seus pensamentos internos?", opcoes: [{texto: "Sim, sou meu próprio aliado.", pontos: 0}, {texto: "Às vezes me critico duramente.", points: 1}, {texto: "Sinto que minha autocrítica é extremamente destrutiva.", points: 2}] },
+
+            // Chakra Frontal / Terceiro Olho (Ajna) - Intuição, Clareza, Visão
+            { titulo: "Você confui na sua intuição e nos seus palpites diante de escolhas difíceis?", opcoes: [{texto: "Minha intuição é certeira e a escuto.", points: 0}, {texto: "Duvido muito da minha intuição.", points: 1}, {texto: "Sou totalmente desconectado(a) da minha voz interior.", points: 2}] },
+            { titulo: "Sua mente costuma ser clara e organizada, livre de confusão excessiva?", opcoes: [{texto: "Tenho clareza mental.", pontos: 0}, {texto: "Minha mente é confusa e cheia de ruídos.", points: 1}, {texto: "Sinto névoa mental constante e tonturas de pensamentos.", points: 2}] },
+            { titulo: "Você consegue enxergar além das aparências nas situações da vida?", opcoes: [{texto: "Sim, percebo as entrelinhas.", points: 0}, {texto: "Sou um pouco ingênuo(a).", points: 1}, {texto: "Caio sempre nas mesmas armadilhas por falta de percepção.", points: 2}] },
+            { titulo: "Tem pesadelos frequentes ou insônia por excesso de imagens mentais ao deitar?", opcoes: [{texto: "Durmo com tranquilidade mental.", pontos: 0}, {texto: "Às vezes tenho excesso de sonhos cansativos.", points: 1}, {texto: "Minha cabeça não desliga nunca, gerando exaustão.", points: 2}] },
+            { titulo: "Você consegue ter uma visão ampla de futuro sem desespero?", opcoes: [{texto: "Sim, planejo com clareza.", pontos: 0}, {texto: "Fico perdido(a) ao olhar adiante.", points: 1}, {texto: "O futuro é um borrão aterrorizante para mim.", points: 2}] },
+
+            // Chakra Coronário (Sahasrara) - Conexão Espiritual, Propósito, Unidade
+            { titulo: "Você sente que sua vida tem um propósito maior e significado profundo?", opcoes: [{texto: "Sim, sinto-me guiado(a) por um propósito.", pontos: 0}, {texto: "Às vezes questiono o sentido de tudo.", points: 1}, {texto: "Não vejo nenhum sentido ou direção na existência.", points: 2}] },
+            { titulo: "Sente uma conexão com algo maior (Deus, Universo, Energia Cósmica)?", opcoes: [{texto: "Sim, sinto-me amparado(a) espiritualmente.", pontos: 0}, {texto: "Tenho dúvidas sobre isso.", points: 1}, {texto: "Sinto-me totalmente separado(a) e abandonado(a) pelo universo.", points: 2}] },
+            { titulo: "Você consegue sentir gratidão genuína pelas experiências da sua jornada?", opcoes: [{texto: "A gratidão é um hábito diário para mim.", pontos: 0}, {texto: "Lembro de agradecer só nas horas boas.", points: 1}, {texto: "Só sinto revolta e reclamação diante da vida.", points: 2}] },
+            { titulo: "Sua mente é aberta a novas perspectivas e aprendizados evolutivos?", opcoes: [{texto: "Sim, amo expandir minha consciência.", pontos: 0}, {texto: "Resisto a mudanças de mentalidade.", points: 1}, {texto: "Sou totalmente rígido(a) e fechado(a) a novas visões.", points: 2}] },
+            { titulo: "Você sente paz espiritual ao pensar na finitude ou nos ciclos da vida?", opcoes: [{texto: "Aceito os ciclos com serenidade.", pontos: 0}, {texto: "Tenho receio e evito pensar nisso.", points: 1}, {texto: "Sinto pavor e angústia profunda com a ideia de ciclos.", points: 2}] },
+            { titulo: "Consegue meditar ou aquietar os pensamentos em momentos de silêncio?", opcoes: [{texto: "Sim, encontro paz no silêncio.", points: 0}, {texto: "É muito difícil aquietar a mente.", points: 1}, {texto: "O silêncio me gera agonia e desespero.", points: 2}] }
+        ];
+
+        let perguntasSorteadas = [];
+        let questaoAtual = 0;
+        let pontuacaoTotal = 0;
+
+        // Função para sortear 15 perguntas únicas do banco de 50
+        function sortearPerguntas() {
+            let copiaBanco = [...bancoPerguntas];
+            copiaBanco.sort(() => Math.random() - 0.5);
+            perguntasSorteadas = copiaBanco.slice(0, 15);
+        }
+
+        function iniciarQuiz() {
+            sortearPerguntas();
+            questaoAtual = 0;
+            pontuacaoTotal = 0;
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.add('hidden');
+            document.getElementById('quiz-perguntas').classList.remove('hidden');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = perguntasSorteadas[questaoAtual];
+            document.getElementById('progresso-txt').innerText = `Questão ${questaoAtual + 1} de ${perguntasSorteadas.length}`;
+            document.getElementById('pergunta-titulo').innerText = q.titulo;
+            
+            const container = document.getElementById('opcoes-container');
+            container.innerHTML = '';
+            
+            q.opcoes.forEach(op => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-purple-50/50 hover:border-purple-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.innerText = op.texto;
+                btn.onclick = () => selecionarOpcao(op.pontos);
+                container.appendChild(btn);
+            });
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function selecionarOpcao(pontos) {
+            pontuacaoTotal += pontos;
+            questaoAtual++;
+            if (questaoAtual < perguntasSorteadas.length) {
+                carregarQuestao();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-perguntas').classList.add('hidden');
+            document.getElementById('quiz-resultado').classList.remove('hidden');
+
+            const iconeContainer = document.getElementById('resultado-icone-container');
+            const iconeEl = document.getElementById('resultado-icone');
+            const subtituloEl = document.getElementById('resultado-subtitulo');
+            const tituloEl = document.getElementById('resultado-titulo');
+            const descEl = document.getElementById('resultado-descricao');
+            const blocoPraticas = document.getElementById('bloco-praticas');
+
+            // Critérios de pontuação adaptados para 15 perguntas (máximo 30 pontos)
+            if (pontuacaoTotal >= 16) {
+                // Desalinhamento / Bloqueio Energético Intenso
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-700 rounded-2xl border border-amber-200";
+                iconeEl.setAttribute('data-lucide', 'cloud-rain');
+                subtituloEl.className = "text-xs text-amber-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Energia sobrecarregada ou bloqueada";
+                tituloEl.innerText = "Seus centros vitais pedem realinhamento e cuidado";
+                descEl.innerHTML = "O mapeamento indica que grande parte da sua energia está encontrando resistências, bloqueios ou exaustão nos centros vitais. É um momento de respiro profundo: permita-se desacelerar, cuidar do seu templo físico e buscar práticas restauradoras que tragam leveza de volta ao seu dia a dia.";
+                blocoPraticas.classList.remove('hidden');
+            } else if (pontuacaoTotal >= 7) {
+                // Desgaste moderado
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-purple-50 text-purple-700 rounded-2xl border border-purple-200";
+                iconeEl.setAttribute('data-lucide', 'sun');
+                subtituloEl.className = "text-xs text-purple-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Harmonia em Oscilação";
+                tituloEl.innerText = "Alguns pontos de energia precisam de atenção";
+                descEl.innerHTML = "Suas respostas mostram que você navega bem por certas áreas da vida, mas alguns chakras apresentam desgaste devido à rotina, estresse ou acúmulo de cobranças. É uma excelente oportunidade para olhar para essas áreas específicas com carinho e restaurar seu fluxo natural.";
+                blocoPraticas.classList.remove('hidden');
+            } else {
+                // Alto Equilíbrio
+                iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
+                iconeEl.setAttribute('data-lucide', 'sparkles');
+                subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
+                subtituloEl.innerText = "Excelente Fluidez Energética";
+                tituloEl.innerText = "Seus chakras encontram-se em belo equilíbrio";
+                descEl.innerHTML = "Que alegria! Suas respostas refletem uma sintonia harmoniosa entre suas bases físicas, emocionais e espirituais. Continue cultivando seus rituais de autocuidado, pensamentos construtivos e momentos de paz que mantêm sua energia vibrando alto.";
+                blocoPraticas.classList.add('hidden');
+            }
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
