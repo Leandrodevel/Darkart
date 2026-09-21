@@ -55,7 +55,7 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                   const dataHoje = obterDataHojeIso();
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
-                await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
+               // await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
                 res = await supabaseClient.from('videos_dia').upsert([dados]);
             }
             else if (dados.acao === 'enviar_mensagem') {
