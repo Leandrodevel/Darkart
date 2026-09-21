@@ -52,12 +52,35 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
             } 
             else if (dados.acao === 'salvar_video_dia') {
-                  const dataHoje = obterDataHojeIso();
-                
-                // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
-               // await supabaseClient.from('videos_dia').delete().lt('data', dataHoje);
-                res = await supabaseClient.from('videos_dia').upsert([dados]);
-            }
+    const dataHoje = obterDataHojeIso();
+    
+    // 1. Limpa registros anteriores (ajustado para garantir que a exclusão funcione)
+    // Se a tabela guarda apenas 1 vídeo do dia, o ideal é limpar todos:
+    const { error: errorDelete } = await supabaseClient
+        .from('videos_dia')
+        .delete()
+        .neq('id', -1); // ou .gte('id', 0) dependendo do seu tipo de ID
+
+    if (errorDelete) {
+        console.error("Erro ao limpar vídeos antigos:", errorDelete);
+        return;
+    }
+
+    // 2. Insere/Atualiza o novo vídeo do dia
+    const { data, error: errorUpsert } = await supabaseClient
+        .from('videos_dia')
+        .upsert([dados])
+        .select(); // O .select() ajuda a retornar o registro salvo para confirmação
+
+    if (errorUpsert) {
+        console.error("Erro ao salvar vídeo do dia:", errorUpsert);
+        res = { success: false, error: errorUpsert };
+    } else {
+        console.log("Vídeo salvo com sucesso!", data);
+        res = { success: true, data };
+    }
+}
+
             else if (dados.acao === 'enviar_mensagem') {
                 const dataHoje = obterDataHojeIso();
                 
