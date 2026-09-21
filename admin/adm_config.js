@@ -47,11 +47,11 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
         
         else if (metodo === 'POST' || metodo === 'PUT') {
             // Verifica a ação enviada pelo payload antigo para mapear corretamente no Supabase
-            if (dados.acao === 'excluir_registro') {
+ if (dados.acao === 'excluir_registro') {
                 const colunaId = (dados.tabela === 'videos_dia') ? 'data' : 'id';
                 res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
             } 
-            else if (dados.acao === 'salvar_video_dia') {
+    else if (dados.acao === 'salvar_video_dia') {
     const dataHoje = obterDataHojeIso();
     
     // 1. Limpa registros anteriores (ajustado para garantir que a exclusão funcione)
@@ -79,9 +79,7 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
         console.log("Vídeo salvo com sucesso!", data);
         res = { success: true, data };
     }
-}
-
-            else if (dados.acao === 'enviar_mensagem') {
+}else if (dados.acao === 'enviar_mensagem') {
                 const dataHoje = obterDataHojeIso();
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
