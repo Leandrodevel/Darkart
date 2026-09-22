@@ -48,7 +48,9 @@ async function cadastrarNoticiaAdmin(e) {
     const previa = document.getElementById('news-previa').value.trim();
     const imagem_url = document.getElementById('news-imagem').value.trim();
     const autor = document.getElementById('news-autor').value.trim();
-    const conteudo = document.getElementById('news-conteudo').value.trim();
+    const conteudo = quillAutor.root.innerHTML;
+
+    document.getElementById('news-conteudo').value.trim();
 
     const dados = {
         acao: 'salvar_materia', // Tratado de forma genérica ou direta no adm_config se necessário
@@ -346,7 +348,13 @@ async function carregarMensagemAutor() {
     const msg = mensagens[mensagens.length - 1];
     document.getElementById('autor-nome').value = msg.autor || '';
     document.getElementById('autor-data').value = msg.data || new Date().toISOString().split('T')[0];
-    document.getElementById('autor-texto').value = msg.texto || '';
+   // document.getElementById('autor-texto').value = msg.texto || '';
+    quillAutor.root.innerHTML = msg.texto || '';
+    // Substitua algo como: document.getElementById('autor-texto').value = dados.texto;
+// Por isto:
+    
+
+
 }
 
 async function publicarNovaAutor() {
@@ -543,9 +551,8 @@ async function cadastrarNovoAdministrador() {
 }
 setInterval(() => {
     carregarMensagensDia();
-    carregarMensagemAutor();
     carregarRelatos();
     carregarAdminsCadastrados();
-    carregarMateriasAdmin();
+    
 
 }, 5000);

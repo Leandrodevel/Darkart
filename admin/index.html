@@ -9,6 +9,8 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Quill.js CSS (Estilos do Editor Visual) -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <!-- Configurações do PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
@@ -73,10 +75,9 @@
 
         <nav class="flex justify-center gap-3 sm:gap-6 mb-6 overflow-x-auto pb-2 px-2">
             <button onclick="mudarAba('news')" id="btn-news" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition w-24 cursor-pointer">
-    <i data-lucide="newspaper" class="w-6 h-6"></i>
-    <span class="text-[11px] font-semibold">News</span>
-</button>
-
+                <i data-lucide="newspaper" class="w-6 h-6"></i>
+                <span class="text-[11px] font-semibold">News</span>
+            </button>
             <button onclick="mudarAba('video')" id="btn-video" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition w-24 cursor-pointer shadow-sm">
                 <i data-lucide="video" class="w-6 h-6"></i>
                 <span class="text-[11px] font-semibold">Vídeos</span>
@@ -99,8 +100,7 @@
             </button>
         </nav>
 
-        <!-- ABA 1: VÍDEOS -->
-                <!-- ABA: NEWS / MATÉRIAS -->
+        <!-- ABA: NEWS / MATÉRIAS -->
         <section id="aba-news" class="hidden space-y-6">
             <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
@@ -126,10 +126,11 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Conteúdo Completo</label>
-                        <textarea id="news-conteudo" rows="5" required placeholder="Texto completo da matéria..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue-500"></textarea>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Conteúdo Completo (Editor Visual)</label>
+                        <!-- Quill Editor para News -->
+                        <div id="editor-news" style="height: 250px;" class="bg-white rounded-b-lg text-sm"></div>
                     </div>
-                    <div class="flex justify-end">
+                    <div class="flex justify-end pt-2">
                         <button type="submit" id="btn-salvar-news" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 transition cursor-pointer shadow-sm">
                             <i data-lucide="check-circle" class="w-4 h-4"></i> Publicar Matéria
                         </button>
@@ -145,6 +146,7 @@
             </div>
         </section>
 
+        <!-- ABA 1: VÍDEOS -->
         <section id="aba-video" class="space-y-6">
             <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <h2 class="text-md font-semibold mb-4 text-gray-800 flex items-center gap-2">
@@ -188,14 +190,16 @@
                 <h2 class="text-md font-semibold text-gray-800 flex items-center gap-2">
                     <i data-lucide="message-square-plus" class="w-4 h-4 text-blue-600"></i> Nova Mensagem do Dia (<span id="label-data-hoje" class="text-gray-600"></span>)
                 </h2>
-<div class="flex flex-col sm:flex-row gap-3 items-start">
-    <textarea id="nova-msg-texto" rows="3" placeholder="Escreva a mensagem do dia..." class="w-full sm:flex-1 h-20 bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white text-gray-800 resize-none"></textarea>
-
-    <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition text-sm whitespace-nowrap cursor-pointer shadow-sm">
-        <i data-lucide="send" class="w-4 h-4"></i> Enviar
-    </button>
-</div>
-
+                <div class="space-y-3">
+                    <!-- Quill Editor para Mensagens do Dia -->
+                    <div id="editor-mensagens" style="height: 180px;" class="bg-white rounded-b-lg text-sm"></div>
+                    
+                    <div class="flex justify-end">
+                        <button onclick="adicionarMensagemDia()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 transition text-sm cursor-pointer shadow-sm">
+                            <i data-lucide="send" class="w-4 h-4"></i> Enviar Mensagem
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-4">
                 <h3 class="text-md font-semibold text-gray-800 flex items-center gap-2">
@@ -224,8 +228,9 @@
                         <input type="date" id="autor-data" disabled class="w-full bg-gray-100 border border-gray-200 text-gray-500 rounded-lg p-2.5 text-sm cursor-not-allowed">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Texto da Mensagem</label>
-                        <textarea id="autor-texto" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500 focus:bg-white text-sm text-gray-800"></textarea>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Texto da Mensagem (Editor Visual)</label>
+                        <!-- Quill Editor para Mensagem do Autor -->
+                        <div id="editor-autor" style="height: 200px;" class="bg-white rounded-b-lg text-sm"></div>
                     </div>
                 </div>
                 <div class="mt-4 flex justify-end">
@@ -333,7 +338,52 @@
         </div>
     </div>
 
+    <!-- Quill.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <!-- Scripts do Admin -->
     <script src="adm_config.js"></script>
     <script src="adm.js"></script>
+
+    <!-- Script de Inicialização dos Quill Editors -->
+    <script>
+        // Inicializa o Quill para a aba News
+        const quillNews = new Quill('#editor-news', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Inicializa o Quill para a aba Mensagens do Dia
+        const quillMensagens = new Quill('#editor-mensagens', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Inicializa o Quill para a aba Mensagem do Autor
+        const quillAutor = new Quill('#editor-autor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
+    </script>
 </body>
 </html>
