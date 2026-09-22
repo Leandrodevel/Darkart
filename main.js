@@ -212,7 +212,7 @@ async function enviarMensagemServidor() {
 
         localStorage.setItem('equalize_ultimo_envio', dataHojeIso);
 
-        alert("Mensagem enviada e publicada com sucesso!");
+        mostrarAvisoFlutuante("Mensagem enviada com sucesso!");
         fecharModalFrase();
         window.location.reload();
 
