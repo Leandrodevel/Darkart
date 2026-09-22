@@ -20,43 +20,11 @@
 </head>
 <body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
 
-    <!---BOTAO COMPARTILHAR-->
-<button onclick="compartilharPaginaAtual()" class="fixed top-4 right-4 z-50 bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 p-3 rounded-full shadow-lg transition-all hover:scale-105 cursor-pointer flex items-center justify-center" title="Compartilhar página">
-    <i data-lucide="share-2" class="w-5 h-5"></i>
-</button>
-<script>    
-    async function compartilharPaginaAtual() {
-    const dadosCompartilhamento = {
-        title: document.title,
-        text: "Confira esta página incrível!",
-        url: window.location.href
-    };
+    <!--- BOTAO COMPARTILHAR (Fundo Verde, Ícone Branco, Topo Direito) -->
+    <button onclick="compartilharPaginaAtual()" class="fixed top-4 right-4 z-50 bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 p-3 rounded-full shadow-lg transition-all hover:scale-105 cursor-pointer flex items-center justify-center" title="Compartilhar página">
+        <i data-lucide="share-2" class="w-5 h-5"></i>
+    </button>
 
-    // Tenta usar a API nativa de compartilhamento do dispositivo (celular/desktop compatível)
-    if (navigator.share) {
-        try {
-            await navigator.share(dadosCompartilhamento);
-        } catch (erro) {
-            // Se o usuário cancelar o compartilhamento, não faz nada
-            if (erro.name !== 'AbortError') {
-                console.error("Erro ao compartilhar:", erro);
-            }
-        }
-    } else {
-        // Fallback: Se o navegador não suportar, copia o link para a área de transferência
-        try {
-            await navigator.clipboard.writeText(window.location.href);
-            if (typeof mostrarAvisoFlutuante === 'function') {
-                mostrarAvisoFlutuante("Link copiado para a área de transferência!");
-            } else {
-                alert("Link copiado!");
-            }
-        } catch (erro) {
-            console.error("Erro ao copiar link:", erro);
-        }
-    }
-}
-</script>
     <!-- CABEÇALHO FIXO -->
     <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
         <div class="flex items-center gap-2">
@@ -73,7 +41,7 @@
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-8">
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-8 mt-24">
         
         <!-- Seção de Apresentação -->
         <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-10 text-center">
@@ -85,7 +53,7 @@
                 Se você está passando por momentos difíceis, buscando clareza mental ou necessitando de um direcionamento espiritual, compartilhe seu relato conosco. Este é um espaço seguro e acolhedor.
             </p>
             <div class="mt-6">
-                <button onclick="abrirModalRelato()" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-700 to-purple-700 hover:from-emerald-800 hover:to-purple-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md cursor-pointer">
+                <button onclick="abrirModalRelato()" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-md cursor-pointer">
                     <i data-lucide="send" class="w-4 h-4"></i> Enviar Meu Relato / Pedido de Ajuda
                 </button>
             </div>
@@ -98,7 +66,6 @@
             </h2>
             
             <div id="lista-relatos" class="space-y-4">
-                <!-- Os relatos cadastrados aparecerão dinamicamente aqui -->
                 <p class="text-sm text-slate-500 text-center py-6">Carregando relatos e orientações...</p>
             </div>
         </div>
@@ -131,7 +98,7 @@
                 </div>
                 <div class="flex justify-end gap-3 pt-2">
                     <button onclick="fecharModalRelato()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer">Cancelar</button>
-                    <button id="btn-enviar-relato" onclick="enviarRelatoServidor()" class="px-5 py-2 bg-gradient-to-r from-emerald-700 to-purple-700 hover:from-emerald-800 hover:to-purple-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md cursor-pointer">Enviar Relato</button>
+                    <button id="btn-enviar-relato" onclick="enviarRelatoServidor()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-md cursor-pointer">Enviar Relato</button>
                 </div>
             </div>
         </div>
@@ -149,6 +116,60 @@
     <script>
         lucide.createIcons();
 
+        // Função de Aviso Flutuante (Toast)
+        function mostrarAvisoFlutuante(mensagem) {
+            const avisoAntigo = document.getElementById('aviso-flutuante-toast');
+            if (avisoAntigo) {
+                avisoAntigo.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.id = 'aviso-flutuante-toast';
+            toast.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-slate-900/80 backdrop-blur-md text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg transition-all duration-300 opacity-0 scale-95';
+            toast.innerText = mensagem;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'scale-95');
+                toast.classList.add('opacity-100', 'scale-100');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'scale-100');
+                toast.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 2500);
+        }
+
+        async function compartilharPaginaAtual() {
+            const dadosCompartilhamento = {
+                title: document.title,
+                text: "Confira esta página de acolhimento!",
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(dadosCompartilhamento);
+                } catch (erro) {
+                    if (erro.name !== 'AbortError') {
+                        console.error("Erro ao compartilhar:", erro);
+                    }
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    mostrarAvisoFlutuante("Link copiado para a área de transferência!");
+                } catch (erro) {
+                    console.error("Erro ao copiar link:", erro);
+                }
+            }
+        }
+
         function abrirModalRelato() {
             document.getElementById("modal-relato").classList.remove("hidden");
         }
@@ -164,7 +185,7 @@
             const texto = document.getElementById("input-texto-relato").value.trim();
 
             if (!texto) {
-                alert("Por favor, escreva o seu relato antes de enviar.");
+                mostrarAvisoFlutuante("Por favor, escreva o seu relato antes de enviar.");
                 return;
             }
 
@@ -175,17 +196,16 @@
             }
 
             try {
-                // Utiliza a função importada do arquivo ajuda_sinc.js
                 const sucesso = await enviarPedidoAjuda(autor, texto);
 
                 if (sucesso) {
-                    alert("Seu relato foi enviado com sucesso e acolhimento em breve!");
+                    mostrarAvisoFlutuante("Seu relato foi enviado com sucesso!");
                     fecharModalRelato();
                     await carregarRelatos();
                 }
             } catch (error) {
                 console.error("Erro ao enviar:", error);
-                alert("Não foi possível enviar o relato no momento. Tente novamente.");
+                mostrarAvisoFlutuante("Não foi possível enviar o relato no momento.");
             } finally {
                 if (btn) {
                     btn.innerText = "Enviar Relato";
@@ -196,14 +216,12 @@
 
         async function carregarRelatos() {
             try {
-                // Utiliza a função de busca do ajuda_sinc.js
                 const record = await buscarDadosAjudaServidor();
                 const listaContainer = document.getElementById("lista-relatos");
                 listaContainer.innerHTML = "";
 
                 let temRelatos = false;
 
-                // Percorre os dias para exibir os relatos salvos
                 Object.keys(record).sort().reverse().forEach(dataKey => {
                     const diaObj = record[dataKey];
                     if (diaObj && diaObj.relatosAjuda && diaObj.relatosAjuda.length > 0) {

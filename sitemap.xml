@@ -15,7 +15,48 @@
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
-
+    <!-- Página de Acolhimento -->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/acolhimento.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- Página de Chakras -->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/chakras.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- Página de Superpoderes -->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/superpoder.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- Página de Arquétipos e Numerologia -->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/arq_numerologia.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!--página elemento-->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/elemento.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- página estresse-->
+    <url>
+        <loc>https://equalizese.vercel.app/testes/estresse.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
     <!-- Página de Numerologia -->
     <url>
         <loc>https://equalizese.vercel.app/numerologia.html</loc>
