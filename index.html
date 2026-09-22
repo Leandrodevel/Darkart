@@ -153,7 +153,7 @@
     </div>
 </nav>
 
-     
+ 
 
         <!-- MENSAGEM DO DIA -->
         <section class="w-full">
@@ -209,6 +209,29 @@
             <!-- O script main.js injetará a última matéria aqui automaticamente -->
         </div>
 
+ <!-- CHAT DE MENSAGENS -->
+<section id="secao-frases-container" class="w-full space-y-3">
+    <div class="flex items-center justify-between px-2">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mural de Recados</h3>
+        <span id="contador-mural-msgs" class="text-[11px] text-slate-400 font-medium">0 mensagens</span>
+    </div>
+
+    <!-- Container com Rolagem Estilo Chat/Feed -->
+    <div id="lista-frases-do-dia" class="space-y-3 max-h-[340px] overflow-y-auto pr-1">
+        <!-- As mensagens aparecem aqui dinamicamente empilhadas -->
+    </div>
+
+    <!-- Botão de Envio -->
+    <div class="flex flex-col items-center justify-center gap-3 text-center pt-2">
+        <p class="text-sm text-orange-600 dark:text-orange-300 font-medium max-w-xs">
+            Deixe seu recado, bom dia ou uma boa energia para quem visitar o site!
+        </p>
+      <button id="btn-abrir-modal-frase" onclick="abrirModalFrase()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/40 font-medium cursor-pointer" title="Enviar Mensagem">
+    <span>Deixe sua mensagem</span>
+    <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+</button>
+    </div>
+</section>
         <!-- SEÇÃO: BANDEJA DE TESTES E INTERATIVIDADE -->
         <section class="w-full">
             <div class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 shadow-sm">

@@ -10,85 +10,105 @@ const supabaseMainClient = window.supabase ? window.supabase.createClient(SUPABA
 
 lucide.createIcons();
 
+// Tempo de bloqueio em milissegundos (1 hora = 60 * 60 * 1000 = 3600000 ms)
+const TEMPO_BLOQUEIO_MS = 60 * 60 * 1000; 
+
 function abrirModalFrase() {
-    const hojeIso = obterChaveDataHoje();
-    const ultimoEnvio = localStorage.getItem('equalize_ultimo_envio');
-    
-    if (ultimoEnvio === hojeIso) {
-        alert("Você já enviou a sua mensagem permitida para hoje! Ela ficará ativa até amanhã.");
+    const ultimoEnvioTimestamp = parseInt(localStorage.getItem('equalize_ultimo_envio_ts') || '0');
+    const agora = Date.now();
+    const tempoDecorrido = agora - ultimoEnvioTimestamp;
+
+    if (tempoDecorrido < TEMPO_BLOQUEIO_MS) {
+        const tempoRestanteMs = TEMPO_BLOQUEIO_MS - tempoDecorrido;
+        const minutosRestantes = Math.ceil(tempoRestanteMs / (60 * 1000));
+        alert(`Você precisa aguardar mais ${minutosRestantes} minuto(s) para enviar uma nova mensagem.`);
         return;
     }
+
     document.getElementById("modal-frase").classList.remove("hidden");
 }
 
+// Função para atualizar o visual do botão de envio caso esteja no tempo de espera
+function atualizarEstadoBotaoEnvio() {
+    const botao = document.getElementById("btn-abrir-modal-frase");
+    if (!botao) return;
+
+    const ultimoEnvioTimestamp = parseInt(localStorage.getItem('equalize_ultimo_envio_ts') || '0');
+    const agora = Date.now();
+    const tempoDecorrido = agora - ultimoEnvioTimestamp;
+
+    if (tempoDecorrido < TEMPO_BLOQUEIO_MS) {
+        const tempoRestanteMs = TEMPO_BLOQUEIO_MS - tempoDecorrido;
+        const minutos = Math.floor(tempoRestanteMs / (60 * 1000));
+        const segundos = Math.floor((tempoRestanteMs % (60 * 1000)) / 1000);
+
+        // Estilo Cinza e Inativo
+        botao.className = "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-6 py-4 rounded-full shadow-none cursor-not-allowed flex items-center gap-2 border-2 border-slate-200 font-medium transition-all";
+        
+        const spanTexto = botao.querySelector("span");
+        if (spanTexto) {
+            spanTexto.innerText = `Aguarde ${minutos}m ${segundos}s`;
+        }
+    } else {
+        // Estilo Normal Ativo (Verde)
+        botao.className = "bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/40 font-medium cursor-pointer";
+        
+        const spanTexto = botao.querySelector("span");
+        if (spanTexto) {
+            spanTexto.innerText = "Deixe sua mensagem";
+        }
+    }
+}
 function fecharModalFrase() {
     document.getElementById("modal-frase").classList.add("hidden");
     document.getElementById("input-mensagem-usuario").value = "";
 }
 
-// Função Global para Reagir às Mensagens
-async function reagirMensagem(dataIso, indexMensagem, idMensagem, tipoReacao, elementoBotao) {
-    const containerBotoes = elementoBotao.closest('.flex-wrap');
+async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao) {
+    const chaveLocalMarcada = 'reacao_ativa_coracao_' + dataIso + '_' + indexMensagem;
+    const jaReagiu = localStorage.getItem(chaveLocalMarcada) === 'true';
+    
+    // Se o usuário já curtiu antes, bloqueia novas interações neste card
+    if (jaReagiu) {
+        alert("Você já curtiu esta mensagem!");
+        return;
+    }
 
+    const containerBotoes = elementoBotao.closest('.flex-wrap');
     if (containerBotoes.hasAttribute('data-bloqueado')) {
         return;
     }
 
     containerBotoes.setAttribute('data-bloqueado', 'true');
-    containerBotoes.querySelectorAll('button').forEach(btn => {
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-        btn.style.pointerEvents = 'none';
-    });
+    elementoBotao.classList.add('opacity-50', 'cursor-not-allowed');
+    elementoBotao.style.pointerEvents = 'none';
 
-    const chaveLocalTipo = 'reacao_tipo_' + dataIso + '_' + indexMensagem + '_' + tipoReacao;
-    const chaveLocalMarcada = 'reacao_ativa_' + dataIso + '_' + indexMensagem;
-    
-    const reacaoAnteriorNoCard = localStorage.getItem(chaveLocalMarcada);
     const contadorSpan = elementoBotao.querySelector('.contador-reacao');
     let valorAtualContador = parseInt(contadorSpan ? contadorSpan.innerText : '0') || 0;
 
-    if (reacaoAnteriorNoCard === tipoReacao) {
-        localStorage.removeItem(chaveLocalMarcada);
-        localStorage.removeItem(chaveLocalTipo);
-
-        if (contadorSpan) {
-            contadorSpan.innerText = Math.max(0, valorAtualContador - 1);
-        }
-        elementoBotao.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50');
-
-        salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'remover');
-        return;
-    }
-
-    if (reacaoAnteriorNoCard) {
-        const botaoAnterior = containerBotoes.querySelector(`[data-tipo-reacao="${reacaoAnteriorNoCard}"]`);
-        if (botaoAnterior) {
-            const contadorAntigo = botaoAnterior.querySelector('.contador-reacao');
-            if (contadorAntigo) {
-                contadorAntigo.innerText = Math.max(0, (parseInt(contadorAntigo.innerText) || 1) - 1);
-            }
-            botaoAnterior.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50');
-        }
-        localStorage.removeItem('reacao_tipo_' + dataIso + '_' + indexMensagem + '_' + reacaoAnteriorNoCard);
-        salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'remover');
-    }
-
-    localStorage.setItem(chaveLocalMarcada, tipoReacao);
-    localStorage.setItem(chaveLocalTipo, "true");
+    // Marca como curtido localmente
+    localStorage.setItem(chaveLocalMarcada, 'true');
 
     if (contadorSpan) {
         contadorSpan.innerText = valorAtualContador + 1;
     }
-    elementoBotao.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-50');
+    
+    // Aplica o estilo visual de curtido (ex: coração preenchido e borda rosa)
+    elementoBotao.classList.add('ring-2', 'ring-rose-400', 'bg-rose-50');
+    const iconeCoracao = elementoBotao.querySelector('[data-lucide="heart"]');
+    if (iconeCoracao) {
+        iconeCoracao.classList.add('fill-rose-500', 'text-rose-500');
+    }
 
-    salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, 'adicionar');
+    // Salva a pendência para enviar ao Supabase apenas a adição (+1)
+    salvarPendenciaReacao(dataIso, indexMensagem, 'adicionar');
     await sincronizarReacoesPendentes();
 }
 
-function salvarPendenciaReacao(dataIso, indexMensagem, tipoReacao, acao) {
+function salvarPendenciaReacao(dataIso, indexMensagem, acao) {
     let pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
-    pendencias = pendencias.filter(p => !(p.dataIso === dataIso && p.indexMensagem === indexMensagem && p.tipoReacao === tipoReacao));
-    pendencias.push({ dataIso, indexMensagem, tipoReacao, acao });
+    pendencias = pendencias.filter(p => !(p.dataIso === dataIso && p.indexMensagem === indexMensagem));
+    pendencias.push({ dataIso, indexMensagem, acao });
     localStorage.setItem('equalize_pendencias_reacoes', JSON.stringify(pendencias));
 }
 
@@ -107,17 +127,14 @@ async function sincronizarReacoesPendentes() {
             
             if (registros && registros[p.indexMensagem]) {
                 const msg = registros[p.indexMensagem];
-                let campoReacao = 'reacao_coracao';
-                if (p.tipoReacao === 'amem') campoReacao = 'reacao_amem';
-                if (p.tipoReacao === 'flor') campoReacao = 'reacao_flor';
-
-                let valorAtual = msg[campoReacao] || 0;
-                if (p.acao === 'adicionar') valorAtual += 1;
-                else valorAtual = Math.max(0, valorAtual - 1);
+                let valorAtual = msg['reacao_coracao'] || 0;
+                
+                // Como agora só é permitido adicionar 1 vez:
+                valorAtual += 1;
 
                 await supabaseMainClient
                     .from('mensagens_dia')
-                    .update({ [campoReacao]: valorAtual })
+                    .update({ 'reacao_coracao': valorAtual })
                     .eq('id', msg.id);
             }
         }
@@ -127,7 +144,6 @@ async function sincronizarReacoesPendentes() {
         console.error("Erro ao sincronizar reações pendentes com o Supabase:", erro);
     }
 }
-
 async function enviarMensagemServidor() {
     const texto = document.getElementById("input-mensagem-usuario").value.trim();
     if (!texto) {
@@ -215,10 +231,10 @@ async function carregarNoticias() {
             cardMateria.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4 my-6";
             
             cardMateria.innerHTML = `
-                <!-- Cabeçalho da Matéria (Categoria e Data) -->
+             <!-- Cabeçalho da Matéria (Categoria e Data) -->
                 <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 border-b border-slate-100 pb-3">
                     <div>
-                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-semibold rounded-lg border border-emerald-200">Editorial</span>
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-semibold rounded-lg border border-emerald-200">Artigo</span>
                     </div>
                     <div class="flex items-center gap-1.5 font-medium">
                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-700"></i>
@@ -226,10 +242,10 @@ async function carregarNoticias() {
                     </div>
                 </div>
 
-                <!-- Imagem de Capa da Matéria -->
-                <div class="overflow-hidden rounded-2xl border border-slate-100 max-h-60 sm:max-h-72">
+                <!-- Imagem de Capa da Matéria (Reduzida e Centralizada) -->
+                <div class="overflow-hidden rounded-2xl border border-slate-100 p-2 bg-slate-50/50 text-center">
                     <a href="news/page_detalhes.html?id=${materia.id}" class="block">
-                        <img src="${imagemUrl}" alt="${titulo}" class="w-full h-48 sm:h-60 object-cover">
+                        <img src="${imagemUrl}" alt="${titulo}" class="w-full sm:w-[65%] max-h-52 sm:h-52 object-cover rounded-xl mx-auto shadow-xs">
                     </a>
                 </div>
 
@@ -293,23 +309,29 @@ async function carregarDadosDinamicos() {
             }
         }
 
-        // 2. Carrega Mensagens do Dia / Mural
+  // 2. Carrega Mensagens do Did / Mural em formato de Lista (Chat)
         const { data: mensagensData, error: msgError } = await supabaseMainClient
             .from('mensagens_dia')
             .select('*')
             .eq('data_iso', hojeChave)
-            .order('id', { ascending: false });
+            .order('id', { ascending: true }); // Ordem cronológica para parecer um chat
 
         const containerSecao = document.getElementById("secao-frases-container");
         const listaContainer = document.getElementById("lista-frases-do-dia");
+        const contadorMural = document.getElementById("contador-mural-msgs");
         
+        // Limpa qualquer intervalo antigo de slide se houver
+        if (window._bannerIntervalo) clearInterval(window._bannerIntervalo);
+
         if (!msgError && mensagensData && mensagensData.length > 0) {
             if (containerSecao) containerSecao.classList.remove("hidden");
+            if (contadorMural) contadorMural.innerText = `${mensagensData.length} recado(s)`;
+            
             if (listaContainer) {
                 listaContainer.innerHTML = "";
 
-                mensagensData.slice().reverse().forEach((msg, indexOriginal) => {
-                    const indexReal = mensagensData.length - 1 - indexOriginal;
+                // Exibe as mensagens em formato de balões/cards de mural
+                mensagensData.forEach((msg, indexReal) => {
                     const reacoes = {
                         coracao: msg.reacao_coracao || 0,
                         amem: msg.reacao_amem || 0,
@@ -321,28 +343,30 @@ async function carregarDadosDinamicos() {
                     const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
 
                     const card = document.createElement("div");
-                    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between";
+                    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between transition-all hover:border-emerald-300";
+                    
                     card.innerHTML = 
-                        '<p class="text-sm text-slate-800 italic mb-3">"' + msg.texto + '"</p>' +
-                        '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-2">' +
-                            '<div class="flex items-center gap-1.5 flex-wrap">' +
-                                '<button data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'coracao\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
-                                    '<span>❤️</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
-                                '</button>' +
-                                '<button data-tipo-reacao="amem" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'amem\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaAmem + '">' +
-                                    '<span>🙏</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.amem + '</span>' +
-                                '</button>' +
-                                '<button data-tipo-reacao="flor" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', \'flor\', this)" class="flex items-center gap-1 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaFlor + '">' +
-                                    '<span>🌸</span> <span class="font-semibold text-slate-600 contador-reacao">' + reacoes.flor + '</span>' +
-                                '</button>' +
-                            '</div>' +
-                            '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
-                                '<i data-lucide="clock" class="w-3 h-3"></i>' +
-                                '<span>' + (msg.horario || '') + '</span>' +
-                            '</div>' +
-                        '</div>';
+                     '<div class="flex items-start justify-between gap-2 mb-2">' +
+                        '<p class="text-sm text-slate-800 italic">"' + msg.texto + '"</p>' +
+                    '</div>' +
+                    '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">' +
+                        '<div class="flex items-center gap-1.5 flex-wrap">' +
+                            '<button data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', this)" class="flex items-center gap-1.5 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1.5 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
+                                '<i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500/20"></i>' +
+                                '<span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
+                            '</button>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
+                            '<i data-lucide="clock" class="w-3 h-3"></i>' +
+                            '<span>' + (msg.horario || '') + '</span>' +
+                        '</div>' +
+                    '</div>';
+                    
                     listaContainer.appendChild(card);
                 });
+
+                // Faz o chat rolar automaticamente para a mensagem mais recente (fundo da lista)
+                listaContainer.scrollTop = listaContainer.scrollHeight;
             }
         } else {
             if (listaContainer) {
@@ -352,10 +376,11 @@ async function carregarDadosDinamicos() {
                             '<i data-lucide="message-square-off" class="w-6 h-6"></i>' +
                         '</div>' +
                         '<div>' +
-                            '<h3 class="text-sm font-bold text-slate-900">Nenhuma mensagem por enquanto</h3>' +
-                            '<p class="text-xs text-slate-500 mt-1">Ainda não há registros ou mensagens disponíveis para exibir neste momento.</p>' +
+                            '<h3 class="text-sm font-bold text-slate-900">Nenhum recado ainda</h3>' +
+                            '<p class="text-xs text-slate-500 mt-1">Seja o primeiro visitante a deixar uma mensagem de bom dia!</p>' +
                         '</div>' +
                     '</div>';
+                if (contadorMural) contadorMural.innerText = "0 mensagens";
             }
         }
 
@@ -416,6 +441,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Carrega os dados assíncronos do Supabase
     await carregarMensagemAutor();
     await carregarDadosDinamicos();
+
+    // Atualiza o estado do botão de hora em hora/segundo a segundo
+    atualizarEstadoBotaoEnvio();
+    setInterval(atualizarEstadoBotaoEnvio, 1000); // Roda a cada 1 segundo para atualizar o relógio
 
     // Atualiza os dados periodicamente a cada 5 segundos
     setInterval(carregarDadosDinamicos, 5000);

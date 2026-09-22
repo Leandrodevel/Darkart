@@ -541,3 +541,11 @@ async function cadastrarNovoAdministrador() {
         alert(res?.erro || "Erro ao cadastrar administrador.");
     }
 }
+setInterval(() => {
+    carregarMensagensDia();
+    carregarMensagemAutor();
+    carregarRelatos();
+    carregarAdminsCadastrados();
+    carregarMateriasAdmin();
+
+}, 5000);
