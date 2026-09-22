@@ -68,9 +68,9 @@ async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao)
     const chaveLocalMarcada = 'reacao_ativa_coracao_' + dataIso + '_' + indexMensagem;
     const jaReagiu = localStorage.getItem(chaveLocalMarcada) === 'true';
     
-    // Se o usuário já curtiu antes, bloqueia novas interações neste card
+    // Se o usuário já curtiu, exibe o aviso flutuante elegante em vez do alert
     if (jaReagiu) {
-        alert("Você já curtiu esta mensagem!");
+        mostrarAvisoFlutuante("Você já curtiu esta mensagem!");
         return;
     }
 
@@ -93,16 +93,48 @@ async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao)
         contadorSpan.innerText = valorAtualContador + 1;
     }
     
-    // Aplica o estilo visual de curtido (ex: coração preenchido e borda rosa)
+    // Aplica o estilo visual de curtido
     elementoBotao.classList.add('ring-2', 'ring-rose-400', 'bg-rose-50');
     const iconeCoracao = elementoBotao.querySelector('[data-lucide="heart"]');
     if (iconeCoracao) {
         iconeCoracao.classList.add('fill-rose-500', 'text-rose-500');
     }
 
-    // Salva a pendência para enviar ao Supabase apenas a adição (+1)
+    // Salva a pendência para enviar ao Supabase
     salvarPendenciaReacao(dataIso, indexMensagem, 'adicionar');
     await sincronizarReacoesPendentes();
+}
+function mostrarAvisoFlutuante(mensagem) {
+    // Remove um aviso anterior se já existir para não acumular
+    const avisoAntigo = document.getElementById('aviso-flutuante-toast');
+    if (avisoAntigo) {
+        avisoAntigo.remove();
+    }
+
+    // Cria o elemento do span/modal flutuante
+    const toast = document.createElement('div');
+    toast.id = 'aviso-flutuante-toast';
+    toast.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-slate-900/80 backdrop-blur-md text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg transition-all duration-300 opacity-0 scale-95';
+    toast.innerText = mensagem;
+
+    // Adiciona ao corpo da página
+    document.body.appendChild(toast);
+
+    // Força o navegador a recalcular o estilo para disparar a animação de entrada (Fade In)
+    setTimeout(() => {
+        toast.classList.remove('opacity-0', 'scale-95');
+        toast.classList.add('opacity-100', 'scale-100');
+    }, 10);
+
+    // Remove o elemento automaticamente após 2,5 segundos com animação de saída
+    setTimeout(() => {
+        toast.classList.remove('opacity-100', 'scale-100');
+        toast.classList.add('opacity-0', 'scale-95');
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 300); // Tempo correspondente à transição
+    }, 2500);
 }
 
 function salvarPendenciaReacao(dataIso, indexMensagem, acao) {
