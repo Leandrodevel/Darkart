@@ -63,47 +63,6 @@ function fecharModalFrase() {
     document.getElementById("modal-frase").classList.add("hidden");
     document.getElementById("input-mensagem-usuario").value = "";
 }
-
-async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao) {
-    const chaveLocalMarcada = 'reacao_ativa_coracao_' + dataIso + '_' + indexMensagem;
-    const jaReagiu = localStorage.getItem(chaveLocalMarcada) === 'true';
-    
-    // Se o usuário já curtiu, exibe o aviso flutuante elegante em vez do alert
-    if (jaReagiu) {
-        mostrarAvisoFlutuante("Você já curtiu esta mensagem!");
-        return;
-    }
-
-    const containerBotoes = elementoBotao.closest('.flex-wrap');
-    if (containerBotoes.hasAttribute('data-bloqueado')) {
-        return;
-    }
-
-    containerBotoes.setAttribute('data-bloqueado', 'true');
-    elementoBotao.classList.add('opacity-50', 'cursor-not-allowed');
-    elementoBotao.style.pointerEvents = 'none';
-
-    const contadorSpan = elementoBotao.querySelector('.contador-reacao');
-    let valorAtualContador = parseInt(contadorSpan ? contadorSpan.innerText : '0') || 0;
-
-    // Marca como curtido localmente
-    localStorage.setItem(chaveLocalMarcada, 'true');
-
-    if (contadorSpan) {
-        contadorSpan.innerText = valorAtualContador + 1;
-    }
-    
-    // Aplica o estilo visual de curtido
-    elementoBotao.classList.add('ring-2', 'ring-rose-400', 'bg-rose-50');
-    const iconeCoracao = elementoBotao.querySelector('[data-lucide="heart"]');
-    if (iconeCoracao) {
-        iconeCoracao.classList.add('fill-rose-500', 'text-rose-500');
-    }
-
-    // Salva a pendência para enviar ao Supabase
-    salvarPendenciaReacao(dataIso, indexMensagem, 'adicionar');
-    await sincronizarReacoesPendentes();
-}
 function mostrarAvisoFlutuante(mensagem) {
     // Remove um aviso anterior se já existir para não acumular
     const avisoAntigo = document.getElementById('aviso-flutuante-toast');
@@ -137,47 +96,86 @@ function mostrarAvisoFlutuante(mensagem) {
     }, 2500);
 }
 
-function salvarPendenciaReacao(dataIso, indexMensagem, acao) {
-    let pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
-    pendencias = pendencias.filter(p => !(p.dataIso === dataIso && p.indexMensagem === indexMensagem));
-    pendencias.push({ dataIso, indexMensagem, acao });
-    localStorage.setItem('equalize_pendencias_reacoes', JSON.stringify(pendencias));
+async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao) {
+    // Utiliza o ID único da mensagem do Supabase para evitar conflitos de índice
+    const chaveLocalMarcada = 'reacao_ativa_coracao_id_' + idMensagem;
+    const jaReagiu = localStorage.getItem(chaveLocalMarcada) === 'true';
+    
+    if (jaReagiu) {
+        mostrarAvisoFlutuante("Você já curtiu esta mensagem!");
+        return;
+    }
+
+    const containerBotoes = elementoBotao.closest('.flex-wrap');
+    if (containerBotoes && containerBotoes.hasAttribute('data-bloqueado')) {
+        return;
+    }
+
+    if (containerBotoes) containerBotoes.setAttribute('data-bloqueado', 'true');
+    elementoBotao.classList.add('opacity-50', 'cursor-not-allowed');
+    elementoBotao.style.pointerEvents = 'none';
+
+    const contadorSpan = elementoBotao.querySelector('.contador-reacao');
+    let valorAtualContador = parseInt(contadorSpan ? contadorSpan.innerText : '0') || 0;
+
+    // Marca como curtido localmente usando o ID
+    localStorage.setItem(chaveLocalMarcada, 'true');
+
+    if (contadorSpan) {
+        contadorSpan.innerText = valorAtualContador + 1;
+    }
+    
+    // Aplica o estilo visual de curtido
+    elementoBotao.classList.add('ring-2', 'ring-rose-400', 'bg-rose-50');
+    const iconeCoracao = elementoBotao.querySelector('[data-lucide="heart"]');
+    if (iconeCoracao) {
+        iconeCoracao.classList.add('fill-rose-500', 'text-rose-500');
+    }
+
+    // Salva a pendência utilizando o ID da mensagem
+    salvarPendenciaReacaoPorId(idMensagem, 'adicionar');
+    await sincronizarReacoesPendentesPorId();
 }
 
-async function sincronizarReacoesPendentes() {
-    const pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes') || '[]');
+function salvarPendenciaReacaoPorId(idMensagem, acao) {
+    let pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes_id') || '[]');
+    pendencias = pendencias.filter(p => p.idMensagem !== idMensagem);
+    pendencias.push({ idMensagem, acao });
+    localStorage.setItem('equalize_pendencias_reacoes_id', JSON.stringify(pendencias));
+}
+
+async function sincronizarReacoesPendentesPorId() {
+    const pendencias = JSON.parse(localStorage.getItem('equalize_pendencias_reacoes_id') || '[]');
     if (pendencias.length === 0 || !supabaseMainClient) return;
 
     try {
         for (const p of pendencias) {
-            const { data: registros, error: errBusca } = await supabaseMainClient
+            const { data: msg, error: errBusca } = await supabaseMainClient
                 .from('mensagens_dia')
                 .select('*')
-                .eq('data_iso', p.dataIso);
+                .eq('id', p.idMensagem)
+                .maybeSingle();
 
-            if (errBusca) continue;
+            if (errBusca || !msg) continue;
             
-            if (registros && registros[p.indexMensagem]) {
-                const msg = registros[p.indexMensagem];
-                let valorAtual = msg['reacao_coracao'] || 0;
-                
-                // Como agora só é permitido adicionar 1 vez:
-                valorAtual += 1;
+            let valorAtual = msg['reacao_coracao'] || 0;
+            valorAtual += 1;
 
-                await supabaseMainClient
-                    .from('mensagens_dia')
-                    .update({ 'reacao_coracao': valorAtual })
-                    .eq('id', msg.id);
-            }
+            await supabaseMainClient
+                .from('mensagens_dia')
+                .update({ 'reacao_coracao': valorAtual })
+                .eq('id', p.idMensagem);
         }
 
-        localStorage.removeItem('equalize_pendencias_reacoes');
+        localStorage.removeItem('equalize_pendencias_reacoes_id');
     } catch (erro) {
         console.error("Erro ao sincronizar reações pendentes com o Supabase:", erro);
     }
 }
+
 async function enviarMensagemServidor() {
-    const texto = document.getElementById("input-mensagem-usuario").value.trim();
+    const inputEl = document.getElementById("input-mensagem-usuario");
+    const texto = inputEl.value.trim();
     if (!texto) {
         alert("Por favor, escreva uma mensagem antes de enviar.");
         return;
@@ -193,7 +191,7 @@ async function enviarMensagemServidor() {
     const horarioAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
     try {
-        await sincronizarReacoesPendentes();
+        await sincronizarReacoesPendentesPorId();
 
         if (!supabaseMainClient) throw new Error("Cliente Supabase não inicializado.");
 
@@ -210,19 +208,25 @@ async function enviarMensagemServidor() {
 
         if (error) throw error;
 
-        localStorage.setItem('equalize_ultimo_envio', dataHojeIso);
+        // Salva o timestamp atual para bloquear novos envios por 1 hora
+        localStorage.setItem('equalize_ultimo_envio_ts', Date.now().toString());
 
+        inputEl.value = "";
         mostrarAvisoFlutuante("Mensagem enviada com sucesso!");
         fecharModalFrase();
-        window.location.reload();
+        
+        // Em vez de recarregar a página inteira, atualiza apenas os dados do chat dinamicamente
+        await carregarDadosDinamicos();
 
     } catch (error) {
         console.error("Erro no envio:", error);
         alert("Houve um erro ao enviar a mensagem para o servidor. Tente novamente.");
+    } finally {
         if (btn) {
             btn.innerText = "Enviar";
             btn.disabled = false;
         }
+        atualizarEstadoBotaoEnvio();
     }
 }
 
@@ -316,7 +320,7 @@ async function carregarNoticias() {
 
 // Carrega os dados dinâmicos do Supabase
 async function carregarDadosDinamicos() {
-    await sincronizarReacoesPendentes();
+    await sincronizarReacoesPendentesPorId();
     if (!supabaseMainClient) return;
 
     try {
@@ -363,39 +367,43 @@ async function carregarDadosDinamicos() {
                 listaContainer.innerHTML = "";
 
                 // Exibe as mensagens em formato de balões/cards de mural
-                mensagensData.forEach((msg, indexReal) => {
-                    const reacoes = {
-                        coracao: msg.reacao_coracao || 0,
-                        amem: msg.reacao_amem || 0,
-                        flor: msg.reacao_flor || 0
-                    };
-                    
-                    const reacaoAtivaCoracao = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'coracao' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaAmem = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'amem' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
-                    const reacaoAtivaFlor = localStorage.getItem('reacao_ativa_' + msg.data_iso + '_' + indexReal) === 'flor' ? 'ring-2 ring-emerald-400 bg-emerald-50' : '';
+// Exibe as mensagens em formato de balões/cards de mural
+mensagensData.forEach((msg, indexReal) => {
+    const reacoes = {
+        coracao: msg.reacao_coracao || 0,
+        amem: msg.reacao_amem || 0,
+        flor: msg.reacao_flor || 0
+    };
+    
+    // Declaração correta da variável para evitar o erro
+    const jaCurtiu = localStorage.getItem('reacao_ativa_coracao_id_' + msg.id) === 'true';
+    const estiloCurtido = jaCurtiu ? 'ring-2 ring-rose-400 bg-rose-50' : '';
+    const estiloIcone = jaCurtiu ? 'fill-rose-500 text-rose-500' : 'fill-rose-500/20 text-rose-500';
+    const ponteiroDesativado = jaCurtiu ? 'opacity-75' : '';
 
-                    const card = document.createElement("div");
-                    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between transition-all hover:border-emerald-300";
-                    
-                    card.innerHTML = 
-                     '<div class="flex items-start justify-between gap-2 mb-2">' +
-                        '<p class="text-sm text-slate-800 italic">"' + msg.texto + '"</p>' +
-                    '</div>' +
-                    '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">' +
-                        '<div class="flex items-center gap-1.5 flex-wrap">' +
-                            '<button data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', this)" class="flex items-center gap-1.5 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1.5 rounded-full text-xs transition-all cursor-pointer ' + reacaoAtivaCoracao + '">' +
-                                '<i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500/20"></i>' +
-                                '<span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
-                            '</button>' +
-                        '</div>' +
-                        '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
-                            '<i data-lucide="clock" class="w-3 h-3"></i>' +
-                            '<span>' + (msg.horario || '') + '</span>' +
-                        '</div>' +
-                    '</div>';
-                    
-                    listaContainer.appendChild(card);
-                });
+    const card = document.createElement("div");
+    card.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-xs flex flex-col justify-between transition-all hover:border-emerald-300";
+    
+    card.innerHTML = 
+     '<div class="flex items-start justify-between gap-2 mb-2">' +
+        '<p class="text-sm text-slate-800 italic">"' + msg.texto + '"</p>' +
+    '</div>' +
+    '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">' +
+        '<div class="flex items-center gap-1.5 flex-wrap">' +
+            '<button data-tipo-reacao="coracao" onclick="reagirMensagem(\'' + msg.data_iso + '\', ' + indexReal + ', \'' + msg.id + '\', this)" class="flex items-center gap-1.5 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1.5 rounded-full text-xs transition-all cursor-pointer ' + estiloCurtido + ' ' + ponteiroDesativado + '">' +
+                '<i data-lucide="heart" class="w-4 h-4 ' + estiloIcone + '"></i>' +
+                '<span class="font-semibold text-slate-600 contador-reacao">' + reacoes.coracao + '</span>' +
+            '</button>' +
+        '</div>' +
+        '<div class="flex items-center gap-1 text-[11px] text-slate-400 font-medium whitespace-nowrap">' +
+            '<i data-lucide="clock" class="w-3 h-3"></i>' +
+            '<span>' + (msg.horario || '') + '</span>' +
+        '</div>' +
+    '</div>';
+    
+    listaContainer.appendChild(card);
+});
+
 
                 // Faz o chat rolar automaticamente para a mensagem mais recente (fundo da lista)
                 listaContainer.scrollTop = listaContainer.scrollHeight;
