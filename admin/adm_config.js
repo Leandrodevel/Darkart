@@ -82,14 +82,14 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 }
             }
 else if (dados.acao === 'enviar_mensagem') {
-    const dataHoje = obterDataHojeIso()
+    const dataHoje = obterDataLocalIso()
 
 
 
 
     // Apenas insere a nova mensagem do dia no Supabase, preservando o histórico anterior
     res = await supabaseClient.from('mensagens_dia').insert([{
-        data_iso: dados.dataIso || dataHoje,
+        data_iso: dataHoje,
         horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
         texto: dados.texto,
         reacao_coracao: 0,
