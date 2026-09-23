@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed de Artigos - Revista Equalize-se</title>
+    
+    <!-- Meta Tags para SEO e Busca do Google -->
+    <meta name="description" content="Explore todos os artigos, reflexões e conteúdos exclusivos sobre espiritualidade e autoconhecimento do Equalize-se.">
+    <meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
+     crossorigin="anonymous"></script>
+    <!-- Ícones do Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white text-slate-800 min-h-screen py-4 font-sans flex flex-col justify-between">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="w-full max-w-[1440px] mx-auto px-2 sm:px-4 space-y-4">
+        
+        <!-- CABEÇALHO -->
+        <header class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm text-center">
+            <a href="index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
+                Equalize-se
+            </a>
+            <p class="text-xs text-slate-500 font-medium mt-1">Portal de Artigos, Conexão e Autoconhecimento</p>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO FUNCIONAL -->
+        <nav class="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-3 relative z-50">
+            <div class="max-w-md mx-auto flex justify-around items-center">
+                <a href="../index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-emerald-50 rounded-xl transition-all">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Início</span>
+                </a>
+                <a href="feed.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-emerald-50 rounded-xl transition-all">
+                        <i data-lucide="book-open" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium font-bold">Artigos</span>
+                </a>
+                <a href="../ajuda.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-orange-800 transition-all hover:scale-105">
+                    <div class="p-2 hover:bg-orange-50 rounded-xl transition-all">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <span class="text-[11px] font-medium">Acolhimento</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- SEÇÃO DO FEED DE ARTIGOS -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Todos os Artigos</h1>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Navegue pelas nossas publicações recentes sobre espiritualidade e expansão da consciência.</p>
+            </div>
+
+            <!-- CONTAINER ONDE OS ARTIGOS DO JSON SERÃO INSERIDOS DINAMICAMENTE -->
+            <div id="feed-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Estado de Carregamento (Loading) -->
+                <div class="col-span-full text-center py-10 text-slate-400 text-sm">
+                    Carregando artigos...
+                </div>
+            </div>
+        </section>
+
+        <!-- Botão de Voltar -->
+        <div>
+            <a href="../index.html" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition-all border border-emerald-200/60">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Voltar ao início</span>
+            </a>
+        </div>
+
+        <!-- Bloco de Anúncios AdSense Único e Seguro -->
+        <div class="my-4">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5020225266620750"
+                 data-ad-slot="3973012904"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 try {
+                      (adsbygoogle = window.adsbygoogle || []).push({});
+                 } catch (e) {
+                      console.error("Erro no AdSense: ", e);
+                 }
+            </script>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-4 border-t border-slate-100">
+        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+    </footer>
+
+    <!-- Script para buscar o materia.json e renderizar os cards dinamicamente -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const container = document.getElementById("feed-container");
+
+            try {
+                // Como o arquivo materia.json está na raiz e este feed.html pode estar na raiz, ajustamos o caminho. 
+                // Se o feed.html ficar dentro de uma pasta, ajuste para '../materia.json'
+                const response = await fetch("../materias.json");
+                if (!response.ok) throw new Error("Não foi possível carregar o arquivo de matérias.");
+                
+                const materias = await response.json();
+
+                if (materias.length === 0) {
+                    container.innerHTML = `<p class="col-span-full text-center text-slate-500 py-6">Nenhum artigo cadastrado no momento.</p>`;
+                    return;
+                }
+
+                // Limpa o container de carregamento
+                container.innerHTML = "";
+
+                // Cria o card para cada artigo do JSON
+                materias.forEach(materia => {
+                    // Formata a data para o padrão brasileiro (Ex: 2026-09-23 -> 23 de Setembro, 2026)
+                    let dataFormatada = materia.data;
+                    try {
+                        const [ano, mes, dia] = materia.data.split("-");
+                        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+                        dataFormatada = `${dia} de ${meses[parseInt(mes) - 1]}, ${ano}`;
+                    } catch (e) {}
+
+                    const card = document.createElement("div");
+                    card.className = "bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="h-48 overflow-hidden border-b border-slate-200">
+                                <img src="${materia.imagem_url}" alt="${materia.titulo}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center gap-2 text-xs text-slate-500">
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-semibold rounded border border-emerald-200">Artigo</span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-700"></i> ${dataFormatada}
+                                    </span>
+                                </div>
+                                <h2 class="text-lg font-bold text-slate-900 leading-snug hover:text-emerald-700 transition-colors">
+                                    <a href="${materia.link}">${materia.titulo}</a>
+                                </h2>
+                                <p class="text-xs sm:text-sm text-slate-600 line-clamp-3">
+                                    ${materia.resumo}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <a href="${materia.link}" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-lg transition-all border border-emerald-200">
+                                <span>Ler artigo completo</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                    `;
+
+                    container.appendChild(card);
+                });
+
+                // Reinicializa os ícones do Lucide nos novos elementos injetados
+                lucide.createIcons();
+
+            } catch (error) {
+                console.error("Erro:", error);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-red-500 text-xs">
+                        Erro ao carregar o feed de artigos. Verifique se o arquivo <strong>materia.json</strong> está acessível na raiz.
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+    <!-- Inicialização padrão dos ícones estáticos -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

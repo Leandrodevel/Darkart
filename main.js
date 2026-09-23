@@ -422,7 +422,7 @@ mensagensData.forEach((msg, indexReal) => {
         amem: msg.reacao_amem || 0,
         flor: msg.reacao_flor || 0
     };
-    console.log(msg.texto)
+    
     // Declaração correta da variável para evitar o erro
     const jaCurtiu = localStorage.getItem('reacao_ativa_coracao_id_' + msg.id) === 'true';
     const estiloCurtido = jaCurtiu ? 'ring-2 ring-rose-400 bg-rose-50' : '';
