@@ -261,7 +261,7 @@ async function carregarNoticias() {
             const titulo = materia.titulo || 'Sem título';
             const conteudo = materia.conteudo || materia.descricao || 'Nenhum conteúdo disponível.';
             const dataMateria = dataFormatada || '';
-            const imagemUrl = materia.imagem || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80';
+            const imagemUrl = materia.imagem_url || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80';
 
             const cardMateria = document.createElement("section");
             cardMateria.className = "bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4 my-6";
@@ -287,7 +287,7 @@ async function carregarNoticias() {
 
                 <!-- Título da Matéria -->
                 <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug hover:text-emerald-800 transition-colors">
-                    <a href="news/page_detalhes.html?id=${materia.id}">${titulo}</a>
+                    <a href="imagemUrlnews/page_detalhes.html?id=${materia.id}">${titulo}</a>
                 </h2>
 
                 <!-- Prévia do Conteúdo com Efeito de Esmaecimento (Fade Out) -->
