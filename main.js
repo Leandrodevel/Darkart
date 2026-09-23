@@ -385,7 +385,7 @@ mensagensData.forEach((msg, indexReal) => {
     
     card.innerHTML = 
      '<div class="flex items-start justify-between gap-2 mb-2">' +
-        '<p class="text-sm text-slate-800 italic">"' + msg.texto + '"</p>' +
+        '<span class="text-sm text-slate-800 italic">'+ msg.texto +'</span>' +
     '</div>' +
     '<div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">' +
         '<div class="flex items-center gap-1.5 flex-wrap">' +
