@@ -448,7 +448,7 @@ async function carregarMensagemAutor() {
         
         if (elemento) {
             if (!error && autorData && autorData.texto) {
-                elemento.innerText = autorData.texto;
+                elemento.innerHTML = autorData.texto;
                 if (elementoData) elementoData.innerText = autorData.data || "Data não disponível.";
                 if (melementoAutor) melementoAutor.innerText = autorData.autor || "Autor não disponível.";
             } else {

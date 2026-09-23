@@ -34,7 +34,6 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
         if (metodo === 'GET') {
             let query = supabaseClient.from(recurso).select('*');
             
-            // Se houver um ID específico, aplica o filtro (considerando colunas padrão 'id' ou 'data')
             if (id !== null) {
                 const colunaId = (recurso === 'videos_dia') ? 'data' : 'id';
                 query = query.eq(colunaId, id);
@@ -46,13 +45,17 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
         } 
         
         else if (metodo === 'POST' || metodo === 'PUT') {
-            // Verifica a ação enviada pelo payload antigo para mapear corretamente no Supabase
- if (dados.acao === 'excluir_registro') {
+            
+            if (dados.acao === 'excluir_registro') {
                 const colunaId = (dados.tabela === 'videos_dia') ? 'data' : 'id';
                 res = await supabaseClient.from(dados.tabela).delete().eq(colunaId, dados.id);
             } 
-                else if (dados.acao === 'salvar_video_dia') {
-                // Remove o vídeo anterior se houver apenas um por dia, ou faz upsert baseado na data
+            else if (dados.acao === 'salvar_materia') {
+                // Remove o campo 'acao' para evitar erro de coluna inexistente no Supabase
+                const { acao, ...payload } = dados;
+                res = await supabaseClient.from('materias').insert([payload]);
+            }
+            else if (dados.acao === 'salvar_video_dia') {
                 const { error: errorUpsert } = await supabaseClient
                     .from('videos_dia')
                     .upsert([{
@@ -63,38 +66,28 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                     }], { onConflict: 'data' });
 
                 if (errorUpsert) {
-                    console.error("Erro ao salvar vídeo do dia:", errorUpsert);
-                    res = { success: false, error: errorUpsert };
+                    throw errorUpsert;
                 } else {
-                    res = { success: true };
+                    res = { data: null };
                 }
             }
 else if (dados.acao === 'enviar_mensagem') {
-                const dataHoje = obterDataHojeIso();
-                
-                // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
-                await supabaseClient.from('mensagens_dia').delete().lt('data_iso', dataHoje);
+    const dataHoje = new Date().toISOString().split('T')[0];
 
-                // Insere a nova mensagem do dia
-                res = await supabaseClient.from('mensagens_dia').insert([{
-                    data_iso: dados.dataIso || dataHoje,
-                    horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                    texto: dados.texto,
-                    reacao_coracao: 0,
-                    reacao_amem: 0,
-                    reacao_flor: 0
-                }]);
-            }
+    // Apenas insere a nova mensagem do dia no Supabase, preservando o histórico anterior
+    res = await supabaseClient.from('mensagens_dia').insert([{
+        data_iso: dados.dataIso || dataHoje,
+        horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        texto: dados.texto,
+        reacao_coracao: 0,
+        reacao_amem: 0,
+        reacao_flor: 0
+    }]);
+}
             else if (dados.acao === 'salvar_mensagem_autor') {
-                // Remove todas as mensagens de autor anteriores para garantir que fique apenas a atual (substituição)
-                await supabaseClient.from('mensagens_autor').delete().neq('id', 0); // ou delete de todas
-
-                // Insere a nova mensagem do autor
-                res = await supabaseClient.from('mensagens_autor').insert([{
-                    autor: dados.autor,
-                    data: dados.data,
-                    texto: dados.texto
-                }]);
+                const { acao, ...payload } = dados;
+                await supabaseClient.from('mensagens_autor').delete().neq('id', 0);
+                res = await supabaseClient.from('mensagens_autor').insert([payload]);
             }
             else if (dados.acao === 'responder_relato') {
                 res = await supabaseClient.from('relatos_ajuda').update({
@@ -102,24 +95,19 @@ else if (dados.acao === 'enviar_mensagem') {
                 }).eq('id', dados.id);
             }
             else if (dados.acao === 'cadastrar_admin') {
-                res = await supabaseClient.from('admins').insert([{
-                    id: dados.id,
-                    apelido: dados.apelido,
-                    senha: dados.senha,
-                    nivel: dados.nivel || 'Admin'
-                }]);
+                const { acao, ...payload } = dados;
+                res = await supabaseClient.from('admins').insert([payload]);
             } 
             else {
-                // Inserção/Atualização genérica padrão
-                res = await supabaseClient.from(recurso).upsert([dados]);
+                // Inserção/Atualização genérica padrão (remove o 'acao' se existir)
+                const payload = dados.acao ? (({ acao, ...rest }) => rest)(dados) : dados;
+                res = await supabaseClient.from(recurso).upsert([payload]);
             }
         
-         if (res.error) throw res.error;
-            return { sucesso: true, data: res.data };
+            if (res && res.error) throw res.error;
+            return { sucesso: true, data: res ? res.data : null };
         
-    
-        
-        }else if (metodo === 'DELETE') {
+        } else if (metodo === 'DELETE') {
             const colunaId = (recurso === 'videos_dia') ? 'data' : 'id';
             res = await supabaseClient.from(recurso).delete().eq(colunaId, id);
             if (res.error) throw res.error;

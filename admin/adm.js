@@ -42,33 +42,51 @@ async function carregarMateriasAdmin() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-async function cadastrarNoticiaAdmin(e) {
-    e.preventDefault();
-    const titulo = document.getElementById('news-titulo').value.trim();
-    const previa = document.getElementById('news-previa').value.trim();
-    const imagem_url = document.getElementById('news-imagem').value.trim();
-    const autor = document.getElementById('news-autor').value.trim();
-    const conteudo = quillAutor.root.innerHTML;
+async function cadastrarNoticiaAdmin(event) {
+    if (event) event.preventDefault();
 
-    document.getElementById('news-conteudo').value.trim();
+    // Captura os inputs do formulário de notícias
+    const inputTitulo = document.getElementById('news-titulo');
+    const inputPrevia = document.getElementById('news-previa');
+    const inputImagem = document.getElementById('news-imagem');
+    const inputAutor = document.getElementById('news-autor'); // <-- Campo do autor
+
+    const titulo = inputTitulo ? inputTitulo.value.trim() : '';
+    const previa = inputPrevia ? inputPrevia.value.trim() : '';
+    const imagem_url = inputImagem ? inputImagem.value.trim() : '';
+    const autor = inputAutor ? inputAutor.value.trim() : 'Admin'; // Usa 'Admin' como padrão se o campo não existir
+    
+    // Conteúdo do Quill
+    const conteudo = typeof quillNews !== 'undefined' ? quillNews.root.innerHTML.trim() : '';
+
+    if (!titulo || !conteudo || conteudo === '<p><br></p>') {
+        alert("Preencha o título e o conteúdo da notícia!");
+        return;
+    }
 
     const dados = {
-        acao: 'salvar_materia', // Tratado de forma genérica ou direta no adm_config se necessário
-        titulo,
-        previa,
-        imagem_url,
-        autor,
-        conteudo
+        acao: 'salvar_materia',
+        titulo: titulo,
+        previa: previa,
+        imagem_url: imagem_url,
+        autor: autor, // <-- Enviando o autor corretamente
+        conteudo: conteudo
     };
 
-    // Inserção direta usando a tabela 'materias'
     const res = await apiRequisicao('materias', 'POST', dados);
     if (res && res.sucesso) {
-        alert("Matéria cadastrada com sucesso!");
-        document.getElementById('formNoticiaAdmin').reset();
-        carregarMateriasAdmin();
+        alert("Notícia cadastrada com sucesso!");
+        
+        // Limpa os campos
+        if (inputTitulo) inputTitulo.value = '';
+        if (inputPrevia) inputPrevia.value = '';
+        if (inputImagem) inputImagem.value = '';
+        if (inputAutor) inputAutor.value = '';
+        if (typeof quillNews !== 'undefined') quillNews.root.innerHTML = '';
+        
+        if (typeof carregarNoticias === 'function') carregarNoticias();
     } else {
-        alert("Erro ao cadastrar matéria.");
+        alert("Erro ao cadastrar notícia: " + (res.erro || "Erro desconhecido"));
     }
 }
 
@@ -308,8 +326,10 @@ async function carregarMensagensDia() {
 }
 
 async function adicionarMensagemDia() {
-    const texto = document.getElementById('nova-msg-texto').value.trim();
-    if (!texto) {
+    // Altere de document.getElementById('nova-msg-texto').value para o Quill:
+    const texto = quillMensagens.root.innerHTML.trim();
+    
+    if (!texto || texto === '<p><br></p>') {
         alert("Escreva o texto da mensagem!");
         return;
     }
@@ -323,7 +343,7 @@ async function adicionarMensagemDia() {
 
     const res = await apiRequisicao('mensagens_dia', 'POST', dados);
     if (res && res.sucesso) {
-        document.getElementById('nova-msg-texto').value = '';
+        quillMensagens.root.innerHTML = ''; // Limpa o editor
         carregarMensagensDia();
     } else {
         alert("Erro ao enviar mensagem.");
@@ -358,14 +378,18 @@ async function carregarMensagemAutor() {
 }
 
 async function publicarNovaAutor() {
-    const autor = document.getElementById('autor-nome').value.trim();
-    const texto = document.getElementById('autor-texto').value.trim();
-    const data = new Date().toISOString().split('T')[0];
+    const autorInput = document.getElementById('autor-nome');
+    const autor = autorInput ? autorInput.value.trim() : '';
+    
+    // Pega o conteúdo do editor Quill (ou fallback caso não use o Quill)
+    const texto = typeof quillAutor !== 'undefined' ? quillAutor.root.innerHTML.trim() : '';
 
-    if (!autor || !texto) {
+    if (!autor || !texto || texto === '<p><br></p>') {
         alert("Preencha o nome do autor e o texto da mensagem!");
         return;
     }
+
+    const data = new Date().toISOString().split('T')[0];
 
     const dados = {
         acao: 'salvar_mensagem_autor',
@@ -377,6 +401,8 @@ async function publicarNovaAutor() {
     const res = await apiRequisicao('mensagens_autor', 'POST', dados);
     if (res && res.sucesso) {
         alert("Mensagem do autor publicada com sucesso!");
+        if (typeof quillAutor !== 'undefined') quillAutor.root.innerHTML = ''; // Limpa o Quill
+        if (autorInput) autorInput.value = ''; // Limpa o input do nome
         carregarMensagemAutor();
     } else {
         alert("Erro ao publicar mensagem.");
@@ -551,7 +577,6 @@ async function cadastrarNovoAdministrador() {
 }
 setInterval(() => {
     carregarMensagensDia();
-    carregarRelatos();
     carregarAdminsCadastrados();
     
 
