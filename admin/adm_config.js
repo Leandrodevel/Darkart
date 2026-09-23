@@ -10,14 +10,24 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 
 // Função auxiliar para obter a data atual no formato ISO (YYYY-MM-DD)
 function obterDataHojeIso() {
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoje.getDate()).padStart(2, '0');
+    const d = new Date();
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
 }
+// Função para pegar a data local correta no formato YYYY-MM-DD
+function obterDataLocalIso() {
+    const d = new Date();
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+}
+
 window.addEventListener('load', async () => {
-    const dataHoje = obterDataHojeIso();
+    const dataHoje = obterDataLocalIso()
+    
     // Lógica para apagar mensagens do dia anterior
                 
                 // Opcional: Remove mensagens anteriores ao dia de hoje para manter apenas o dia atual no banco
@@ -72,7 +82,10 @@ async function apiRequisicao(recurso, metodo = 'GET', dados = null, id = null) {
                 }
             }
 else if (dados.acao === 'enviar_mensagem') {
-    const dataHoje = new Date().toISOString().split('T')[0];
+    const dataHoje = obterDataHojeIso()
+
+
+
 
     // Apenas insere a nova mensagem do dia no Supabase, preservando o histórico anterior
     res = await supabaseClient.from('mensagens_dia').insert([{

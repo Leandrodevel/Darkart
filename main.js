@@ -358,7 +358,6 @@ async function carregarDadosDinamicos() {
         
         // Limpa qualquer intervalo antigo de slide se houver
         if (window._bannerIntervalo) clearInterval(window._bannerIntervalo);
-
         if (!msgError && mensagensData && mensagensData.length > 0) {
             if (containerSecao) containerSecao.classList.remove("hidden");
             if (contadorMural) contadorMural.innerText = `${mensagensData.length} recado(s)`;
@@ -374,7 +373,7 @@ mensagensData.forEach((msg, indexReal) => {
         amem: msg.reacao_amem || 0,
         flor: msg.reacao_flor || 0
     };
-    
+    console.log(msg.texto)
     // Declaração correta da variável para evitar o erro
     const jaCurtiu = localStorage.getItem('reacao_ativa_coracao_id_' + msg.id) === 'true';
     const estiloCurtido = jaCurtiu ? 'ring-2 ring-rose-400 bg-rose-50' : '';
