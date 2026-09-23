@@ -330,7 +330,7 @@ async function carregarNoticias() {
             container.scrollBy({ left: larguraItem, behavior: 'smooth' });
         }
     }
-
+       //destaques
     // Busca e renderiza as matérias
     fetch('materias.json')
       .then(response => response.json())
@@ -341,7 +341,7 @@ async function carregarNoticias() {
         materias.forEach(materia => {
           // Card formatado em coluna para carrossel lateral
           const card = `
-            <a href="${materia.link}" class="flex-shrink-0 w-72 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-200 group flex flex-col">
+            <a href="pages/${materia.link}" class="flex-shrink-0 w-72 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-200 group flex flex-col">
                 <!-- Imagem no topo -->
                 <img src="${materia.imagem_url}" alt="${materia.titulo}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
                 
