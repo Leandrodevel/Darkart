@@ -415,69 +415,74 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Astrologia -->
-            <div class="bg-white/80 backdrop-blur-sm border border-amber-100/80 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:border-amber-300 hover:shadow-md transition-all duration-300 group">
-                <div>
-                    <div class="flex items-center gap-3 mb-4 text-amber-600">
-                        <div class="p-3 bg-amber-100/60 rounded-2xl border border-amber-200/60 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="sun" class="w-6 h-6"></i>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+            
+            <!-- Astrologia (Card Compacto) -->
+            <div class="bg-white/90 backdrop-blur-sm border border-amber-100/80 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-amber-300 hover:shadow transition-all duration-300 group">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5 text-amber-600">
+                        <div class="p-2 bg-amber-100/60 rounded-xl border border-amber-200/60 group-hover:scale-105 transition-transform">
+                            <i data-lucide="sun" class="w-5 h-5"></i>
                         </div>
-                        <h2 class="text-lg font-bold text-slate-900">Astrologia do Dia</h2>
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Astrologia</h2>
+                            <p id="astro-valor" class="text-base sm:text-lg font-extrabold text-amber-700 leading-tight">Calculando...</p>
+                        </div>
                     </div>
-                    <p id="astro-valor" class="text-xl font-extrabold text-amber-700 mb-2">Calculando...</p>
-                    <p id="astro-significado" class="text-sm text-slate-600 leading-relaxed mb-6">Energia regente do Sol e tendências astrológicas para hoje.</p>
                 </div>
-                <div class="pt-4 border-t border-slate-100">
-                    <a href="horoscopo.html" class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:shadow">
-                        <i data-lucide="sparkles" class="w-4 h-4"></i>
-                        <span>Ver Horóscopo Completo</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-auto"></i>
+                <p id="astro-significado" class="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-2">Energia regente do Sol e tendências astrológicas para hoje.</p>
+                <div class="pt-2.5 border-t border-slate-100">
+                    <a href="horoscopo.html" class="inline-flex items-center justify-between w-full px-3 py-2 bg-amber-50 hover:bg-amber-600 text-amber-800 hover:text-white text-xs font-bold rounded-xl transition-all border border-amber-200/60">
+                        <span class="flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ver Horóscopo</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </a>
                 </div>
             </div>
             
-            <!-- Fase da Lua -->
-            <div class="bg-white/80 backdrop-blur-sm border border-indigo-100/80 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:border-indigo-300 hover:shadow-md transition-all duration-300 group">
-                <div>
-                    <div class="flex items-center gap-3 mb-4 text-indigo-600">
-                        <div class="p-3 bg-indigo-100/60 rounded-2xl border border-indigo-200/60 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="moon" class="w-6 h-6"></i>
+            <!-- Fase da Lua (Card Compacto) -->
+            <div class="bg-white/90 backdrop-blur-sm border border-indigo-100/80 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-indigo-300 hover:shadow transition-all duration-300 group">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5 text-indigo-600">
+                        <div class="p-2 bg-indigo-100/60 rounded-xl border border-indigo-200/60 group-hover:scale-105 transition-transform">
+                            <i data-lucide="moon" class="w-5 h-5"></i>
                         </div>
-                        <h2 class="text-lg font-bold text-slate-900">Fase da Lua</h2>
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Fase da Lua</h2>
+                            <p id="lua-valor" class="text-base sm:text-lg font-extrabold text-indigo-700 leading-tight">Calculando...</p>
+                        </div>
                     </div>
-                    <p id="lua-valor" class="text-xl font-extrabold text-indigo-700 mb-2">Calculando...</p>
-                    <p id="lua-significado" class="text-sm text-slate-600 leading-relaxed mb-6">Influência lunar atual sobre as emoções e intuição.</p>
                 </div>
-                <div class="pt-4 border-t border-slate-100">
-                    <a href="calendario.html" class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:shadow">
-                        <i data-lucide="calendar" class="w-4 h-4"></i>
-                        <span>Ver Calendário Lunar</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-auto"></i>
+                <p id="lua-significado" class="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-2">Influência lunar atual sobre as emoções e intuição.</p>
+                <div class="pt-2.5 border-t border-slate-100">
+                    <a href="calendario.html" class="inline-flex items-center justify-between w-full px-3 py-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-800 hover:text-white text-xs font-bold rounded-xl transition-all border border-indigo-200/60">
+                        <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Ver Calendário</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </a>
                 </div>
             </div>
             
-            <!-- Numerologia -->
-            <div class="bg-white/80 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:border-emerald-300 hover:shadow-md transition-all duration-300 group">
-                <div>
-                    <div class="flex items-center gap-3 mb-4 text-emerald-700">
-                        <div class="p-3 bg-emerald-100/60 rounded-2xl border border-emerald-200/60 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="hash" class="w-6 h-6"></i>
+            <!-- Numerologia (Card Compacto) -->
+            <div class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-emerald-300 hover:shadow transition-all duration-300 group">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5 text-emerald-700">
+                        <div class="p-2 bg-emerald-100/60 rounded-xl border border-emerald-200/60 group-hover:scale-105 transition-transform">
+                            <i data-lucide="hash" class="w-5 h-5"></i>
                         </div>
-                        <h2 class="text-lg font-bold text-slate-900">Numerologia do Dia</h2>
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Numerologia</h2>
+                            <p id="num-valor" class="text-base sm:text-lg font-extrabold text-emerald-800 leading-tight">Calculando...</p>
+                        </div>
                     </div>
-                    <p id="num-valor" class="text-xl font-extrabold text-emerald-800 mb-2">Calculando...</p>
-                    <p id="num-significado" class="text-sm text-slate-600 leading-relaxed mb-6">Vibração numérica matemática do dia corrente.</p>
                 </div>
-                <div class="pt-4 border-t border-slate-100">
-                    <a href="numerologia.html" class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:shadow">
-                        <i data-lucide="compass" class="w-4 h-4"></i>
-                        <span>Ver Numerologia Completa</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-auto"></i>
+                <p id="num-significado" class="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-2">Vibração numérica matemática do dia corrente.</p>
+                <div class="pt-2.5 border-t border-slate-100">
+                    <a href="numerologia.html" class="inline-flex items-center justify-between w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white text-xs font-bold rounded-xl transition-all border border-emerald-200/60">
+                        <span class="flex items-center gap-1.5"><i data-lucide="compass" class="w-3.5 h-3.5"></i> Ver Numerologia</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </a>
                 </div>
             </div>
+
         </div>
 
         <!-- VÍDEO DO DIA -->
