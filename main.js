@@ -287,7 +287,7 @@ async function carregarNoticias() {
 
                 <!-- Título da Matéria -->
                 <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug hover:text-emerald-800 transition-colors">
-                    <a href="imagemUrlnews/page_detalhes.html?id=${materia.id}">${titulo}</a>
+                    <a href="news/page_detalhes.html?id=${materia.id}">${titulo}</a>
                 </h2>
 
                 <!-- Prévia do Conteúdo com Efeito de Esmaecimento (Fade Out) -->
