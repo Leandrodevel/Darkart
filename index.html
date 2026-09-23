@@ -148,7 +148,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </header>
 
         <!-- MENU DE NAVEGAÇÃO ESTILO APLICATIVO -->
-<nav class=" bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+<nav class="hidden bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
     <div class="max-w-lg mx-auto flex justify-around items-center">
         
         <!-- 1. ORIENTAÇÕES (Dropdown para baixo) -->
@@ -266,6 +266,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="lista-noticias" class="w-full">
             <!-- O script main.js injetará a última matéria aqui automaticamente -->
         </div>
+<section class="max-w-6xl mx-auto px-4 py-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Destaques</h2>
+    
+    <!-- Container relativo para posicionar as setas de rolagem -->
+    <div class="relative group">
+        
+        <!-- Botão Esquerdo (Voltar) -->
+        <button onclick="rolarCarrossel('esquerda')" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 bg-white/90 hover:bg-white text-gray-700 p-2 rounded-full shadow-lg border border-gray-200 focus:outline-none transition-all opacity-0 group-hover:opacity-100 hidden sm:block">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+
+        <!-- Lista com Rolagem Lateral (Overflow X) -->
+        <div id="lista-materias" class="flex gap-4 overflow-x-auto scroll-smooth pb-4 pt-1 px-1 no-scrollbar">
+            <!-- Os cards serão injetados aqui pelo JavaScript -->
+        </div>
+
+        <!-- Botão Direito (Avançar) -->
+        <button onclick="rolarCarrossel('direita')" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 bg-white/90 hover:bg-white text-gray-700 p-2 rounded-full shadow-lg border border-gray-200 focus:outline-none transition-all opacity-0 group-hover:opacity-100 hidden sm:block">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+</section>
 
  <!-- CHAT DE MENSAGENS -->
 <section id="secao-frases-container" class="w-full space-y-3">
@@ -290,59 +316,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </button>
     </div>
 </section>
-        <!-- SEÇÃO: BANDEJA DE TESTES E INTERATIVIDADE -->
-        <section class="w-full">
-            <div class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 shadow-sm">
-                <div class="flex items-center gap-2 mb-4 px-1 text-emerald-700">
-                    <i data-lucide="compass" class="w-5 h-5 text-emerald-600"></i>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Testes e Descobertas</h2>
+<!-- SEÇÃO: BANDEJA DE TESTES E INTERATIVIDADE (MODO COMPACTO SEM CARDS) -->
+<section class="w-full">
+    <div class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
+        
+        <!-- Cabeçalho da Seção -->
+        <div class="flex items-center gap-2 px-1 text-emerald-700 border-b border-slate-100 pb-3">
+            <i data-lucide="compass" class="w-5 h-5 text-emerald-600"></i>
+            <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">Testes e Descobertas</h2>
+        </div>
+        
+        <!-- Grid de Cartões Estilizados -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+            
+            <!-- Item: Numerologia -->
+            <a href="testes/arq_numerologia.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-purple-50/50 border border-slate-200/80 hover:border-purple-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-purple-100 text-purple-700 rounded-2xl mb-2 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
                 </div>
-                
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                    <a href="testes/arq_numerologia.html" class="group flex flex-col items-center text-center p-3.5 bg-purple-50/60 hover:bg-purple-100/80 border border-purple-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-purple-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="sparkles" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-purple-900 transition-colors leading-tight">Numerologia</span>
-                    </a>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-purple-900 transition-colors">Numerologia</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Sua essência e números</span>
+            </a>
 
-                    <a href="testes/acolhimento.html" class="group flex flex-col items-center text-center p-3.5 bg-orange-50/60 hover:bg-orange-100/80 border border-orange-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-orange-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="heart-handshake" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-orange-900 transition-colors leading-tight">Estado Emocional</span>
-                    </a>
-
-                    <a href="testes/chakras.html" class="group flex flex-col items-center text-center p-3.5 bg-pink-50/60 hover:bg-pink-100/80 border border-pink-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-pink-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="activity" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-pink-900 transition-colors leading-tight">Chakras</span>
-                    </a>
-
-                    <a href="testes/elemento.html" class="group flex flex-col items-center text-center p-3.5 bg-emerald-50/60 hover:bg-emerald-100/80 border border-emerald-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-emerald-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="leaf" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-emerald-900 transition-colors leading-tight">Elementos</span>
-                    </a>
-
-                    <a href="testes/estresse.html" class="group flex flex-col items-center text-center p-3.5 bg-blue-50/60 hover:bg-blue-100/80 border border-blue-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-blue-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="shield-alert" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-blue-900 transition-colors leading-tight">Estresse</span>
-                    </a>
-
-                    <a href="testes/superpoder.html" class="group flex flex-col items-center text-center p-3.5 bg-amber-50/60 hover:bg-amber-100/80 border border-amber-100/80 rounded-2xl transition-all duration-300 hover:scale-105">
-                        <div class="p-3 bg-amber-600 text-white rounded-2xl shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                            <i data-lucide="zap" class="w-5 h-5"></i>
-                        </div>
-                        <span class="font-bold text-slate-900 text-xs group-hover:text-amber-900 transition-colors leading-tight">Superpoder</span>
-                    </a>
+            <!-- Item: Emocional / Acolhimento -->
+            <a href="testes/acolhimento.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-orange-50/50 border border-slate-200/80 hover:border-orange-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-orange-100 text-orange-700 rounded-2xl mb-2 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="heart-handshake" class="w-5 h-5"></i>
                 </div>
-            </div>
-        </section>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-orange-900 transition-colors">Emocional</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Acolhimento e paz</span>
+            </a>
+
+            <!-- Item: Chakras -->
+            <a href="testes/chakras.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-pink-50/50 border border-slate-200/80 hover:border-pink-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-pink-100 text-pink-700 rounded-2xl mb-2 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-pink-900 transition-colors">Chakras</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Alinhamento vital</span>
+            </a>
+
+            <!-- Item: Elementos -->
+            <a href="testes/elemento.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-emerald-100 text-emerald-700 rounded-2xl mb-2 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="leaf" class="w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-emerald-900 transition-colors">Elementos</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Sua conexão natural</span>
+            </a>
+
+            <!-- Item: Estresse -->
+            <a href="testes/estresse.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-blue-50/50 border border-slate-200/80 hover:border-blue-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-blue-100 text-blue-700 rounded-2xl mb-2 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-blue-900 transition-colors">Estresse</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nível de energia</span>
+            </a>
+
+            <!-- Item: Superpoder -->
+            <a href="testes/superpoder.html" class="group flex flex-col items-center text-center p-4 bg-slate-50/60 hover:bg-amber-50/50 border border-slate-200/80 hover:border-amber-200 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm">
+                <div class="p-3 bg-amber-100 text-amber-700 rounded-2xl mb-2 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-sm">
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-amber-900 transition-colors">Superpoder</span>
+                <span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Sua maior virtude</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
 
         <!-- Seção Card: Teste de Arquétipo Espiritual -->
         <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8 relative overflow-hidden transition-all duration-300 hover:shadow-md hover:border-purple-200">

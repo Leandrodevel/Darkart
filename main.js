@@ -318,6 +318,55 @@ async function carregarNoticias() {
 }
 
 
+//lista lateral deaterias
+
+    // Função para mover o carrossel para os lados ao clicar nas setas
+    function rolarCarrossel(direcao) {
+        const container = document.getElementById('lista-materias');
+        const larguraItem = 300; // Tamanho aproximado de cada card + gap
+        if (direcao === 'esquerda') {
+            container.scrollBy({ left: -larguraItem, behavior: 'smooth' });
+        } else {
+            container.scrollBy({ left: larguraItem, behavior: 'smooth' });
+        }
+    }
+
+    // Busca e renderiza as matérias
+    fetch('materias.json')
+      .then(response => response.json())
+      .then(materias => {
+        const container = document.getElementById('lista-materias');
+        container.innerHTML = ""; 
+        
+        materias.forEach(materia => {
+          // Card formatado em coluna para carrossel lateral
+          const card = `
+            <a href="${materia.link}" class="flex-shrink-0 w-72 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-200 group flex flex-col">
+                <!-- Imagem no topo -->
+                <img src="${materia.imagem_url}" alt="${materia.titulo}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                
+                <!-- Conteúdo -->
+                <div class="p-4 flex flex-col flex-grow justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-gray-400 uppercase mb-1 block">${materia.data}</span>
+                        <h3 class="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug mb-2">${materia.titulo}</h3>
+                        <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${materia.resumo}</p>
+                    </div>
+                    <span class="text-xs font-semibold text-blue-600 mt-3 inline-flex items-center gap-1">
+                        Ler matéria 
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                    </span>
+                </div>
+            </a>
+          `;
+          container.innerHTML += card;
+        });
+      })
+      .catch(error => console.error('Erro ao carregar as matérias:', error));
+
+
+
+
 // Carrega os dados dinâmicos do Supabase
 async function carregarDadosDinamicos() {
     await sincronizarReacoesPendentesPorId();
