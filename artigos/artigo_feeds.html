@@ -110,7 +110,7 @@
             try {
                 // Como o arquivo materia.json está na raiz e este feed.html pode estar na raiz, ajustamos o caminho. 
                 // Se o feed.html ficar dentro de uma pasta, ajuste para '../materia.json'
-                const response = await fetch("artigo-lista.json");
+                const response = await fetch("artigos-lista.json");
                 if (!response.ok) throw new Error("Não foi possível carregar o arquivo de matérias.");
                 
                 const materias = await response.json();
