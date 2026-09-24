@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feed de Artigos - Revista Equalize-se</title>
+    <title>Feed de relatos - Revista Equalize-se</title>
     
     <!-- Meta Tags para SEO e Busca do Google -->
-    <meta name="description" content="Explore todos os artigos, reflexões e conteúdos exclusivos sobre espiritualidade e autoconhecimento do Equalize-se.">
+    <meta name="description" content="Explore todos os relatos, reflexões e conteúdos exclusivos sobre espiritualidade e autoconhecimento do Equalize-se.">
     <meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0">
     <meta name="robots" content="index, follow">
     
@@ -33,7 +33,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
                 Equalize-se
             </a>
-            <p class="text-xs text-slate-500 font-medium mt-1">Portal de Artigos, Conexão e Autoconhecimento</p>
+            <p class="text-xs text-slate-500 font-medium mt-1">Portal de relatos, Conexão e Autoconhecimento</p>
         </header>
 
         <!-- MENU DE NAVEGAÇÃO FUNCIONAL -->
@@ -60,18 +60,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </nav>
 
-        <!-- SEÇÃO DO FEED DE ARTIGOS -->
+        <!-- SEÇÃO DO FEED DE relatos -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-sm space-y-6">
             <div class="border-b border-slate-100 pb-4">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Todos os Artigos</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Todos os relatos</h1>
                 <p class="text-xs sm:text-sm text-slate-500 mt-1">Navegue pelas nossas publicações recentes sobre espiritualidade e expansão da consciência.</p>
             </div>
 
-            <!-- CONTAINER ONDE OS ARTIGOS DO SUPABASE SERÃO INSERIDOS DINAMICAMENTE -->
+            <!-- CONTAINER ONDE OS relatos DO SUPABASE SERÃO INSERIDOS DINAMICAMENTE -->
             <div id="feed-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Estado de Carregamento (Loading) -->
                 <div class="col-span-full text-center py-10 text-slate-400 text-sm">
-                    Carregando artigos do banco de dados...
+                    Carregando relatos do banco de dados...
                 </div>
             </div>
         </section>
@@ -137,7 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 if (error) throw new Error(error.message);
 
                 if (!materias || materias.length === 0) {
-                    container.innerHTML = `<p class="col-span-full text-center text-slate-500 py-6">Nenhum artigo cadastrado no momento.</p>`;
+                    container.innerHTML = `<p class="col-span-full text-center text-slate-500 py-6">Nenhum relato cadastrado no momento.</p>`;
                     return;
                 }
 
@@ -163,12 +163,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     
                     card.innerHTML = `
                         <div>
-                            <div class="h-48 overflow-hidden bg-slate-200 border-b border-slate-200">
-                                <img src="${materia.imagem_url || '../img/default.jpg'}" alt="${materia.titulo}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                            </div>
+               
                             <div class="p-5 space-y-3">
                                 <div class="flex items-center gap-2 text-xs text-slate-500">
-                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-semibold rounded border border-emerald-200">${materia.categoria || 'Artigo'}</span>
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-semibold rounded border border-emerald-200">${materia.categoria || 'relato'}</span>
                                     <span class="flex items-center gap-1">
                                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-700"></i> ${dataFormatada}
                                     </span>
@@ -183,7 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="p-5 pt-0">
                             <a href="page_detalhes.html?id=${materia.id}" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-lg transition-all border border-emerald-200">
-                                <span>Ler artigo completo</span>
+                                <span>Ler relato completo</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                             </a>
                         </div>
@@ -201,7 +199,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 console.error("Erro ao carregar feed:", error);
                 container.innerHTML = `
                     <div class="col-span-full text-center py-8 text-rose-500 text-xs font-medium">
-                        Erro ao carregar o feed de artigos do banco de dados. Verifique a conexão com o Supabase.
+                        Erro ao carregar o feed de relatos do banco de dados. Verifique a conexão com o Supabase.
                     </div>
                 `;
             }

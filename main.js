@@ -270,7 +270,7 @@ async function carregarNoticias() {
              <!-- Cabeçalho da Matéria (Categoria e Data) -->
                 <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 border-b border-slate-100 pb-3">
                     <div>
-                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-semibold rounded-lg border border-emerald-200">Artigo</span>
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-semibold rounded-lg border border-emerald-200">Relatos</span>
                     </div>
                     <div class="flex items-center gap-1.5 font-medium">
                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-700"></i>
@@ -281,10 +281,9 @@ async function carregarNoticias() {
                 <!-- Imagem de Capa da Matéria (Reduzida e Centralizada) -->
                 <div class="overflow-hidden rounded-2xl border border-slate-100 p-2 bg-slate-50/50 text-center">
                     <a href="news/page_detalhes.html?id=${materia.id}" class="block">
-                        <img src="${imagemUrl}" alt="${titulo}" class="w-full sm:w-[65%] max-h-52 sm:h-52 object-cover rounded-xl mx-auto shadow-xs">
+                    
                     </a>
                 </div>
-
                 <!-- Título da Matéria -->
                 <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug hover:text-emerald-800 transition-colors">
                     <a href="news/page_detalhes.html?id=${materia.id}">${titulo}</a>
