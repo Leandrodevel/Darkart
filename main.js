@@ -320,7 +320,7 @@ async function carregarNoticias() {
 
 // Busca e renderiza as matérias no padrão de destaque da dashboard
 // Busca e renderiza as matérias
-fetch('materias.json')
+fetch('artigos/artigos-lista.json')
   .then(response => response.json())
   .then(materias => {
     const container = document.getElementById('container-destaques');
@@ -337,7 +337,7 @@ fetch('materias.json')
 
     // 1º Card: Destaque Principal (Utiliza a matéria com id: 0)
     let htmlDestaques = `
-      <a href="pages/${principal.link}" class="relative block rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 group transition-all duration-300" data-id="${principal.id}">
+      <a href="artigos/${principal.link}" class="relative block rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 group transition-all duration-300" data-id="${principal.id}">
           <div class="relative w-full h-72 sm:h-[400px]">
               <img src="${principal.imagem_url}" alt="${principal.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
@@ -369,7 +369,7 @@ fetch('materias.json')
         
         outrasMaterias.forEach(mat => {
             htmlDestaques += `
-              <a href="pages/${mat.link}" class="flex-shrink-0 w-72 bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col justify-between p-4 space-y-3" data-id="${mat.id}">
+              <a href="artigos/${mat.link}" class="flex-shrink-0 w-72 bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col justify-between p-4 space-y-3" data-id="${mat.id}">
                   <div class="overflow-hidden rounded-xl">
                       <img src="${mat.imagem_url}" alt="${mat.titulo}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
                   </div>
