@@ -318,51 +318,86 @@ async function carregarNoticias() {
 }
 
 
-//lista lateral deaterias
+// Busca e renderiza as matérias no padrão de destaque da dashboard
+// Busca e renderiza as matérias
+fetch('materias.json')
+  .then(response => response.json())
+  .then(materias => {
+    const container = document.getElementById('container-destaques');
+    container.innerHTML = ""; 
+    
+    if (materias.length === 0) return;
 
-    // Função para mover o carrossel para os lados ao clicar nas setas
-    function rolarCarrossel(direcao) {
-        const container = document.getElementById('lista-materias');
-        const larguraItem = 300; // Tamanho aproximado de cada card + gap
-        if (direcao === 'esquerda') {
-            container.scrollBy({ left: -larguraItem, behavior: 'smooth' });
-        } else {
-            container.scrollBy({ left: larguraItem, behavior: 'smooth' });
-        }
-    }
-       //destaques
-    // Busca e renderiza as matérias
-    fetch('materias.json')
-      .then(response => response.json())
-      .then(materias => {
-        const container = document.getElementById('lista-materias');
-        container.innerHTML = ""; 
+    // Adiciona um ID baseado no Index para cada matéria e separa a principal (index 0)
+    const materiasComId = materias.map((materia, index) => ({
+      ...materia,
+      id: index
+    }));
+    const principal = materiasComId[0];
+
+    // 1º Card: Destaque Principal (Utiliza a matéria com id: 0)
+    let htmlDestaques = `
+      <a href="pages/${principal.link}" class="relative block rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 group transition-all duration-300" data-id="${principal.id}">
+          <div class="relative w-full h-72 sm:h-[400px]">
+              <img src="${principal.imagem_url}" alt="${principal.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-5 sm:p-6 space-y-2">
+              <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-1 bg-slate-900/80 text-white text-[10px] font-bold uppercase tracking-wider rounded-md backdrop-blur-sm">Destaque</span>
+                  <span class="text-xs text-slate-300 font-medium">${principal.data}</span>
+              </div>
+              <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight group-hover:text-emerald-300 transition-colors line-clamp-2">
+                  ${principal.titulo}
+              </h3>
+          </div>
+      </a>
+    `;
+
+    // Filtra as matérias para a rolagem de baixo: 
+    // Exclui a matéria principal (id: 0) e pega até 5 matérias a seguir
+    const outrasMaterias = materiasComId
+      .filter(mat => mat.id !== principal.id)
+      .slice(0, 5);
+
+    if (outrasMaterias.length > 0) {
+        htmlDestaques += `
+          <div class="relative group">
+              <!-- Lista com Rolagem Lateral para os cards no tamanho original -->
+              <div class="flex gap-4 overflow-x-auto scroll-smooth pb-4 pt-1 px-1 no-scrollbar">
+        `;
         
-        materias.forEach(materia => {
-          // Card formatado em coluna para carrossel lateral
-          const card = `
-            <a href="pages/${materia.link}" class="flex-shrink-0 w-72 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-200 group flex flex-col">
-                <!-- Imagem no topo -->
-                <img src="${materia.imagem_url}" alt="${materia.titulo}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
-                
-                <!-- Conteúdo -->
-                <div class="p-4 flex flex-col flex-grow justify-between">
-                    <div>
-                        <span class="text-xs font-semibold text-gray-400 uppercase mb-1 block">${materia.data}</span>
-                        <h3 class="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug mb-2">${materia.titulo}</h3>
-                        <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${materia.resumo}</p>
-                    </div>
-                    <span class="text-xs font-semibold text-blue-600 mt-3 inline-flex items-center gap-1">
-                        Ler matéria 
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-                    </span>
-                </div>
-            </a>
-          `;
-          container.innerHTML += card;
+        outrasMaterias.forEach(mat => {
+            htmlDestaques += `
+              <a href="pages/${mat.link}" class="flex-shrink-0 w-72 bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col justify-between p-4 space-y-3" data-id="${mat.id}">
+                  <div class="overflow-hidden rounded-xl">
+                      <img src="${mat.imagem_url}" alt="${mat.titulo}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                  </div>
+                  <div class="space-y-1.5 flex-grow">
+                      <span class="text-xs font-semibold text-gray-400 uppercase">${mat.data}</span>
+                      <h4 class="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                          ${mat.titulo}
+                      </h4>
+                      <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${mat.resumo}</p>
+                  </div>
+                  <span class="text-xs font-semibold text-emerald-700 inline-flex items-center gap-1 pt-1">
+                      Ler matéria 
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                  </span>
+              </a>
+            `;
         });
-      })
-      .catch(error => console.error('Erro ao carregar as matérias:', error));
+
+        htmlDestaques += `
+              </div>
+          </div>
+        `;
+    }
+
+    container.innerHTML = htmlDestaques;
+  })
+  .catch(error => console.error('Erro ao carregar as matérias:', error));
+
 
 
 
