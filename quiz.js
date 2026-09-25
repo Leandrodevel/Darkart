@@ -13,36 +13,68 @@ const resultDescription = document.getElementById("result-description");
 const matchList = document.getElementById("match-list");
 
 // Mapeamento de Arquétipos do Sistema com base nas categorias do quiz
+// Mapeamento de Arquétipos do Sistema corrigido com as categorias exatas do quiz.json
+// Mapeamento expandido para 10 Arquétipos do Sistema
 const archetypesMapping = [
     {
         title: "O Místico Universalista",
-        keywords: ["Universalismo", "Budismo", "Evolução e Consciência", "Fé Racional", "Propósito de Vida"],
-        description: "Sua alma busca a síntese entre todas as filosofias. Você compreende que a verdade divina transcende dogmas fechados, valorizando a meditação, a expansão da consciência e a fraternidade cósmica.",
-        traits: ["Visão integrativa", "Busca pela iluminação", "Conexão cósmica universal"]
+        keywords: ["Universalismo e Conexão", "Universalismo e Fraternidade"],
+        description: "Sua alma busca a síntese entre todas as filosofias. Você compreende que a verdade divina transcende dogmas fechados, valorizando a fraternidade cósmica e a união de todas as crenças.",
+        traits: ["Visão integrativa", "Fraternidade universal", "Conexão cósmica"]
     },
     {
         title: "O Guardião da Alquimia Interior",
-        keywords: ["Psicologia e Sombra", "Hermetismo e Leis Universais", "Hermetismo e Alquimia", "Psicologia e Autoconhecimento", "Misticismo Prático"],
-        description: "Você entende a espiritualidade através da maestria mental e do autoconhecimento profundo. Acolhe suas sombras, domina as leis herméticas e transmuta desafios em pura evolução.",
-        traits: ["Maturidade psicológica", "Domínio das leis mentais", "Autonomia espiritual"]
+        keywords: ["Psicologia e Sombra", "Psicologia e Autoconhecimento"],
+        description: "Você entende a espiritualidade através da maestria mental e do autoconhecimento profundo. Acolhe suas sombras e transmuta desafios em pura evolução emocional e psicológica.",
+        traits: ["Maturidade psicológica", "Integração da sombra", "Autonomia espiritual"]
     },
     {
-        title: "O Sacerdote da Terra (Ervas e Cristais)",
-        keywords: ["Magia Natural (Ervas)", "Cristais e Radiestesia", "Cura Ancestral", "Sintonia Vibracional", "Energia e Intuição"],
-        description: "Sua conexão com o sagrado passa pelos elementos da natureza. Você manipula com respeito a frequência dos cristais, a força das ervas e as medicinas ancestrais para purificar e proteger.",
-        traits: ["Intuição apurada", "Magia natural prática", "Respeito à ancestralidade"]
+        title: "O Sacerdote da Natureza",
+        keywords: ["Magia Natural (Ervas)", "Cura Ancestral"],
+        description: "Sua conexão com o sagrado passa pelos elementos da Terra. Você respeita a força das ervas, as medicinas tradicionais e a sabedoria ancestral para purificar e harmonizar os ambientes.",
+        traits: ["Magia natural prática", "Respeito à ancestralidade", "Sintonia com a terra"]
     },
     {
-        title: "O Peregrino da Caridade e Luz",
-        keywords: ["Espiritismo e Reencarnação", "Espiritismo e Caridade", "Umbanda e Orixás", "Umbanda e Caridade", "Sustentação Espiritual Geral"],
-        description: "Sua jornada é guiada pelo amparo, pela caridade ativa e pela crença na evolução contínua do espírito através de múltiplas existências, contando sempre com o auxílio dos guias e mentores.",
-        traits: ["Amor ao próximo", "Firmeza na caridade", "Sintonia com mentores espirituais"]
+        title: "O Mestre dos Cristais e da Energia",
+        keywords: ["Cristais e Radiestesia", "Energia e Intuição"],
+        description: "Você utiliza a frequência dos minerais, da geometria sagrada e da sua intuição apurada para blindar campos energéticos e elevar a vibração ao seu redor.",
+        traits: ["Intuição apurada", "Sensibilidade mineral", "Blindagem energética"]
     },
     {
-        title: "O Alquimista Energético (Reiki e Frequência)",
-        keywords: ["Reiki e Energia Vital", "Reiki e Autocura", "Lei da Atração e Frequência", "Lei da Atração e Cocriação", "Equilíbrio Material e Espiritual"],
-        description: "Você opera como um canal de frequências sutis. Compreende que a energia vital, a imposição de mãos e o poder mental de cocriação moldam diretamente a realidade material e espiritual.",
-        traits: ["Canal de cura energética", "Cocriação consciente", "Harmonização vibracional"]
+        title: "O Peregrino da Caridade",
+        keywords: ["Espiritismo e Reencarnação", "Espiritismo e Caridade"],
+        description: "Sua jornada é guiada pelo dever moral, pela caridade ativa e pela crença na evolução contínua do espírito através de múltiplas existências em busca da luz.",
+        traits: ["Amor ao próximo", "Firmeza na caridade", "Evolução contínua"]
+    },
+    {
+        title: "O Filho de Aruanda (Sintonia Umbandista)",
+        keywords: ["Umbanda e Orixás", "Umbanda e Caridade", "Sustentação Espiritual Geral"],
+        description: "Você sente uma profunda reverência pelas divindades, guias e pelos rituais de caridade nos terreiros, encontrando amparo e sabedoria nos espíritos de luz.",
+        traits: ["Respeito aos Orixás e guias", "Caridade nos terreiros", "Amparo espiritual"]
+    },
+    {
+        title: "O Canalizador de Reiki e Cura",
+        keywords: ["Reiki e Energia Vital", "Reiki e Autocura"],
+        description: "Você opera como um canal puro de energia vital universal. Através do toque consciente e da autocura diária, promove o realinhamento dos chakras e o bem-estar.",
+        traits: ["Canal de cura energética", "Imposição de mãos", "Harmonização de chakras"]
+    },
+    {
+        title: "O Sábio Zen (Budismo e Desapego)",
+        keywords: ["Budismo e Desapego", "Budismo e Iluminação"],
+        description: "Sua busca é pela paz interior através do controle do ego e da prática da atenção plena (mindfulness), compreendendo que o verdadeiro despertar reside no desapego.",
+        traits: ["Atenção plena", "Prática da compaixão", "Busca pelo nirvana"]
+    },
+    {
+        title: "O Alquimista Mental e Hermético",
+        keywords: ["Hermetismo e Leis Universais", "Hermetismo e Alquimia"],
+        description: "Você estuda e aplica as leis imutáveis que rege o cosmo. Compreende que o domínio da mente é a chave para transmutar realidades e alcançar a maestria interna.",
+        traits: ["Domínio das leis mentais", "Alquimia de estados", "Visão hermética"]
+    },
+    {
+        title: "O Cocriador da Realidade",
+        keywords: ["Lei da Atração e Frequência", "Lei da Atração e Cocriação", "Equilíbrio Material e Espiritual"],
+        description: "Você entende que seus pensamentos criam ondas eletromagnéticas que moldam o mundo físico. Alinha intenção, foco e prosperidade com total responsabilidade espiritual.",
+        traits: ["Cocriação consciente", "Foco vibracional", "Equilíbrio entre matéria e espírito"]
     }
 ];
 
