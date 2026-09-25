@@ -635,25 +635,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
     </footer>
 <!-- Modal de Instalação (Padrão de Cores do Painel Cinco Peixes) -->
-<div id="installModal" class="page" style="display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
-    <div style="background-color: #ffffff; border-radius: 12px; max-width: 380px; width: 100%; padding: 25px; text-align: center; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
+<!-- Modal de Instalação (Com Tailwind e Logo Personalizada) -->
+<div id="installModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100">
         
-        <!-- Ícone / Logo no padrão do painel -->
-        <div style="width: 60px; height: 60px; background-color: #e0f2fe; color: #0284c7; border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-            <i class="fas fa-download"></i>
+        <!-- Logo do Projeto -->
+        <div class="w-16 h-16 bg-sky-50 rounded-full mx-auto mb-4 flex items-center justify-center p-2 border border-sky-100 shadow-sm overflow-hidden">
+            <img src="IMG/logo.png" alt="Logo Cinco Peixes" class="w-full h-full object-contain">
         </div>
 
-        <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 8px; font-weight: 600;">Instalar Aplicativo</h3>
-        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px; line-height: 1.4;">
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Instalar Aplicativo</h3>
+        <p class="text-slate-500 text-sm mb-6 leading-relaxed">
             Instale o painel no seu dispositivo para ter acesso rápido, funcionamento otimizado e uma melhor experiência!
         </p>
 
-        <!-- Botões de Ação com as classes do seu sistema -->
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button id="btnInstallConfirm" class="btn-primary" style="margin-top: 0; background-color: #16a34a;">
+        <!-- Botões de Ação com Tailwind -->
+        <div class="flex flex-col gap-3">
+            <button id="btnInstallConfirm" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-lg transition duration-200 shadow-sm flex items-center justify-center gap-2">
                 <i class="fas fa-check"></i> Instalar Agora
             </button>
-            <button id="btnInstallClose" style="width: 100%; background-color: #f1f5f9; color: #475569; border: none; padding: 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;">
+            <button id="btnInstallClose" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-3 px-4 rounded-lg transition duration-200">
                 Agora Não
             </button>
         </div>
