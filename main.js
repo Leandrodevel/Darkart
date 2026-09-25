@@ -10,6 +10,12 @@ const supabaseMainClient = window.supabase ? window.supabase.createClient(SUPABA
 
 lucide.createIcons();
 
+
+
+
+
+
+
 // Tempo de bloqueio em milissegundos (1 hora = 60 * 60 * 1000 = 3600000 ms)
 const TEMPO_BLOQUEIO_MS = 60 * 60 * 1000; 
 
@@ -27,50 +33,6 @@ function abrirModalFrase() {
 
     document.getElementById("modal-frase").classList.remove("hidden");
 }
-let deferredPrompt;
-const installModal = document.getElementById('installModal');
-const btnInstallConfirm = document.getElementById('btnInstallConfirm');
-const btnInstallClose = document.getElementById('btnInstallClose');
-
-// 1. O navegador avisa que o app pode ser instalado
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Impede o banner padrão do navegador de aparecer
-    e.preventDefault();
-    // Guarda o evento para usar depois
-    deferredPrompt = e;
-    
-    // Aqui você pode decidir quando mostrar a modal. 
-    // Exemplo: Mostrar assim que o evento estiver pronto ou após uma ação do usuário.
-    setTimeout(() => {
-        installModal.classList.remove('hidden');
-    }, 2000); // Mostra após 2 segundos de acesso, por exemplo
-});
-
-// 2. Quando o usuário clica em "Instalar Agora" na sua modal
-btnInstallConfirm.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    
-    // Mostra o prompt nativo de instalação do navegador
-    deferredPrompt.prompt();
-    
-    // Espera a escolha do usuário
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-        console.log('Usuário aceitou a instalação');
-    } else {
-        console.log('Usuário recusou a instalação');
-    }
-    
-    // Limpa a variável e esconde a modal
-    deferredPrompt = null;
-    installModal.classList.add('hidden');
-});
-
-// 3. Quando o usuário clica em "Agora Não"
-btnInstallClose.addEventListener('click', () => {
-    installModal.classList.add('hidden');
-});
 
 // Função para atualizar o visual do botão de envio caso esteja no tempo de espera
 function atualizarEstadoBotaoEnvio() {
@@ -139,6 +101,59 @@ function mostrarAvisoFlutuante(mensagem) {
         }, 300); // Tempo correspondente à transição
     }, 2500);
 }
+
+
+let deferredPrompt;
+const installModal = document.getElementById('installModal');
+const btnInstallConfirm = document.getElementById('btnInstallConfirm');
+const btnInstallClose = document.getElementById('btnInstallClose');
+
+// 1. O navegador avisa que o app pode ser instalado
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Exibe a modal centralizada com efeito flex
+    if (installModal) {
+        installModal.style.display = 'flex';
+    }
+});
+
+// 2. Quando o usuário clica em "Instalar Agora" na modal
+if (btnInstallConfirm) {
+    btnInstallConfirm.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+            console.log('Usuário aceitou a instalação');
+        }
+        
+        deferredPrompt = null;
+        installModal.style.display = 'none';
+    });
+}
+
+// 3. Quando o usuário clica em "Agora Não"
+if (btnInstallClose) {
+    btnInstallClose.addEventListener('click', () => {
+        installModal.style.display = 'none';
+    });
+}
+
+// 4. Se já foi instalado, garante que fica oculta
+window.addEventListener('appinstalled', () => {
+    if (installModal) installModal.style.display = 'none';
+});
+
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    if (installModal) installModal.style.display = 'none';
+}
+
+
+
 
 async function reagirMensagem(dataIso, indexMensagem, idMensagem, elementoBotao) {
     // Utiliza o ID único da mensagem do Supabase para evitar conflitos de índice
