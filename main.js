@@ -27,6 +27,50 @@ function abrirModalFrase() {
 
     document.getElementById("modal-frase").classList.remove("hidden");
 }
+let deferredPrompt;
+const installModal = document.getElementById('installModal');
+const btnInstallConfirm = document.getElementById('btnInstallConfirm');
+const btnInstallClose = document.getElementById('btnInstallClose');
+
+// 1. O navegador avisa que o app pode ser instalado
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Impede o banner padrão do navegador de aparecer
+    e.preventDefault();
+    // Guarda o evento para usar depois
+    deferredPrompt = e;
+    
+    // Aqui você pode decidir quando mostrar a modal. 
+    // Exemplo: Mostrar assim que o evento estiver pronto ou após uma ação do usuário.
+    setTimeout(() => {
+        installModal.classList.remove('hidden');
+    }, 2000); // Mostra após 2 segundos de acesso, por exemplo
+});
+
+// 2. Quando o usuário clica em "Instalar Agora" na sua modal
+btnInstallConfirm.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    
+    // Mostra o prompt nativo de instalação do navegador
+    deferredPrompt.prompt();
+    
+    // Espera a escolha do usuário
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+        console.log('Usuário aceitou a instalação');
+    } else {
+        console.log('Usuário recusou a instalação');
+    }
+    
+    // Limpa a variável e esconde a modal
+    deferredPrompt = null;
+    installModal.classList.add('hidden');
+});
+
+// 3. Quando o usuário clica em "Agora Não"
+btnInstallClose.addEventListener('click', () => {
+    installModal.classList.add('hidden');
+});
 
 // Função para atualizar o visual do botão de envio caso esteja no tempo de espera
 function atualizarEstadoBotaoEnvio() {

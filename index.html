@@ -634,6 +634,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <i data-lucide="lock" class="w-4 h-4"></i>
         </a>
     </footer>
+<!-- Modal de Instalação (Fica oculta por padrão) -->
+<div id="installModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
+        
+        <!-- Ícone / Logo -->
+        <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-2xl mx-auto flex items-center justify-center mb-4 text-2xl font-bold">
+            📱
+        </div>
+
+        <h3 class="text-xl font-bold text-white mb-2">Instalar Aplicativo</h3>
+        <p class="text-slate-400 text-sm mb-6">
+            Instale nosso aplicativo para ter acesso rápido, funcionamento offline e uma melhor experiência direto na sua tela inicial!
+        </p>
+
+        <!-- Botões de Ação -->
+        <div class="space-y-3">
+            <button id="btnInstallConfirm" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-emerald-900/20">
+                Instalar Agora
+            </button>
+            <button id="btnInstallClose" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 px-4 rounded-xl transition duration-200">
+                Agora Não
+            </button>
+        </div>
+    </div>
+</div>
 
     <!-- Scripts de Conexão e Lógica -->
     <script src="cards_home.js"></script>
