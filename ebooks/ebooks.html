@@ -48,7 +48,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PG5KC9SF');</script>
 <!-- End Google Tag Manager -->
 </head>
-<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%), url('../img/bg.jpeg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
     <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5KC9SF"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -91,22 +91,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 </script>
     <!-- CABEÇALHO FIXO -->
-    <header class="fixed top-0 left-0 w-full h-18 bg-white/90 backdrop-blur-md shadow-sm z-50 flex justify-between items-center px-6 sm:px-10 border-b border-emerald-100/50">
-        <!-- Nome/Logo do App -->
-        <div class="flex items-center gap-2">
-            <a href="index.html" class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
-                Equalize-se
-            </a>
+ <header class=" text-center flex flex-col items-center justify-center space-y-2">
+    <a href="../index.html" class="flex flex-col items-center ">
+        <!-- Imagem da logo na pasta IMG -->
+        <img src="../img/logo.png" alt="Logo Foco EC" class="w-24 h-24 object-contain rounded-full transition-transform group-hover:scale-105">
+        
+        <!-- Nome Foco EC com o E estilizado em degradê -->
+        <span class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Foco & Ser
+        </span>
+    </a>
+    <p class="text-xs text-slate-500 font-medium mt-1">Nossa jornada de foco e evolução diária</p>
+</header>
+  <nav class=" bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+    <div class="max-w-lg mx-auto flex justify-around items-center">
+        
+        <!-- 1. ORIENTAÇÕES (Dropdown para baixo) -->
+           <a href="../artigos/artigo_feeds.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2 bg-emerald-50 rounded-xl transition-all">
+                        <i data-lucide="newspaper" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium font-bold">Artigos</span>
+                </a>
+    
+        <!-- 2. INTERESSES (Dropdown para baixo) -->
+        <div class="relative group">
+            <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
+                <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                    <i data-lucide="hash" class="w-5 h-5 text-emerald-700"></i>
+                </div>
+                <span class="text-[11px] font-medium">Interesses</span>
+            </button>
+            
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 before:absolute before:-top-3 before:inset-x-0 before:h-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+                <a href="../consultas/numerologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Numerologia</a>
+                <a href="../consultas/horoscopo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Astrologia</a>
+                <a href="../consultas/calendario.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Calendario Lunar</a>
+              
+            </div>
         </div>
 
-        <!-- Botão de Voltar para o Início -->
-        <nav class="flex items-center gap-2">
-            <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200/60 shadow-2xs">
-                <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-700"></i> Voltar ao Início
-            </a>
-        </nav>
-    </header>
+       
+     
 
+        <!-- 4. EBOOKS -->
+          <a href="../news/news_feeds.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2  rounded-xl transition-all">
+                        <i data-lucide="file-heart" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium font-bold">Relatos</span>
+                </a>
+
+
+    </div>
+</nav>
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
         

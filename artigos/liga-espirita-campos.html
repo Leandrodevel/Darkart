@@ -26,7 +26,7 @@
     <!-- Ícones do Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: url('img/bg.jpg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%), url('../img/bg.jpeg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5KC9SF"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button onclick="compartilharPaginaAtual()" class="fixed top-4 right-4 z-[9999] bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 p-3 rounded-full shadow-2xl transition-all hover:scale-105 cursor-pointer flex items-center justify-center" title="Compartilhar página">
@@ -36,12 +36,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main class="w-full max-w-[1440px] mx-auto px-2 sm:px-4 space-y-4">
         
         <!-- CABEÇALHO -->
-        <header class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm text-center">
-            <a href="../index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
-                Equalize-se
-            </a>
-            <p class="text-xs text-slate-500 font-medium mt-1">Portal de Artigos, Conexão e Autoconhecimento</p>
-        </header>
+      <header class=" text-center flex flex-col items-center justify-center space-y-2">
+    <a href="../index.html" class="flex flex-col items-center ">
+        <!-- Imagem da logo na pasta IMG -->
+        <img src="../img/logo.png" alt="Logo Foco EC" class="w-24 h-24 object-contain rounded-full transition-transform group-hover:scale-105">
+        
+        <!-- Nome Foco EC com o E estilizado em degradê -->
+        <span class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Foco & Ser
+        </span>
+    </a>
+    <p class="text-xs text-slate-500 font-medium mt-1">Nossa jornada de foco e evolução diária</p>
+</header>
 
         <!-- MENU DE NAVEGAÇÃO FUNCIONAL -->
         <nav class="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-3 relative z-50">

@@ -76,37 +76,60 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- CONTAINER PRINCIPAL -->
     <main class="w-full max-w-[1440px] mx-auto px-2 sm:px-4 space-y-4">
         
-        <!-- CABEÇALHO / LOGO SIMPLES -->
-        <header class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm text-center">
-            <a href="../index.html" class="text-2xl font-extrabold bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent tracking-wide">
-                Equalize-se
-            </a>
-            <p class="text-xs text-slate-500 font-medium mt-1">Portal de Artigos, Conexão e Autoconhecimento</p>
-        </header>
+    <header class=" text-center flex flex-col items-center justify-center space-y-2">
+    <a href="../index.html" class="flex flex-col items-center ">
+        <!-- Imagem da logo na pasta IMG -->
+        <img src="../img/logo.png" alt="Logo Foco EC" class="w-24 h-24 object-contain rounded-full transition-transform group-hover:scale-105">
+        
+        <!-- Nome Foco EC com o E estilizado em degradê -->
+        <span class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Foco & Ser
+        </span>
+    </a>
+    <p class="text-xs text-slate-500 font-medium mt-1">Nossa jornada de foco e evolução diária</p>
+</header>
 
-        <!-- MENU DE NAVEGAÇÃO -->
-        <nav class="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-3 relative z-50">
-            <div class="max-w-md mx-auto flex justify-around items-center">
-                <a href="../index.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-emerald-50 rounded-xl transition-all">
-                        <i data-lucide="home" class="w-5 h-5 text-emerald-700"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Início</span>
-                </a>
-           <a href="news_feeds.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+     <nav class=" bg-white/95 backdrop-blur-lg border border-emerald-100/80 rounded-3xl shadow-sm p-3 relative z-50">
+    <div class="max-w-lg mx-auto flex justify-around items-center">
+        
+        <!-- 1. ORIENTAÇÕES (Dropdown para baixo) -->
+           <a href="../artigos/artigo_feeds.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
                     <div class="p-2 bg-emerald-50 rounded-xl transition-all">
+                        <i data-lucide="newspaper" class="w-5 h-5 text-emerald-700"></i>
+                    </div>
+                    <span class="text-[11px] font-medium font-bold">Artigos</span>
+                </a>
+    
+        <!-- 2. INTERESSES (Dropdown para baixo) -->
+        <div class="relative group">
+            <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-800 transition-all hover:scale-105 focus:outline-none">
+                <div class="p-2 hover:bg-emerald-50 rounded-2xl transition-all">
+                    <i data-lucide="hash" class="w-5 h-5 text-emerald-700"></i>
+                </div>
+                <span class="text-[11px] font-medium">Interesses</span>
+            </button>
+            
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 before:absolute before:-top-3 before:inset-x-0 before:h-3 hidden group-hover:flex flex-col bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 min-w-[150px] z-50">
+                <a href="../consultas/numerologia.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Numerologia</a>
+                <a href="../consultas/horoscopo.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Astrologia</a>
+                <a href="../consultas/calendario.html" class="px-3 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all">Calendario Lunar</a>
+              
+            </div>
+        </div>
+
+       
+     
+
+        <!-- 4. EBOOKS -->
+          <a href="../news/news_feeds.html" class="flex flex-col items-center gap-1 text-emerald-800 transition-all hover:scale-105">
+                    <div class="p-2  rounded-xl transition-all">
                         <i data-lucide="file-heart" class="w-5 h-5 text-emerald-700"></i>
                     </div>
                     <span class="text-[11px] font-medium font-bold">Relatos</span>
                 </a>
-                <a href="../testes/acolhimento.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-orange-800 transition-all hover:scale-105">
-                    <div class="p-2 hover:bg-orange-50 rounded-xl transition-all">
-                        <i data-lucide="heart-handshake" class="w-5 h-5 text-orange-600"></i>
-                    </div>
-                    <span class="text-[11px] font-medium">Acolhimento</span>
-                </a>
-            </div>
-        </nav>
+
+
+    </div>
+</nav>
 
         <!-- MATÉRIA PRINCIPAL (Preenchida dinamicamente via Supabase) -->
         <article id="materiaContainer" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-sm space-y-6">
