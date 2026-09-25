@@ -3,71 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equalize-se - Conexão e Autoconhecimento</title>
-<!-- Descrição SEO para o Google -->
-<meta name="description" content="Descubra conteúdos sobre autoconhecimento, horóscopo, numerologia, arquétipos e calendário. Conecte-se com seu desenvolvimento pessoal no Equalize-se.">
+    <title>Foco & Ser - Conexão e Autoconhecimento</title>
 
-<meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0" />
+    <!-- SEO e Metadados -->
+    <meta name="description" content="Descubra conteúdos sobre autoconhecimento, horóscopo, numerologia, arquétipos e calendário. Conecte-se com seu desenvolvimento pessoal no Foco & Ser.">
+    <meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0">
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
-     crossorigin="anonymous"></script>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DQ9HS0727"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2DQ9HS0727');
-</script>
-     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Equalize-se",
-  "url": "https://equalizese.vercel.app/",
-  "author": {
-    "@type": "Person",
-    "name": "Leandro Pessanha"
-  },
-  "description": "Plataforma de conexão e autoconhecimento abordando horóscopo, numerologia, arquétipos e calendário."
-}
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
-     crossorigin="anonymous"></script>
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Ícones Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Configurações do PWA para o Equalize-se -->
+    <!-- Configurações do PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Equalize-se">
+    <meta name="apple-mobile-web-app-title" content="Foco & Ser">
 
-    <!-- Script para registrar o Service Worker e buscar dados novos ao abrir -->
+    <!-- Estilos e Ícones (Tailwind, FontAwesome e Lucide) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Bibliotecas Externas (Supabase) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750" crossorigin="anonymous"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DQ9HS0727"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2DQ9HS0727');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PG5KC9SF');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Schema.org (Dados Estruturados) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Foco & Ser",
+      "url": "https://equalizese.vercel.app/",
+      "author": {
+        "@type": "Person",
+        "name": "Leandro Pessanha"
+      },
+      "description": "Plataforma de conexão e autoconhecimento abordando horóscopo, numerologia, arquétipos e calendário."
+    }
+    </script>
+
+    <!-- Script de Registo do Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js').then(reg => {
-            console.log('Service Worker do Equalize-se registrado com sucesso.');
+            console.log('Service Worker do Foco & Ser registrado com sucesso.');
 
-            // Força a verificação de atualizações sempre que a página ganha foco (ao abrir o app)
             window.addEventListener('focus', () => {
               reg.update();
             });
 
-            // Detecta se há uma nova versão disponível e atualiza em segundo plano
             reg.onupdatefound = () => {
               const installingWorker = reg.installing;
               installingWorker.onstatechange = () => {
                 if (installingWorker.state === 'installed') {
                   if (navigator.serviceWorker.controller) {
-                    console.log('Nova versão do Equalize-se encontrada. Atualizando...');
+                    console.log('Nova versão do Foco & Ser encontrada. Atualizando...');
                     window.location.reload();
                   }
                 }
@@ -79,13 +89,6 @@
         });
       }
     </script>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PG5KC9SF');</script>
-<!-- End Google Tag Manager -->
 </head>
 <body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%), url('img/bg.jpeg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
 
@@ -105,7 +108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         url: window.location.href
     };
 
-    // Tenta usar a API nativa de compartilhamento do dispositivo (celular/desktop compatível)
+    // Tnta usar a API nativa de compartilhamento do dispositivo (celular/desktop compatível)
     if (navigator.share) {
         try {
             await navigator.share(dadosCompartilhamento);
@@ -223,7 +226,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </p>
                     <span id="mensagem-dia-data" class="text-xs text-slate-500 font-medium">Data de referência: --/--/----</span>
                     <p id="mensagem-dia-autor" class="text-xs text-emerald-700 font-semibold text-right">
-                        — Equalize-se
+                        — Foco & Ser
                     </p>
                 </div>
             </div>
@@ -605,6 +608,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
     </div>
+<!-- Card de Redes Sociais -->
+<div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-4 max-w-sm mx-auto my-4">
+    
+    <!-- Texto Descritivo -->
+    <div>
+        <h4 class="text-sm font-bold text-slate-950">Nossas Redes Sociais</h4>
+        <p class="text-xs text-slate-500 mt-0.5">Acompanhe nosso trabalho e novidades</p>
+    </div>
+
+    <!-- Links / Botões do YouTube e Instagram -->
+    <div class="flex items-center gap-2">
+        <!-- Botão Instagram -->
+        <a href="https://www.instagram.com/SEU_USUARIO" target="_blank" rel="noopener noreferrer" 
+           class="w-10 h-10 bg-pink-50 hover:bg-pink-100 text-pink-600 rounded-lg flex items-center justify-center transition duration-200" title="Instagram">
+            <i class="fab fa-instagram text-lg"></i>
+        </a>
+
+        <!-- Botão YouTube -->
+        <a href="https://youtube.com/@focoeser?si=NowsBcqsIXRdgf4B" target="_blank" rel="noopener noreferrer" 
+           class="w-10 h-10 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition duration-200" title="YouTube">
+            <i class="fab fa-youtube text-lg"></i>
+        </a>
+    </div>
+
+</div>
 
     <!-- Card de Redirecionamento para a Página Sobre Nós -->
     <div class="mt-8 max-w-6xl w-full mx-auto px-4 sm:px-6">
@@ -615,7 +643,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <i data-lucide="heart-handshake" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg group-hover:text-emerald-800 transition-colors">Conheça o Equalize-se por dentro</h3>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg group-hover:text-emerald-800 transition-colors">Conheça o Foco & Ser por dentro</h3>
                         <p class="text-slate-600 text-sm font-light">Feito por pessoas reais para trazer apoio, clareza e autoconhecimento ao seu dia.</p>
                     </div>
                 </div>
@@ -628,7 +656,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Rodapé -->
     <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 flex justify-between items-center border-t border-slate-100">
-        <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
+        <span>Foco & Ser &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
         
         <a href="admin/index.html" class="opacity-20 hover:opacity-100 transition-opacity p-1 text-slate-400 hover:text-emerald-700" title="Painel Administrativo">
             <i data-lucide="lock" class="w-4 h-4"></i>
