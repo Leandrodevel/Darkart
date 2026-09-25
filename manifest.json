@@ -1,11 +1,11 @@
 {
-  "name": "Equalize-se",
-  "short_name": "Equalize-se",
+  "name": "Foco & Ser",
+  "short_name": "Foco&Ser",
   "description": "Plataforma de autoconhecimento, astrologia, numerologia e energias",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "orientation": "portrait",
   "icons": [
     {
