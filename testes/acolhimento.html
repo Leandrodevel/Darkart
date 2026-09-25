@@ -41,18 +41,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         url: window.location.href
     };
 
-    // Tenta usar a API nativa de compartilhamento do dispositivo (celular/desktop compatível)
     if (navigator.share) {
         try {
             await navigator.share(dadosCompartilhamento);
         } catch (erro) {
-            // Se o usuário cancelar o compartilhamento, não faz nada
             if (erro.name !== 'AbortError') {
                 console.error("Erro ao compartilhar:", erro);
             }
         }
     } else {
-        // Fallback: Se o navegador não suportar, copia o link para a área de transferência
         try {
             await navigator.clipboard.writeText(window.location.href);
             if (typeof mostrarAvisoFlutuante === 'function') {
@@ -184,7 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span>EQUALIZE-SE &copy; 2026 • TODOS OS DIREITOS RESERVADOS</span>
     </footer>
 
-    <!-- Script com Banco de 50 Perguntas e Sorteio de 15 -->
+    <!-- Script Corrigido com Banco de Perguntas e Lógica de Sensibilidade -->
     <script>
         const bancoPerguntas = [
             // Tristeza / Depressão
@@ -202,7 +199,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             // Pânico / Ansiedade Extrema
             { titulo: "Você tem sentido episódios repentinos de falta de ar ou coração disparado?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Raramente sob estresse.", pontos: 1}, {texto: "Sim, tenho crises frequentes.", pontos: 2}] },
             { titulo: "Sente um medo súbito e intenso de que algo trágico vá acontecer a qualquer momento?", opcoes: [{texto: "Não sinto isso.", pontos: 0}, {texto: "Às vezes me preocupo muito.", pontos: 1}, {texto: "Sim, vivo em alerta constante.", pontos: 2}] },
-            { titulo: "Você tem tido tonturas, tremores ou suores frios sem esforço físico prévio?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Em momentos de pico de nervosismo.", pontos: 1}, {texto: "Sim, com certa regularidade.", tokens: 2}] },
+            { titulo: "Você tem tido tonturas, tremores ou suores frios sem esforço físico prévio?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Em momentos de pico de nervosismo.", pontos: 1}, {texto: "Sim, com certa regularidade.", pontos: 2}] },
             { titulo: "Sente um aperto sufocante no peito ou sensação de nó na garganta?", opcoes: [{texto: "Raramente.", pontos: 0}, {texto: "Quando passo por aborrecimentos.", pontos: 1}, {texto: "Sim, quase todos os dias.", pontos: 2}] },
             { titulo: "O medo de ter uma nova crise de pânico consome seus pensamentos?", opcoes: [{texto: "Não penso nisso.", pontos: 0}, {texto: "Às vezes receio.", pontos: 1}, {texto: "Sim, tenho muito medo de ter outra crise.", pontos: 2}] },
             { titulo: "Você evita lugares cheios ou sair de casa por medo de passar mal?", opcoes: [{texto: "Circulo normalmente.", pontos: 0}, {texto: "Evito alguns locais aglomerados.", pontos: 1}, {texto: "Evito sair de casa o máximo possível.", pontos: 2}] },
@@ -218,7 +215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             { titulo: "Sente uma exaustão mental profunda mesmo após passar o dia todo em repouso?", opcoes: [{texto: "O descanso me renova.", pontos: 0}, {texto: "Cansaço leve.", pontos: 1}, {texto: "Sim, o cansaço não passa nunca.", pontos: 2}] },
             { titulo: "Você tem negligenciado sua higiene pessoal ou cuidados básicos por falta de ânimo?", opcoes: [{texto: "Cuido-me normalmente.", pontos: 0}, {texto: "Às vezes sinto preguiça.", pontos: 1}, {texto: "Sim, falta forças para o básico.", pontos: 2}] },
 
-            // Ideação / Pensamentos de Desesperança Profunda (Peso 3 ou 4 para gatilho de apoio urgente)
+            // Ideação / Pensamentos de Desesperança Profunda (Peso alto para gatilho de urgência)
             { titulo: "Você tem sentido que seria melhor para todos se você simplesmente desaparecesse?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Já passou pela mente em dias ruins.", pontos: 2}, {texto: "Sim, sinto isso com frequência.", pontos: 4}] },
             { titulo: "Pensamentos sobre a morte ou sobre o fim da própria vida cruzaram sua mente?", opcoes: [{texto: "Nunca.", pontos: 0}, {texto: "Pensamentos passageiros de sumir.", points: 2}, {texto: "Sim, tenho pensado nisso.", pontos: 4}] },
             { titulo: "Você sente que a dor emocional que carrega tornou-se insuportável de aguentar?", opcoes: [{texto: "Consigo lidar.", pontos: 0}, {texto: "Está difícil.", points: 1}, {texto: "Sim, a dor é insuportável.", pontos: 3}] },
@@ -226,42 +223,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             { titulo: "Sente que perdeu completamente os motivos para continuar lutando?", opcoes: [{texto: "Tenho muitos motivos.", pontos: 0}, {texto: "Às vezes me questiono.", points: 1}, {texto: "Sim, sinto que não há mais motivos.", pontos: 4}] },
 
             // Solidão / Apoio / Relações
-            { titulo: "Você sente que ninguém ao seu redor é capaz de entender o que você passa?", opcoes: [{texto: "Meus amigos me entendem.", pontos: 0}, {texto: "Poucas pessoas entendem.", points: 1}, {texto: "Sim, sinto-me totalmente incompreendido(a) e sozinho(a).", points: 2}] },
-            { titulo: "Evita falar sobre o que sente com medo de ser visto(a) como fraco(a) ou chato(a)?", opcoes: [{texto: "Desabafo com facilidade.", pontos: 0}, {texto: "Guarde algumas coisas.", points: 1}, {texto: "Sim, escondo tudo de todos.", points: 2}] },
-            { titulo: "Sente que é um peso ou um fardo financeiro/emocional para sua família?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Às vezes acho que sim.", points: 1}, {texto: "Sim, sinto que atrapalho a vida deles.", points: 2}] },
-            { titulo: "Recebe apoio afetuoso de alguém no seu dia a dia atual?", opcoes: [{texto: "Sim, tenho ótimo apoio.", pontos: 0}, {texto: "Pouco apoio.", points: 1}, {texto: "Nenhum apoio, estou sozinho(a).", points: 2}] },
-            { titulo: "Tem vergonha de procurar ajuda psicológica ou psiquiátrica?", opcoes: [{texto: "Não tenho vergonha.", pontos: 0}, {texto: "Um pouco de receio.", points: 1}, {texto: "Sim, sinto muita vergonha.", points: 2}] },
+            { titulo: "Você sente que ninguém ao seu redor é capaz de entender o que você passa?", opcoes: [{texto: "Meus amigos me entendem.", pontos: 0}, {texto: "Poucas pessoas entendem.", points: 1}, {texto: "Sim, sinto-me totalmente incompreendido(a) e sozinho(a).", pontos: 2}] },
+            { titulo: "Evita falar sobre o que sente com medo de ser visto(a) como fraco(a) ou chato(a)?", opcoes: [{texto: "Desabafo com facilidade.", pontos: 0}, {texto: "Guardo algumas coisas.", points: 1}, {texto: "Sim, escondo tudo de todos.", pontos: 2}] },
+            { titulo: "Sente que é um peso ou um fardo financeiro/emocional para sua família?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Às vezes acho que sim.", points: 1}, {texto: "Sim, sinto que atrapalho a vida deles.", pontos: 2}] },
+            { titulo: "Recebe apoio afetuoso de alguém no seu dia a dia atual?", opcoes: [{texto: "Sim, tenho ótimo apoio.", pontos: 0}, {texto: "Pouco apoio.", points: 1}, {texto: "Nenhum apoio, estou sozinho(a).", pontos: 2}] },
+            { titulo: "Tem vergonha de procurar ajuda psicológica ou psiquiátrica?", opcoes: [{texto: "Não tenho vergonha.", pontos: 0}, {texto: "Um pouco de receio.", points: 1}, {texto: "Sim, sinto muita vergonha.", pontos: 2}] },
 
             // Autocobrança / Estresse Cotidiano
-            { titulo: "Você se cobra para ser perfeito(a) em tudo o que faz?", opcoes: [{texto: "Não, aceito meus limites.", pontos: 0}, {texto: "Um pouco.", points: 1}, {texto: "Sim, sou extremamente exigente comigo.", points: 2}] },
-            { titulo: "Sente culpa quando decide tirar um tempo para descansar?", opcoes: [{texto: "Descanso sem culpa.", pontos: 0}, {texto: "Fico um pouco inquieto(a).", pontos: 1}, {texto: "Sim, sinto culpa enorme se paro.", points: 2}] },
-            { titulo: "As pequenas tarefas do dia a dia parecem montanhas impossíveis de escalar?", opcoes: [{texto: "Lido bem com a rotina.", pontos: 0}, {texto: "Alguns dias pesam.", points: 1}, {texto: "Sim, até tomar banho parece pesado.", points: 2}] },
-            { titulo: "Você sente raiva ou irritação excessiva com facilidade por qualquer bobagem?", opcoes: [{texto: "Sou calmo(a).", pontos: 0}, {texto: "Estresso-me às vezes.", pontos: 1}, {texto: "Sim, estou irritado(a) o tempo todo.", points: 2}] },
-            { titulo: "Sente um vazio interno profundo que nada consegue preencher?", opcoes: [{texto: "Sinto-me preenchido(a).", pontos: 0}, {texto: "Às vezes sinto um vazio leve.", points: 1}, {texto: "Sim, sinto um vazio constante e doloroso.", points: 2}] },
-
-            // Reflexões Finais de Perspectiva
-            { titulo: "Consegue lembrar de alguma época em que foi feliz ou sentiu paz de espírito?", opcoes: [{texto: "Sim, lembro bem.", pontos: 0}, {texto: "Faz muito tempo.", points: 1}, {texto: "Parece que isso nunca aconteceu comigo.", points: 2}] },
-            { titulo: "Você tem vontade de sumir, pegar a estrada e abandonar tudo?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Já pensei nisso.", points: 1}, {texto: "Sim, tenho essa vontade todos os dias.", points: 2}] },
-            { titulo: "A sua paciência com as pessoas e com os imprevistos esgotou-se?", opcoes: [{texto: "Ainda tenho paciência.", pontos: 0}, {texto: "Está curta.", points: 1}, {texto: "Zero paciência, qualquer coisa me explode.", points: 2}] },
-            { titulo: "Você sente que perdeu o controle sobre a direção da sua própria vida?", opcoes: [{texto: "Controlo minha vida.", pontos: 0}, {texto: "Às vezes sinto descontrole.", points: 1}, {texto: "Sim, a vida está totalmente fora do meu controle.", points: 2}] },
-            { titulo: "Você tem chorado escondido para que ninguém perceba sua dor?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Raramente.", points: 1}, {texto: "Sim, faço isso sempre.", points: 2}] },
-            { titulo: "Sente que sua mente é sua pior inimiga neste momento?", opcoes: [{texto: "Minha mente é tranquila.", pontos: 0}, {texto: "Às vezes atrapalha.", pontos: 1}, {texto: "Sim, minha mente me atormenta o dia todo.", points: 2}] },
-            { titulo: "Você consegue sentir prazer nas pequenas coisas, como um café ou sol?", opcoes: [{texto: "Sim, aprecio.", points: 0}, {texto: "Raramente.", points: 1}, {texto: "Não sinto prazer em absolutamente nada.", points: 2}] },
-            { titulo: "Você sente uma sensação de aperto no peito ao pensar no dia seguinte?", opcoes: [{texto: "Não.", pontos: 0}, {texto: "Um pouco de ansiedade.", points: 1}, {texto: "Sim, pavor de amanhecer o dia.", points: 2}] },
-            { titulo: "Acha que o seu sofrimento atual é uma frescura ou fraqueza sua?", opcoes: [{texto: "Sei que é uma questão real.", pontos: 0}, {texto: "Às vezes me julgo assim.", points: 1}, {texto: "Sim, acho que sou fraco(a) e culpado(a).", points: 2}] },
-            { titulo: "No fundo, você ainda deseja encontrar uma saída e ser feliz de novo?", opcoes: [{texto: "Sim, com certeza.", pontos: 0}, {texto: "Tenho dúvidas, mas queria.", points: 1}, {texto: "Não sei mais se acredito nisso.", points: 2}] }
+            { titulo: "Você se cobra para ser perfeito(a) em tudo o que faz?", opcoes: [{texto: "Não, aceito meus limites.", pontos: 0}, {texto: "Um pouco.", points: 1}, {texto: "Sim, sou extremamente exigente comigo.", pontos: 2}] },
+            { titulo: "Sente culpa quando decide tirar um tempo para descansar?", opcoes: [{texto: "Descanso sem culpa.", pontos: 0}, {texto: "Fico um pouco inquieto(a).", points: 1}, {texto: "Sim, sinto culpa enorme se paro.", pontos: 2}] },
+            { titulo: "As pequenas tarefas do dia a dia parecem montanhas impossíveis de escalar?", opcoes: [{texto: "Lido bem com a rotina.", pontos: 0}, {texto: "Alguns dias pesam.", points: 1}, {texto: "Sim, até tomar banho parece pesado.", pontos: 2}] },
+            { titulo: "Você sente raiva ou irritação excessiva com facilidade por qualquer bobagem?", opcoes: [{texto: "Sou calmo(a).", pontos: 0}, {texto: "Estresso-me às vezes.", pontos: 1}, {texto: "Sim, estou irritado(a) o tempo todo.", pontos: 2}] },
+            { titulo: "Sente um vazio interno profundo que nada consegue preencher?", opcoes: [{texto: "Sinto-me preenchido(a).", pontos: 0}, {texto: "Às vezes sinto um vazio leve.", points: 1}, {texto: "Sim, sinto um vazio constante e doloroso.", pontos: 2}] }
         ];
 
         let perguntasSorteadas = [];
         let questaoAtual = 0;
         let pontuacaoTotal = 0;
+        let temRespostaGrave = false; // Nova flag de segurança
 
-        // Função para embaralhar e selecionar 15 perguntas aleatórias sem repetir na mesma sessão
         function sortearPerguntas() {
             let copiaBanco = [...bancoPerguntas];
-            // Embaralha o array completo
             copiaBanco.sort(() => Math.random() - 0.5);
-            // Pega exatamente 15
             perguntasSorteadas = copiaBanco.slice(0, 15);
         }
 
@@ -269,6 +252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             sortearPerguntas();
             questaoAtual = 0;
             pontuacaoTotal = 0;
+            temRespostaGrave = false;
             document.getElementById('quiz-intro').classList.add('hidden');
             document.getElementById('quiz-resultado').classList.add('hidden');
             document.getElementById('bloco-ajuda').classList.add('hidden');
@@ -286,7 +270,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
             q.opcoes.forEach(op => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-orange-50/50 hover:border-orange-300 transition-all text-sm font-medium text-slate-700 shadow-sm";
+                btn.className = "w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-orange-50/50 hover:border-orange-300 transition-all text-sm font-medium text-slate-700 shadow-sm cursor-pointer";
                 btn.innerText = op.texto;
                 btn.onclick = () => selecionarOpcao(op.pontos);
                 container.appendChild(btn);
@@ -299,6 +283,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         function selecionarOpcao(pontos) {
             pontuacaoTotal += pontos;
+            // Se o usuário selecionou uma opção com peso 3 ou 4, marca a flag de atenção grave
+            if (pontos >= 3) {
+                temRespostaGrave = true;
+            }
+
             questaoAtual++;
             if (questaoAtual < perguntasSorteadas.length) {
                 carregarQuestao();
@@ -318,9 +307,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const descEl = document.getElementById('resultado-descricao');
             const blocoAjuda = document.getElementById('bloco-ajuda');
 
-            // Critérios de pontuação adaptados para 15 perguntas sorteadas
-            if (pontuacaoTotal >= 10) {
-                // Alerta alto / Sofrimento profundo ou ideação
+            // Regra de decisão corrigida e sensível
+            if (temRespostaGrave || pontuacaoTotal >= 6) {
+                // Alerta alto / Acolhimento urgente
                 iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-2xl border border-red-200";
                 iconeEl.setAttribute('data-lucide', 'heart');
                 subtituloEl.className = "text-xs text-red-600 font-bold uppercase tracking-widest";
@@ -328,8 +317,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 tituloEl.innerText = "Você merece cuidado e escuta imediata";
                 descEl.innerHTML = "Notamos através de suas respostas que você está carregando um fardo emocional muito pesado, com sinais importantes de sofrimento, exaustão ou dor intensa. <strong>Lembre-se: o que você sente é real, mas você não precisa carregar isso sozinho(a).</strong> A dor que você sente hoje tem tratamento e suporte, e existem pessoas preparadas para te ouvir sem julgamentos neste exato momento.";
                 blocoAjuda.classList.remove('hidden');
-            } else if (pontuacaoTotal >= 5) {
-                // Sinais moderados
+            } else if (pontuacaoTotal >= 2) {
+                // Sinais moderados / Orientação
                 iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200";
                 iconeEl.setAttribute('data-lucide', 'sun');
                 subtituloEl.className = "text-xs text-amber-600 font-bold uppercase tracking-widest";
@@ -338,7 +327,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 descEl.innerHTML = "Suas respostas indicam que o estresse do dia a dia, a rotina ou momentos de oscilação emocional têm drenado sua energia. É um momento precioso para desacelerar, olhar para dentro com carinho, buscar conversas com pessoas de confiança e considerar um acompanhamento psicológico preventivo.";
                 blocoAjuda.classList.add('hidden');
             } else {
-                // Equilíbrio
+                // Equilíbrio estrito apenas para pontuação 0 ou 1
                 iconeContainer.className = "inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-200";
                 iconeEl.setAttribute('data-lucide', 'shield-check');
                 subtituloEl.className = "text-xs text-emerald-700 font-bold uppercase tracking-widest";
