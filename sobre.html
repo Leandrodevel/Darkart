@@ -110,7 +110,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </header>
 
 
-<div id="menu-container"></div>
+   <div id="menu-container"></div>
+<script>
+    fetch('modulos/menu-index.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('menu-container').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o menu:', error);
+    });
+lucide.createIcons();
+</script>
+
+   
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
@@ -169,7 +182,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Esperamos que cada página deste site traga um momento de pausa, reflexão positiva e inspiração para o seu dia. Explore os recursos e equalize as suas energias sempre que precisar!
             </p>
         </div>
-<div id="ads-container-1"></div></main>
+   <div id="ads-container-1"></div>
+<script>
+    fetch('modulos/ads-1.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('ads-container-1').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o anúncio:', error);
+    });
+    </script>
+
+
+</main>
     </main>
 
     <!-- Rodapé -->

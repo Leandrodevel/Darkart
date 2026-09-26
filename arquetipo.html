@@ -126,7 +126,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </header>
 
 <div id="menu-container"></div>
-
+<script>
+    fetch('modulos/menu-index.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('menu-container').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o menu:', error);
+    });
+lucide.createIcons();
+</script>
 
 
     <!-- CONTEÚDO PRINCIPAL (TESTE ARQUETÍPICO) -->
@@ -191,8 +201,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </button>
         </div>
 
-        <div id="ads-container-1"></div></main>
-        
+          <div id="ads-container-1"></div>
+<script>
+    fetch('modulos/ads-1.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('ads-container-1').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o anúncio:', error);
+    });
+    </script>
+
+
+    </main>
+
         <!-- Ads_horizontais -->
 <ins class="adsbygoogle"
      style="display:block"
@@ -212,32 +235,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </footer>
 
     <!-- Inicialização de Ícones e Menu Hambúrguer Mobile -->
-    <script>
-        lucide.createIcons();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const btnMenu = document.getElementById("btn-menu");
-            const dropdownMenu = document.getElementById("dropdown-menu");
-
-            if (btnMenu && dropdownMenu) {
-                btnMenu.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    dropdownMenu.classList.toggle("opacity-0");
-                    dropdownMenu.classList.toggle("invisible");
-                    dropdownMenu.classList.toggle("-translate-y-2");
-                });
-
-                document.addEventListener("click", (e) => {
-                    if (!dropdownMenu.contains(e.target) && !btnMenu.contains(e.target)) {
-                        dropdownMenu.classList.add("opacity-0", "invisible", "-translate-y-2");
-                    }
-                });
-            }
-        });
-    </script>
-    
+  
+   
     <!-- Script Separado do Quiz -->
     <script src="quiz.js"></script>
-    <script src="index-modulos.js"></script>
+  
 </body>
 </html>
