@@ -74,73 +74,7 @@
     </url>
 
     <!-- Página sobre a Doutrina Espírita (Nova) -->
-    <url>
-        <loc>https://equalizese.vercel.app/conteudo/espiritismo.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
 
-    <!-- Página de Magia das Velas (Nova) -->
-    <url>
-        <loc>https://equalizese.vercel.app/conteudo/velas.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-  
-    <url>
-        <loc>https://equalizese.vercel.app/conteudo/orculos.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/banhos.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/defumacao.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/hermetismo.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/rezas.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/rituais.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/umbanda.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-        <url>
-        <loc>https://equalizese.vercel.app/conteudo/wicca.html</loc>
-        <lastmod>2026-09-20</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
 
 
     <!-- Página de E-books (Nova) -->

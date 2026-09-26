@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nós - Equalize-se</title>
-    <meta name="description" content="Conheça o propósito do Equalize-se: um espaço humano dedicado ao autoconhecimento, apoio, clareza e palavras de conforto para o seu dia a dia.">
+    <title>Sobre Nós - Foco & Ser</title>
+    <meta name="description" content="Conheça o propósito do Foco & Ser: um espaço humano dedicado ao autoconhecimento, apoio, clareza e palavras de conforto para o seu dia a dia.">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,19 +21,19 @@
      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
      crossorigin="anonymous"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Configurações do PWA para o Equalize-se -->
+    <!-- Configurações do PWA para o Foco & Ser -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Equalize-se">
+    <meta name="apple-mobile-web-app-title" content="Foco & Ser">
 
     <!-- Script para registrar o Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js').then(reg => {
-            console.log('Service Worker do Equalize-se registrado com sucesso.');
+            console.log('Service Worker do Foco & Ser registrado com sucesso.');
             window.addEventListener('focus', () => { reg.update(); });
           }).catch(err => {
             console.log('Falha ao registrar o Service Worker:', err);
@@ -140,7 +140,7 @@ lucide.createIcons();
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Feito por Pessoas, para Pessoas</h1>
             <p class="text-slate-600 text-base sm:text-lg font-light leading-relaxed max-w-2xl mx-auto">
-                O <strong class="font-semibold text-emerald-800">Equalize-se</strong> nasceu do desejo genuíno de criar um refúgio digital seguro, acolhedor e humano na internet. 
+                O <strong class="font-semibold text-emerald-800">Foco & Ser</strong> nasceu do desejo genuíno de criar um refúgio digital seguro, acolhedor e humano na internet. 
             </p>
         </div>
 
@@ -205,7 +205,7 @@ lucide.createIcons();
 
     <!-- Rodapé -->
     <footer class="text-center py-6 text-xs text-slate-500 space-y-1">
-        <p>Equalize-se &copy; 2026 — Desenvolvido com dedicação por pessoas reais.</p>
+        <p>Foco & Ser &copy; 2026 — Desenvolvido com dedicação por pessoas reais.</p>
         <p class="text-emerald-700 font-medium"><a href="index.html" class="hover:underline">Voltar à Página Principal</a></p>
     </footer>
 
