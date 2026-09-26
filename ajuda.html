@@ -141,10 +141,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div id="ads-container-1"></div>
 <script>
-    fetch('modulos/ads-1.html')
+   fetch('modulos/ads-1.html')
     .then(response => response.text())
     .then(html => {
-        document.getElementById('ads-container-1').innerHTML = html;
+        const container = document.getElementById('ads-container-1');
+        container.innerHTML = html;
+
+        // Extrai e executa automaticamente qualquer <script> que esteja dentro do ads-1.html
+        container.querySelectorAll('script').forEach(script => {
+            const novoScript = document.createElement('script');
+            // Copia o conteúdo do script
+            novoScript.textContent = script.textContent;
+            // Se o script tiver algum atributo (como src), copia também
+            Array.from(script.attributes).forEach(attr => {
+                novoScript.setAttribute(attr.name, attr.value);
+            });
+            // Insere o script no documento para que ele execute os dados do banner
+            document.body.appendChild(novoScript);
+        });
     })
     .catch(error => {
         console.error('Erro ao carregar o anúncio:', error);
