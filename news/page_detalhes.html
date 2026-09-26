@@ -91,10 +91,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div id="menu-container"></div>
    <div id="ads-container-1"></div>
 <script>
-    fetch('../modulos/menu-pages.html')
+      fetch('../modulos/menu-index.html')
     .then(response => response.text())
     .then(html => {
         document.getElementById('menu-container').innerHTML = html;
+        
+        // CORREÇÃO: Chamar o Lucide aqui garante que ele renderiza 
+        // os ícones assim que o menu for injetado no DOM!
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     })
     .catch(error => {
         console.error('Erro ao carregar o menu:', error);

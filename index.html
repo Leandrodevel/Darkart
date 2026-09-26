@@ -156,11 +156,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .then(response => response.text())
     .then(html => {
         document.getElementById('menu-container').innerHTML = html;
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     })
     .catch(error => {
         console.error('Erro ao carregar o menu:', error);
     });
-lucide.createIcons();
+
 </script>
 
  

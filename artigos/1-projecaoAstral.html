@@ -54,6 +54,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .then(response => response.text())
     .then(html => {
         document.getElementById('menu-container').innerHTML = html;
+        
+        // CORREÇÃO: Chamar o Lucide aqui garante que ele renderiza 
+        // os ícones assim que o menu for injetado no DOM!
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     })
     .catch(error => {
         console.error('Erro ao carregar o menu:', error);
