@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astrologia do Dia - Equalize-se</title>
+    <title>Astrologia do Dia - Foco & Ser</title>
         <meta name="description" content="Saiba mais sobre seu signo, saiba mais sobre você e o dia de Hoje.">
             <meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0" />
 
@@ -25,19 +25,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-       <!-- Configurações do PWA para o Equalize-se -->
+       <!-- Configurações do PWA para o Foco & Ser -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Equalize-se">
+<meta name="apple-mobile-web-app-title" content="Foco & Ser">
 
 <!-- Script para registrar o Service Worker e buscar dados novos ao abrir -->
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').then(reg => {
-        console.log('Service Worker do Equalize-se registrado com sucesso.');
+        console.log('Service Worker do Foco & Ser registrado com sucesso.');
 
         // Força a verificação de atualizações sempre que a página ganha foco (ao abrir o app)
         window.addEventListener('focus', () => {
@@ -50,7 +50,7 @@
           installingWorker.onstatechange = () => {
             if (installingWorker.state === 'installed') {
               if (navigator.serviceWorker.controller) {
-                console.log('Nova versão do Equalize-se encontrada. Atualizando...');
+                console.log('Nova versão do Foco & Ser encontrada. Atualizando...');
                 window.location.reload();
               }
             }
@@ -249,7 +249,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Rodapé -->
     <footer class="text-center py-6 text-xs text-slate-500">
-        Equalize-se &copy; 2026
+        Foco & Ser &copy; 2026
     </footer>
 
     <!-- Scripts e Lógica da Página -->
