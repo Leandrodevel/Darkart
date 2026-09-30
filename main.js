@@ -558,7 +558,7 @@ mensagensData.forEach((msg, indexReal) => {
                         '</div>' +
                         '<div>' +
                             '<h3 class="text-sm font-bold text-slate-900">Nenhum recado ainda</h3>' +
-                            '<p class="text-xs text-slate-500 mt-1">Seja o primeiro visitante a deixar uma mensagem de bom dia!</p>' +
+                            '<p class="text-xs text-slate-500 mt-1">Seja o primeiro visitante a deixar uma mensagem!</p>' +
                         '</div>' +
                     '</div>';
                 if (contadorMural) contadorMural.innerText = "0 mensagens";
