@@ -1,12 +1,39 @@
 [
   {
+    "titulo": "O Hermetismo e os Sete Princípios: A Sabedoria Oculta que Governa o Universo",
+    "imagem_url": "https://images.pexels.com/photos/9381498/pexels-photo-9381498.jpeg",
+    "link": "5-hermetismo.html",
+    "resumo": "O <strong>Hermetismo</strong> é uma tradição filosófica e espiritual baseada nos escritos atribuídos a Hermes Trimegisto, sustentando que existe uma verdade universal subjacente a todas as ciências e leis mentais...",
+    "data": "2026-09-22"
+  },
+  {
+    "titulo": "A Lei da Atração: Como Alinhar Pensamentos, Emoções e Frequência para Cocriar a Realidade",
+    "imagem_url": "https://images.pexels.com/photos/847483/pexels-photo-847483.jpeg",
+    "link": "6-lei-da-atracao.html",
+    "resumo": "A <strong>Lei da Atração</strong> postula que semelhantes atraem semelhantes, demonstrando como os pensamentos, sentimentos e crenças moldam e atraem experiências correspondentes para a nossa realidade material...",
+    "data": "2026-09-21"
+  },
+  {
+    "titulo": "Banhos de Ervas para Descarrego e Limpeza Energética: Purificação e Renovação da Aura",
+    "imagem_url": "https://images.pexels.com/photos/9154231/pexels-photo-9154231.jpeg",
+    "link": "7-banhos-de-ervas.html",
+    "resumo": "Os <strong>banhos de ervas para descarrego</strong> figuram entre as práticas mais tradicionais para dissolver energias densas, cansaços acumulados e miasmas astrais através do uso consciente da natureza...",
+    "data": "2026-09-20"
+  },
+  {
+    "titulo": "O Poder do Reiki: Equilíbrio Energético e Cura Holística",
+    "imagem_url": "https://images.pexels.com/photos/35901651/pexels-photo-35901651.jpeg",
+    "link": "4-reiki.html",
+    "resumo": "O <strong>Reiki</strong> é uma terapia integrativa milenar de harmonização e reposição energética que utiliza a imposição de mãos para canalizar a Energia Vital Universal (Ki). Desenvolvido no Japão por Mikao Usui, este método holístico busca restabelecer o equilíbrio físico, mental, emocional e espiritual do praticante ou receptor, promovendo um profundo estado de paz interior e autocura....",
+    "data": "2026-09-30"
+  },
+  {
     "titulo": "Quem São os Pretos Velhos da Umbanda: Sabedoria, Humildade e Resiliência Ancestral",
     "imagem_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOQCW0vEfxKg_KJmez42dlkNEEQ8yoG7xKiPCPlFxVsIH5bpBAjYgzGh1x&s=10",
     "link": "3-pretos-velhos.html",
     "resumo": "Na religião de matriz brasileira <strong>Umbanda</strong>, os <strong>Pretos Velhos</strong> ocupam um lugar de profunda honra, respeito e amor incondicional, transmutando a dor do cativeiro em imensa sabedoria espiritual...",
     "data": "2026-09-22"
   },
-  
   {
     "titulo": "Como Funcionam os Passes Espíritas: A Mecânica da Cura Energética e do Alívio Espiritual",
     "imagem_url": "https://www.ceefa.org.br/content/images/2824388b82432c50eec4d769150056c4.jpg",
