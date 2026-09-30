@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Página Inicial -->
     <url>
-        <loc>https://equalizese.vercel.app/</loc>
+        <loc>https://focoeser.vercel.app/</loc>
         <lastmod>2026-09-30</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
@@ -10,56 +10,56 @@
 
     <!-- Página de Horóscopo -->
     <url>
-        <loc>https://equalizese.vercel.app/consultas/horoscopo.html</loc>
+        <loc>https://focoeser.vercel.app/consultas/horoscopo.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Página de Acolhimento -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/acolhimento.html</loc>
+        <loc>https://focoeser.vercel.app/testes/acolhimento.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Página de Chakras -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/chakras.html</loc>
+        <loc>https://focoeser.vercel.app/testes/chakras.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Página de Superpoderes -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/superpoder.html</loc>
+        <loc>https://focoeser.vercel.app/testes/superpoder.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Página de Arquétipos e Numerologia -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/arq_numerologia.html</loc>
+        <loc>https://focoeser.vercel.app/testes/arq_numerologia.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- página elemento -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/elemento.html</loc>
+        <loc>https://focoeser.vercel.app/testes/elemento.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- página estresse -->
     <url>
-        <loc>https://equalizese.vercel.app/testes/estresse.html</loc>
+        <loc>https://focoeser.vercel.app/testes/estresse.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Página de Numerologia -->
     <url>
-        <loc>https://equalizese.vercel.app/consultas/numerologia.html</loc>
+        <loc>https://focoeser.vercel.app/consultas/numerologia.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -67,7 +67,7 @@
 
     <!-- Página de Arquétipos -->
     <url>
-        <loc>https://equalizese.vercel.app/arquetipo.html</loc>
+        <loc>https://focoeser.vercel.app/arquetipo.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -75,7 +75,7 @@
 
     <!-- Página de E-books -->
     <url>
-        <loc>https://equalizese.vercel.app/ebooks//ebook.html</loc>
+        <loc>https://focoeser.vercel.app/ebooks/ebook.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -83,7 +83,7 @@
 
     <!-- Página Sobre -->
     <url>
-        <loc>https://equalizese.vercel.app/sobre.html</loc>
+        <loc>https://focoeser.vercel.app/sobre.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -91,7 +91,7 @@
 
     <!-- Página de Calendário -->
     <url>
-        <loc>https://equalizese.vercel.app/consultas/calendario.html</loc>
+        <loc>https://focoeser.vercel.app/consultas/calendario.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
@@ -99,7 +99,7 @@
 
     <!-- Página de Ajuda -->
     <url>
-        <loc>https://equalizese.vercel.app/ajuda.html</loc>
+        <loc>https://focoeser.vercel.app/ajuda.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -107,55 +107,55 @@
 
     <!-- Artigos Existentes e Novos -->
     <url>
-        <loc>https://equalizese.vercel.app/artigos/1-projecaoAstral.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/1-projecaoAstral.html</loc>
         <lastmod>2026-09-23</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/2-passes-espiritas.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/2-passes-espiritas.html</loc>
         <lastmod>2026-09-23</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/3-pretos-velhos.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/3-pretos-velhos.html</loc>
         <lastmod>2026-09-22</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/4-reiki.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/4-reiki.html</loc>
         <lastmod>2026-09-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/5-hermetismo.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/5-hermetismo.html</loc>
         <lastmod>2026-09-22</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/6-lei-da-atracao.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/6-lei-da-atracao.html</loc>
         <lastmod>2026-09-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/7-banhos-de-ervas.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/7-banhos-de-ervas.html</loc>
         <lastmod>2026-09-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/artigos/artigo_feeds.html</loc>
+        <loc>https://focoeser.vercel.app/artigos/artigo_feeds.html</loc>
         <lastmod>2026-09-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://equalizese.vercel.app/news/news_feeds.html</loc>
+        <loc>https://focoeser.vercel.app/news/news_feeds.html</loc>
         <lastmod>2026-09-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
