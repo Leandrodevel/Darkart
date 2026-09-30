@@ -181,6 +181,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
     </script>
 
+
+
         <!-- MENSAGEM DO DIA -->
         <section class="w-full">
             <div class="bg-white/90 backdrop-blur-sm border border-emerald-100/80 rounded-3xl p-6 shadow-sm">
@@ -199,6 +201,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
             </div>
     <!---->    </section>
+
+     <!-- Seção de Boas-Vindas / Data de Referência -->
+        <section class="text-center pt-2">
+       
+            <p id="data-hoje" class="text-emerald-800 font-semibold text-sm sm:text-base inline-block px-4 py-1.5 bg-emerald-50/80 border border-emerald-200/60 rounded-full">Carregando data de referência...</p>
+        </section>
+
+        <!-- SEÇÃO DE PUBLICAÇÃO / MATÉRIA RECENTE DO BANCO DE DADOS -->
+        <div id="lista-noticias" class="w-full">
+            <!-- O script main.js injetará a última matéria aqui automaticamente -->
+        </div>
+<!--ARTIGOS materias--->
+<section class="max-w-6xl mx-auto px-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800">Destaques</h2>
+        <a href="artigos/artigo_feeds.html" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition-all border border-emerald-200/60 flex items-center gap-1.5">
+            <span>Ver todos os artigos</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+    </div>
+
+    <!-- Container Geral -->
+    <div id="container-destaques" class="space-y-4">
+        <!-- O conteúdo será injetado dinamicamente via JS -->
+    </div>
+</section>
+
 
 <!-- MODULO DE ADS 01-->
    <div id="ads-container-1"></div>
@@ -272,32 +301,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-        <!-- Seção de Boas-Vindas / Data de Referência -->
-        <section class="text-center pt-2">
-            <h5 class="text-3xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">Sintonia Diária</h5>
-            <p id="data-hoje" class="text-emerald-800 font-semibold text-sm sm:text-base inline-block px-4 py-1.5 bg-emerald-50/80 border border-emerald-200/60 rounded-full">Carregando data de referência...</p>
-        </section>
-
-        <!-- SEÇÃO DE PUBLICAÇÃO / MATÉRIA RECENTE DO BANCO DE DADOS -->
-        <div id="lista-noticias" class="w-full">
-            <!-- O script main.js injetará a última matéria aqui automaticamente -->
-        </div>
-<!--ARTIGOS materias--->
-<section class="max-w-6xl mx-auto px-4 py-6">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold text-gray-800">Destaques</h2>
-        <a href="artigos/artigo_feeds.html" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition-all border border-emerald-200/60 flex items-center gap-1.5">
-            <span>Ver todos os artigos</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-        </a>
-    </div>
-
-    <!-- Container Geral -->
-    <div id="container-destaques" class="space-y-4">
-        <!-- O conteúdo será injetado dinamicamente via JS -->
-    </div>
-</section>
-
+   
 
  <!-- CHAT DE MENSAGENS -->
 <section id="secao-frases-container" class=" w-full bg-gray-100 p-2 rounded-lg space-y-3 " style="display: none !important;">
@@ -484,6 +488,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </section>
      <!-- Ads_horizontais 
+      
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-5020225266620750"
@@ -493,29 +498,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>  --> 
-    </main> 
 
-    <!-- MODAL / CAIXA DE TEXTO FLUTUANTE -->
-    <div id="modal-frase" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-emerald-100 animate-in fade-in zoom-in duration-200">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-slate-900">Mensagem Inspiradora do Dia</h3>
-                <button onclick="fecharModalFrase()" class="text-slate-400 hover:text-slate-600 p-1">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <p class="text-xs text-slate-500 mb-3">Escreva uma frase curta (máximo 140 caracteres). Permitido apenas 1 envio por dia.</p>
-            
-            <textarea id="input-mensagem-usuario" maxlength="140" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none mb-4" placeholder="Digite sua reflexão de hoje..."></textarea>
-            
-            <div class="flex justify-end gap-2">
-                <button onclick="fecharModalFrase()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-all">Cancelar</button>
-                <button onclick="enviarMensagemServidor()" id="btn-enviar-msg" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Enviar</button>
-            </div>
-        </div>
-    </div>
-<!-- Card de Redes Sociais -->
-<div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-4 max-w-sm mx-auto my-4">
+
+<div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-4 w-full mx-auto ">
     
     <!-- Texto Descritivo -->
     <div>
@@ -541,7 +526,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
     <!-- Card de Redirecionamento para a Página Sobre Nós -->
-    <div class="mt-8 max-w-6xl w-full mx-auto px-4 sm:px-6">
+    <div class="mt-8  w-full mx-auto px-4 sm:px-6">
         <a href="sobre.html" class="group block bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8 hover:border-emerald-600 transition-all duration-300">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -559,6 +544,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </a>
     </div>
+
+    </main> 
+
+    <!-- MODAL / CAIXA DE TEXTO FLUTUANTE -->
+    <div id="modal-frase" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-emerald-100 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Mensagem Inspiradora do Dia</h3>
+                <button onclick="fecharModalFrase()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Escreva uma frase curta (máximo 140 caracteres). Permitido apenas 1 envio por dia.</p>
+            
+            <textarea id="input-mensagem-usuario" maxlength="140" rows="3" class="w-full p-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-emerald-500 resize-none mb-4" placeholder="Digite sua reflexão de hoje..."></textarea>
+            
+            <div class="flex justify-end gap-2">
+                <button onclick="fecharModalFrase()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-all">Cancelar</button>
+                <button onclick="enviarMensagemServidor()" id="btn-enviar-msg" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">Enviar</button>
+            </div>
+        </div>
+    </div>
+<!-- Card de Redes Sociais -->
 
     <!-- Rodapé -->
     <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 flex justify-between items-center border-t border-slate-100 flex flex-col">
