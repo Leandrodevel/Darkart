@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrologia do Dia - Foco & Ser</title>
+        <meta name="description" content="Saiba mais sobre seu signo, saiba mais sobre você e o dia de Hoje.">
+            <meta name="google-site-verification" content="_SYj-oyFiOgQiEa-3QTsK74hVe1IMdV1N6tQsBcNFZ0" />
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
+     crossorigin="anonymous"></script>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5020225266620750"
+     crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DQ9HS0727"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2DQ9HS0727');
+</script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+       <!-- Configurações do PWA para o Foco & Ser -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Foco & Ser">
+
+<!-- Script para registrar o Service Worker e buscar dados novos ao abrir -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        console.log('Service Worker do Foco & Ser registrado com sucesso.');
+
+        // Força a verificação de atualizações sempre que a página ganha foco (ao abrir o app)
+        window.addEventListener('focus', () => {
+          reg.update();
+        });
+
+        // Detecta se há uma nova versão disponível e atualiza em segundo plano
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed') {
+              if (navigator.serviceWorker.controller) {
+                console.log('Nova versão do Foco & Ser encontrada. Atualizando...');
+                window.location.reload();
+              }
+            }
+          };
+        };
+      }).catch(err => {
+        console.log('Falha ao registrar o Service Worker:', err);
+      });
+    });
+  }
+</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PG5KC9SF');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body class="bg-gradient-to-br from-emerald-50/80 via-slate-50/80 to-purple-50/80 text-slate-800 min-h-screen py-8 font-sans flex flex-col justify-between relative bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%), url('../img/bg.jpeg');" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed=""> 
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5KC9SF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!---BOTAO COMPARTILHAR-->
+ <button onclick="compartilharPaginaAtual()" class="fixed top-4 right-4 z-[9999] bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 p-3 rounded-full shadow-2xl transition-all hover:scale-105 cursor-pointer flex items-center justify-center" title="Compartilhar página">
+        <i data-lucide="share-2" class="w-5 h-5"></i>
+    </button>
+<script>    
+    async function compartilharPaginaAtual() {
+    const dadosCompartilhamento = {
+        title: document.title,
+        text: "Confira esta página incrível!",
+        url: window.location.href
+    };
+
+    // Tenta usar a API nativa de compartilhamento do dispositivo (celular/desktop compatível)
+    if (navigator.share) {
+        try {
+            await navigator.share(dadosCompartilhamento);
+        } catch (erro) {
+            // Se o usuário cancelar o compartilhamento, não faz nada
+            if (erro.name !== 'AbortError') {
+                console.error("Erro ao compartilhar:", erro);
+            }
+        }
+    } else {
+        // Fallback: Se o navegador não suportar, copia o link para a área de transferência
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            if (typeof mostrarAvisoFlutuante === 'function') {
+                mostrarAvisoFlutuante("Link copiado para a área de transferência!");
+            } else {
+                alert("Link copiado!");
+            }
+        } catch (erro) {
+            console.error("Erro ao copiar link:", erro);
+        }
+    }
+}
+</script>
+ <header class=" text-center flex flex-col items-center justify-center space-y-2">
+    <a href="../index.html" class="flex flex-col items-center ">
+        <!-- Imagem da logo na pasta IMG -->
+        <img src="../img/logo.png" alt="Logo Foco EC" class="w-24 h-24 object-contain rounded-full transition-transform group-hover:scale-105">
+        
+        <!-- Nome Foco EC com o E estilizado em degradê -->
+        <span class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-emerald-700 to-purple-700 bg-clip-text text-transparent">Foco & Ser
+        </span>
+    </a>
+    <p class="text-xs text-slate-500 font-medium mt-1">Nossa jornada de foco e evolução diária</p>
+</header>
+
+        <!-- Botão de Voltar para o Início -->
+ <div id="menu-container"></div>
+   <div id="ads-container-1"></div>
+<script>
+      fetch('../modulos/menu-pages.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('menu-container').innerHTML = html;
+        
+        // CORREÇÃO: Chamar o Lucide aqui garante que ele renderiza 
+        // os ícones assim que o menu for injetado no DOM!
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o menu:', error);
+    });
+
+   fetch('../modulos/ads-1.html')
+    .then(response => response.text())
+    .then(html => {
+        const container = document.getElementById('ads-container-1');
+        container.innerHTML = html;
+
+        // Extrai e executa automaticamente qualquer <script> que esteja dentro do ads-1.html
+        container.querySelectorAll('script').forEach(script => {
+            const novoScript = document.createElement('script');
+            // Copia o conteúdo do script
+            novoScript.textContent = script.textContent;
+            // Se o script tiver algum atributo (como src), copia também
+            Array.from(script.attributes).forEach(attr => {
+                novoScript.setAttribute(attr.name, attr.value);
+            });
+            // Insere o script no documento para que ele execute os dados do banner
+            document.body.appendChild(novoScript);
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao carregar o anúncio:', error);
+    });
+   lucide.createIcons();
+</script>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-4xl w-full mx-auto px-4 sm:px-6 my-auto space-y-6">
+        
+        <!-- Painel do Céu de Hoje (Sol e Lua) -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <span id="current-date-badge" class="inline-block px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-full mb-2 uppercase tracking-widest">Data de Hoje</span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Céu Astrológico de Hoje</h1>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100">
+                    <span class="block text-2xl mb-1">☀️</span>
+                    <span class="text-xs text-slate-500 block font-medium">Sol de Hoje</span>
+                    <span class="font-bold text-amber-600 text-base">Virgem</span>
+                </div>
+                <div class="bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100">
+                    <span class="block text-2xl mb-1">🌙</span>
+                    <span class="text-xs text-slate-500 block font-medium">Lua de Hoje</span>
+                    <span class="font-bold text-purple-600 text-base">Sagitário</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consulta de Nascimento e Tendências -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <i data-lucide="compass" class="w-5 h-5 text-emerald-700"></i> Consulta por Data de Nascimento
+            </h2>
+            
+            <div class="mb-4">
+                <label class="block text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Sua Data de Nascimento</label>
+                <input type="date" id="dataNascimento" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-emerald-600 transition-colors">
+            </div>
+
+            <button onclick="calcularAstrologia()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition-all shadow-sm cursor-pointer">
+                Equalizar Minhas Energias
+            </button>
+        </div>
+
+        <!-- Resultado Dinâmico da Pesquisa -->
+        <div id="resultadoContainer" class="hidden">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-200 p-6 sm:p-8 space-y-2">
+                <h3 id="tituloSigno" class="text-xl font-bold text-emerald-800"></h3>
+                <p id="textoTendencia" class="text-slate-600 text-sm font-light leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- Seção Fixa: A Psicologia dos Signos & Cards Interativos -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-emerald-100/60 p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-3">
+                <i data-lucide="sparkles" class="w-6 h-6 text-emerald-700"></i>
+                <h3 class="text-lg font-bold text-slate-900">A Psicologia e os Arquétipos dos Signos</h3>
+            </div>
+            <p class="text-slate-600 text-sm font-light leading-relaxed mb-6">
+                Na visão da psicologia analítica (inspirada por Carl Jung), os signos funcionam como arquétipos — padrões de comportamento e instintos do inconsciente coletivo. Clique abaixo em qualquer signo para explorar suas características psicológicas:
+            </p>
+
+            <!-- Seletor de Signos (Cards) -->
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5 mb-6" id="cardsSignosContainer">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- Exibição da Característica Selecionada -->
+            <div id="detalheSignoCard" class="hidden bg-emerald-50/40 border border-emerald-100 rounded-2xl p-5">
+                <h4 id="nomeSignoSelecionado" class="font-bold text-emerald-900 text-base mb-1"></h4>
+                <p id="descricaoSignoSelecionado" class="text-slate-600 text-sm font-light leading-relaxed"></p>
+            </div>
+        </div>
+
+   <!-- Ads_horizontais -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5020225266620750"
+     data-ad-slot="3973012904"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> </main>
+
+ <footer class="text-center py-6 text-xs text-slate-400 font-medium tracking-wider mt-8 relative max-w-4xl mx-auto px-4 flex justify-between items-center border-t border-slate-100 flex flex-col">
+         <span class="flex justify-between items-center">Foco & Ser &copy; 2026 • TODOS OS DIREITOS RESERVADOS </span>
+        
+        <span class="flex justify-between items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> email: focoeser@gmail.com</span>
+</footer>
+
+    <!-- Scripts e Lógica da Página -->
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Exibe a data atual no badge superior de forma amigável
+            const dateBadge = document.getElementById("current-date-badge");
+            if (dateBadge) {
+                const hoje = new Date();
+                const opcoes = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateBadge.textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+            }
+
+            // Renderiza os cards de signos interativos automaticamente
+            renderizarCardsSignos();
+        });
+
+        // Banco de Dados Consolidado (Tendências + Psicologia)
+        const dadosSignos = {
+            "Áries": {
+                tendencia: "Hoje é um dia excelente para focar em metas profissionais. Sua energia estará em alta, mas evite discussões por impulso.",
+                psicologia: "Arquétipo do Pioneiro e do Guerreiro. Representa o impulso vital, a coragem de iniciar, a assertividade e a força de vontade, mas precisa vigiar a impaciência e a impulsividade."
+            },
+            "Touro": {
+                tendencia: "O momento pede mais atenção às finanças e ao conforto do lar. Um bom dia para desacelerar e cuidar de si mesmo.",
+                psicologia: "Arquétipo do Construtor. Relaciona-se com a busca por segurança, estabilidade sensorial, valorização material e constância, tendo como desafio lidar com a rigidez e a resistência a mudanças."
+            },
+            "Gêmeos": {
+                tendencia: "Sua comunicação estará brilhante! Aproveite para resolver pendências, conversar com amigos e iniciar ideias criativas.",
+                psicologia: "Arquétipo do Mensageiro / Comunicador. Focado na curiosidade intelectual, adaptabilidade, troca de ideias e dualidade mental, precisando evitar a dispersão e a superficialidade."
+            },
+            "Câncer": {
+                tendencia: "Sua intuição está muito forte hoje. Confie nos seus instintos, especialmente em decisões que envolvem a família ou o coração.",
+                psicologia: "Arquétipo da Mãe / Protetor. Simboliza o mundo emocional profundo, a memória, o acolhimento, a raiz e a proteção, lidando com o desafio do apego excessivo e da hipersensibilidade."
+            },
+            "Leão": {
+                tendencia: "O seu brilho pessoal atrai olhares positivos. É um dia excelente para se expressar e assumir a liderança em projetos.",
+                psicologia: "Arquétipo do Rei / Artista. Representa a autoexpressão autêntica, a dignidade, a criatividade e a necessidade de reconhecimento, tendo como sombra a vaidade ou a necessidade excessiva de aplausos."
+            },
+            "Virgem": {
+                tendencia: "Com o Sol no seu signo, sua capacidade de organização e foco está potencializada. Excelente para resolver problemas práticos.",
+                psicologia: "Arquétipo do Analista / Servidor. Focado no aperfeiçoamento, na ordem, na utilidade prática e na atenção aos mínimos detalhes, combatendo o excesso de autocrítica e o perfeccionismo."
+            },
+            "Libra": {
+                tendencia: "Busque o equilíbrio nas relações hoje. O dia favorece parcerias, acordos e momentos de harmonia estética ou artística.",
+                psicologia: "Arquétipo do Diplomata / O Justiceiro. Busca constante pela harmonia, alteridade, justiça e completude através do outro, tendo como grande desafio a indecisão crônica e o medo de conflitos."
+            },
+            "Escorpião": {
+                tendencia: "Um dia de grande profundidade emocional. Excelente para transformações internas e para focar em objetivos estratégicos.",
+                psicologia: "Arquétipo do Alquimista / Investigador. Simboliza a intensidade, a regeneração, a capacidade de mergulhar nos mistérios da psique e o renascimento através das crises."
+            },
+            "Sagitário": {
+                tendencia: "A Lua no seu signo traz uma forte onda de otimismo, vontade de expandir horizontes e buscar novas aventuras.",
+                psicologia: "Arquétipo do Filósofo / Explorador. Representa a busca por expansão de horizontes, sentido da vida, fé, otimismo e liberdade, precisando cuidar da tendência ao excesso e à dispersão."
+            },
+            "Capricórnio": {
+                tendencia: "Foco total na disciplina e nos resultados. Seus esforços de longo prazo começam a mostrar sinais positivos.",
+                psicologia: "Arquétipo do Sábio / Administrador. Focado na estrutura, na responsabilidade de longo prazo, na ética do trabalho e na concretização, lidando com o risco do excesso de rigidez e autocobrança."
+            },
+            "Aquário": {
+                tendencia: "Ideias inovadoras surgem com facilidade hoje. É um ótimo dia para se conectar com grupos e pensar no futuro.",
+                psicologia: "Arquétipo do Visionário / Revolucionário. Simboliza a inovação, a coletividade, a quebra de paradigmas tradicionais e a independência mental, equilibrando o distanciamento emocional."
+            },
+            "Peixes": {
+                tendencia: "Sua sensibilidade e criatividade estão em alta. Dedique um tempo para atividades artísticas, espirituais ou de descanso.",
+                psicologia: "Arquétipo do Místico / Poeta. Representa a transcendência, a compaixão universal, a empatia sem fronteiras e a conexão com o plano espiritual ou inconsciente profundo."
+            }
+        };
+
+        // Função para gerar os cards dinamicamente mantendo o padrão visual
+        function renderizarCardsSignos() {
+            const containerCards = document.getElementById("cardsSignosContainer");
+            containerCards.innerHTML = "";
+
+            for (let signo in dadosSignos) {
+                const btn = document.createElement("button");
+                btn.id = `sign-card-${signo.toLowerCase()}`;
+                btn.className = "sign-btn p-3 rounded-xl bg-white border border-emerald-100 hover:border-emerald-600 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all text-center shadow-xs cursor-pointer";
+                btn.innerText = signo;
+                btn.onclick = () => mostrarDetalheSigno(signo);
+                containerCards.appendChild(btn);
+            }
+        }
+
+        // Função ao clicar em um card de signo específico
+        function mostrarDetalheSigno(signo) {
+            const cardDetalhe = document.getElementById("detalheSignoCard");
+            const titulo = document.getElementById("nomeSignoSelecionado");
+            const descricao = document.getElementById("descricaoSignoSelecionado");
+
+            cardDetalhe.classList.remove("hidden");
+            titulo.innerText = `Signo de ${signo} (Visão Psicológica)`;
+            descricao.innerText = dadosSignos[signo].psicologia;
+
+            // Gerencia classes ativas dos botões
+            document.querySelectorAll(".sign-btn").forEach(b => {
+                b.classList.remove("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
+                b.classList.add("bg-white", "text-slate-700");
+            });
+
+            const activeBtn = document.getElementById(`sign-card-${signo.toLowerCase()}`);
+            if (activeBtn) {
+                activeBtn.classList.remove("bg-white", "text-slate-700");
+                activeBtn.classList.add("border-emerald-600", "bg-emerald-50/85", "text-emerald-900", "shadow-sm");
+            }
+        }
+
+        // Lógica de cálculo do Signo Solar via Data de Nascimento
+        function calcularAstrologia() {
+            const dataInput = document.getElementById("dataNascimento").value;
+            const container = document.getElementById("resultadoContainer");
+            const titulo = document.getElementById("tituloSigno");
+            const texto = document.getElementById("textoTendencia");
+
+            if (!dataInput) {
+                alert("Por favor, selecione sua data de nascimento.");
+                return;
+            }
+
+            const data = new Date(dataInput);
+            const dia = data.getDate() + 1;
+            const mes = data.getMonth() + 1;
+
+            let signoSol = "";
+            if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 20)) signoSol = "Áries";
+            else if ((mes == 4 && dia >= 21) || (mes == 5 && dia <= 20)) signoSol = "Touro";
+            else if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) signoSol = "Gêmeos";
+            else if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) signoSol = "Câncer";
+            else if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) signoSol = "Leão";
+            else if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) signoSol = "Virgem";
+            else if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) signoSol = "Libra";
+            else if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) signoSol = "Escorpião";
+            else if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) signoSol = "Sagitário";
+            else if ((mes == 12 && dia >= 22) || (mes == 1 && dia <= 19)) signoSol = "Capricórnio";
+            else if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) signoSol = "Aquário";
+            else signoSol = "Peixes";
+
+            container.classList.remove("hidden");
+            titulo.innerText = `Seu Signo Solar: ${signoSol}`;
+            texto.innerText = dadosSignos[signoSol].tendencia;
+        }
+    </script>
+</body>
+</html>
